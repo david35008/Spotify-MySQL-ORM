@@ -33,14 +33,31 @@ connection.connect((err) => {
   }
 });
 
-app.get("/" , (req, res) => {
-    res.send("This is a rest api, that serves a Music Streaming service")
+app.get("/", (req, res) => {
+  res.send("This is a rest api, that serves a Music Streaming service")
 })
 
 app.get("/songs", (req, res) => {
   connection.query("SELECT * FROM songs", (err, result, fields) => {
-      if (err) throw err;
+    if (err) {
+      res.status(400).send("An error occurred.")
+      throw err
+    } else {
       res.json(result);
+    }
+  });
+})
+
+app.get("/song/:id", (req, res) => {
+  connection.query(`SELECT * FROM songs WHERE song_ID= ${req.params.id}`, (err, result, fields) => {
+    if (err) {
+      res.status(400).send("An error occurred.");
+      throw err
+    } else if (result.length < 1) {
+      res.status(404).send("There is no such song");
+    } else {
+      res.json(result);
+    }
   });
 })
 
