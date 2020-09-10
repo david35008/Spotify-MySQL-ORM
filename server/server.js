@@ -124,7 +124,7 @@ app.get("/album/:id", (req, res) => {
       res.status(400).send("An error occurred.");
       throw err
     } else if (result.length < 1) {
-      res.status(404).send("There is no such artist");
+      res.status(404).send("There is no such album");
     } else {
       res.json(result);
     }
@@ -147,6 +147,19 @@ app.get("/playlists", (req, res) => {
     if (err) {
       res.status(400).send("An error occurred.")
       throw err
+    } else {
+      res.json(result);
+    }
+  });
+})
+
+app.get("/playlist/:id", (req, res) => {
+  connection.query(`SELECT * FROM playlists WHERE playlist_ID= ${req.params.id}`, (err, result, fields) => {
+    if (err) {
+      res.status(400).send("An error occurred.");
+      throw err
+    } else if (result.length < 1) {
+      res.status(404).send("There is no such playlist");
     } else {
       res.json(result);
     }
