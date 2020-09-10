@@ -166,6 +166,17 @@ app.get("/playlist/:id", (req, res) => {
   });
 })
 
+app.get("/top_playlists/:limit", (req, res) => {
+  connection.query(`SELECT * FROM playlists LIMIT ${req.params.limit}`, (err, result) => {
+    if (err) {
+      res.status(400).send("An error occurred.");
+      throw err
+    } else {
+      res.json(result);
+    }
+  });
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
