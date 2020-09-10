@@ -284,6 +284,21 @@ app.put("/album/:id", (req, res) => {
     })
 })
 
+app.put("/playlist/:id", (req, res) => {
+  if (!req.body) {
+      res.status(400).send("content missing")
+  }
+  const { body } = req;
+  const queryString = `UPDATE playlists SET ? WHERE playlist_ID=${req.params.id}`;
+  connection.query(queryString, body, (err, result) => {
+      if (err) {
+          res.send("An error occurred.");
+      } else {
+          res.send("1 playlist updated");
+      }
+  })
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
