@@ -177,6 +177,22 @@ app.get("/top_playlists/:limit", (req, res) => {
   });
 })
 
+app.post("/song", (req, res) => {
+  if (!req.body) {
+      res.status(400).send("content missing")
+  }
+  const { body } = req;
+  const queryString = `INSERT INTO songs SET ?`;
+  console.log(body)
+  connection.query(queryString, body, (err, result) => {
+      if (err) {
+          res.status(400).send("An error occurred.");
+      } else {
+          res.send("1 song successfully inserted into db");
+      }
+  });
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
