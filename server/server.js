@@ -96,6 +96,17 @@ app.get("/artist/:id", (req, res) => {
     });
 })
 
+app.get("/top_artists/:limit", (req, res) => {
+  connection.query(`SELECT * FROM artists LIMIT ${req.params.limit}`, (err, result) => {
+    if (err) {
+      res.status(400).send("An error occurred.");
+      throw err
+    } else {
+      res.json(result);
+    }
+  });
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
