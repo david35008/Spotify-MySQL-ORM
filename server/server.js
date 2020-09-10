@@ -314,6 +314,13 @@ app.delete("/artist/:id", (req, res) => {
   });
 })
 
+app.delete("/album/:id", (req, res) => {
+  connection.query(`DELETE FROM albums WHERE album_ID= ${req.params.id}`, (err, result) => {
+      if (err) res.send("An error occurred.");
+      res.send("One album deleted");
+  });
+})
+
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
