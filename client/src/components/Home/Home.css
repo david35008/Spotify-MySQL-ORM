@@ -1,0 +1,10 @@
+.Home {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: row;
+}
+
+.song-list {
+    display: flex;
+    flex-direction: row;
+}
