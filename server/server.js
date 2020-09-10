@@ -83,6 +83,19 @@ app.get("/artists", (req, res) => {
   });
 })
 
+app.get("/artist/:id", (req, res) => {
+    connection.query(`SELECT * FROM artists WHERE artist_ID= ${req.params.id}`, (err, result) => {
+      if (err) {
+        res.status(400).send("An error occurred.");
+        throw err
+      } else if (result.length < 1) {
+        res.status(404).send("There is no such artist");
+      } else {
+        res.json(result);
+      }
+    });
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
