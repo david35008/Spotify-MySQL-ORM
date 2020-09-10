@@ -1,22 +1,37 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const mysql = require('mysql');
 const app = express()
 
 app.use(express.json());
 
 app.use(morgan(function (tokens, req, res) {
-  const myTiny =[tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.status(req, res),
-    tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms']
-  if (req.method === 'POST' || req.method === 'PUT' ) {
+  const myTiny = [tokens.method(req, res),
+  tokens.url(req, res),
+  tokens.status(req, res),
+  tokens.res(req, res, 'content-length'), '-',
+  tokens['response-time'](req, res), 'ms']
+  if (req.method === 'POST' || req.method === 'PUT') {
     return myTiny.concat([JSON.stringify(req.body)]).join(' ')
   } else {
     return myTiny.join(' ')
   }
 }));
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATA_BASE
+});
+
+connection.connect((err) => {
+  if (err) { throw err }
+  else {
+    console.log(`Connected to my sql! on ${process.env.DATA_BASE} DB`);
+  }
+});
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
