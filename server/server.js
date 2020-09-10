@@ -208,6 +208,21 @@ app.post("/album", (req, res) => {
   });
 })
 
+app.post("/artist", (req, res) => {
+  if (!req.body) {
+      res.status(400).send("content missing")
+  }
+  const { body } = req
+  const queryString = `INSERT INTO artists 
+          SET ?`;
+  connection.query(queryString, body, (err, data) => {
+      if (err) {
+          res.status(400).send("An error occurred.");
+      } else {
+          res.send("1 artist successfully inserted into db");
+      }
+  });
+})
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
