@@ -299,6 +299,14 @@ app.put("/playlist/:id", (req, res) => {
   })
 })
 
+app.delete("/song/:id", (req, res) => {
+  connection.query(`DELETE FROM songs WHERE song_ID= ${req.params.id}`, (err, result) => {
+      if (err) res.send("An error occurred.");
+      res.send("One song deleted");
+  });
+
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
