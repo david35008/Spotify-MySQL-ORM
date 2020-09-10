@@ -33,6 +33,17 @@ connection.connect((err) => {
   }
 });
 
+app.get("/" , (req, res) => {
+    res.send("This is a rest api, that serves a Music Streaming service")
+})
+
+app.get("/songs", (req, res) => {
+  connection.query("SELECT * FROM songs", (err, result, fields) => {
+      if (err) throw err;
+      res.json(result);
+  });
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
