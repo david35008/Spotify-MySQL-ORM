@@ -193,6 +193,22 @@ app.post("/song", (req, res) => {
   });
 })
 
+app.post("/album", (req, res) => {
+  if (!req.body) {
+      res.status(400).send("content missing")
+  }
+  const { body } = req;
+  const queryString = `INSERT INTO albums SET ?`;
+  connection.query(queryString, body, (err, result) => {
+      if (err) {
+          res.status(400).send("An error occurred.");
+      } else {
+          res.send("1 album successfully inserted into db");
+      }
+  });
+})
+
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
