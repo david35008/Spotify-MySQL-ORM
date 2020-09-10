@@ -254,6 +254,21 @@ app.put("/song/:id", (req, res) => {
   })
 })
 
+app.put("/artist/:id", (req, res) => {
+  if (!req.body) {
+      res.status(400).send("content missing")
+  }
+  const { body } = req;
+  const queryString = `UPDATE artists SET ? WHERE artist_ID=${req.params.id}`;
+  connection.query(queryString, body, (err, result) => {
+      if (err) {
+          res.send("An error occurred.");
+      } else {
+          res.send("1 artist updated");
+      }
+  })
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
