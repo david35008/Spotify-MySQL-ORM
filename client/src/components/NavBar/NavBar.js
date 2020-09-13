@@ -1,32 +1,80 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import './NavBar.css';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SideBar from '../SideBar/SideBar.js';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import MyModal from '../MyModal/MyModal'
 
-function NavBar(params) {
+function NavBar({ setSongsList }) {
+
+    const [serachType, setSearchType] = useState('search_song')
+    const [placeHolder, setPlaceHolder] = useState("Search Song...")
+    const [inputValue, setInputValue] = useState('')
+    const [openModal, setOpenModal] = useState(false)
+
+    const inputRef = useRef();
+
+    const [menuClass, setMenuClass] = useState("sidebar-wrapper")
+
+    const ToggleMenu = () => {
+        if (menuClass === "sidebar-wrapper") {
+            setMenuClass("sidebar-wrapper-toggeled")
+        } else {
+            setMenuClass("sidebar-wrapper")
+        }
+    }
+
+    const handleClick = (placeHolderName) => {
+        setPlaceHolder(`Search ${placeHolderName.target.innerText}...`)
+        setSearchType(`search_${placeHolderName.target.innerText}`);
+    }
+
+    const handleChange = (input) => {
+        setInputValue(input.target.value)
+    }
+
+    const search = async () => {
+        const searchValue = inputValue.toLowerCase().trim()
+        if (searchValue !== "") {
+            try {
+                const { data } = await axios.get(`/${serachType}/${searchValue}`)
+                setSongsList(data)
+            } catch {
+                setSongsList([{ title: "not found a match", youtube_link: "" }])
+            }
+        }
+        debugger
+        setInputValue('')
+        inputRef.current.value = ""
+    }
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
-            <Navbar.Brand bg="light" >My Spotify</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="Albums">Albums</Nav.Link>
-                    <Nav.Link href="Artists">Artists</Nav.Link>
-                    <Nav.Link href="Playlists">Playlists</Nav.Link>
-                </Nav>
-                <NavDropdown title="Search By" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Name</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">Album</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Artist</NavDropdown.Item>                      
+        <>
+            <SideBar menuClass={menuClass} />
+            {openModal && <MyModal openModal={openModal} setOpenModal={setOpenModal} />}
+            <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
+                <Button onClick={ToggleMenu} bg="dark" variant="dark" aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigtion" >
+                    <span className="navbar-toggler-icon">  </span>
+                </Button>
+                <Navbar.Brand variant="success" href="/" >My Spotify</Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="mr-auto">
+                    </Nav>
+                    <Button bg="dark" variant="dark" onClick={()=>setOpenModal((state)=> !state)}    >Add New</Button>
+                    <NavDropdown title="Search By" id="basic-nav-dropdown">
+                        <NavDropdown.Item onClick={handleClick}>Song</NavDropdown.Item>
+                        <NavDropdown.Item onClick={handleClick}>Album</NavDropdown.Item>
+                        <NavDropdown.Item onClick={handleClick}>Artist</NavDropdown.Item>
                     </NavDropdown>
-                <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-success">Search</Button>
-                </Form>
-            </Navbar.Collapse>
-        </Navbar>
+                    <Form inline>
+                        <FormControl ref={inputRef} type="text" placeholder={placeHolder} onChange={handleChange} className="mr-sm-2" />
+                        <Button variant="dark" onClick={() => search()} >Search</Button>
+                    </Form>
+                </Navbar.Collapse>
+            </Navbar>
+        </>
     )
 }
 

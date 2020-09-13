@@ -1,0 +1,16 @@
+.navbar-dark .navbar-brand {
+    color: rgb(0, 179, 9) !important;
+}
+
+a {
+    color: #fff !important;
+}
+
+.dropdown-item {
+    color: black !important;
+}
+
+.dropdown-item:hover {
+    color: white !important;
+    background-color: #8D9093 !important;
+}

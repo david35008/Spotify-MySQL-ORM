@@ -1,0 +1,44 @@
+.sidebar-wrapper{
+    position: fixed;
+    margin-top: 55px;
+    top: 0;
+    height: 100vh;
+    width: 200px;
+    left: -1000px;
+    background-color: #1A1D20;
+    transition: 400ms;
+}
+
+.sidebar-wrapper-toggeled {
+    position: fixed;
+    margin-top: 55px;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: #1A1D20;
+    transition: 400ms;
+}
+
+.sidebar-heading {
+    font-size: 25px;
+}
+
+.refButton {
+    padding: .9rem 1rem;
+    border-block-end: 1px solid #343A40;
+    width: 100%;
+}
+
+.refButton:hover {
+    padding: .9rem 1rem;
+    background-color: #8D9093;
+    width: 100%;
+}
+
+.nav {
+    text-align: left;
+    font-size: 15px;
+    width: 205px;
+    margin-left: -20px;
+}
