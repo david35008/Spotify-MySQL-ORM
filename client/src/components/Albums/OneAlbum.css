@@ -1,0 +1,15 @@
+.OneAlbum {
+    display: flex;
+    flex-direction: column;
+}
+
+.AlbumContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
+
+.OneAlbumDescription {
+    text-align: left;
+    font-size: 30px;
+}

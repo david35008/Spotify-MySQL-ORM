@@ -1,6 +1,7 @@
 import React from 'react';
 import './SideBar.css';
 import { Container, Row, Col, Nav } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 
 function SideBar({ menuClass }) {
@@ -12,10 +13,10 @@ function SideBar({ menuClass }) {
                 <Col xs={2} >
                     <div className="sidebar-heading">Menu</div>
                     <Nav className="mr-auto" >
-                        <Nav.Link className="refButton" href="/">Home</Nav.Link>
-                        <Nav.Link className="refButton" href="Albums">Albums</Nav.Link>
-                        <Nav.Link className="refButton" href="Artists">Artists</Nav.Link>
-                        <Nav.Link className="refButton" href="Playlists">Playlists</Nav.Link>
+                        <Link className="refButton" to='/' >Home</Link>
+                        <Link className="refButton" to='/albums' >Albums</Link>
+                        <Link className="refButton" to='/Artists'>Artists</Link>
+                        <Link className="refButton" to='/Playlists'>Playlists</Link>
                     </Nav>
                 </Col>
             </Row>

@@ -1,0 +1,15 @@
+.OneArtist {
+    display: flex;
+    flex-direction: column;
+}
+
+.ArtistContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
+
+.OneArtitstDescription {
+    text-align: left;
+    font-size: 30px;
+}

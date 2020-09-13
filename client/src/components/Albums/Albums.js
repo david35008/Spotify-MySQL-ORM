@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './Albums.css';
-import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
 
 
@@ -26,7 +25,6 @@ const [albumsList, setAlbumsList] = useState([])
     )).splice(0, 1)
 
     const listToPrint = albumsList.map((album, index) => {
-        debugger
         return (
         <li key={album.name + index}>
             <div>{album.title}</div>
@@ -37,7 +35,6 @@ const [albumsList, setAlbumsList] = useState([])
 
     return (
         <div>
-            <NavBar />
             <div className="firstAlb" >{firstAlnum}</div>
                     <ol className='album-list'>
                         {listToPrint}</ol>

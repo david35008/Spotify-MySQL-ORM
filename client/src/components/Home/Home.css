@@ -6,17 +6,87 @@
 .song-list {
     margin-top: 10px;
     display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 10px auto 0px auto ;
+}
+
+.song {
+    display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 0px 0px 0px ;
+    border-bottom: 1px solid #00b30962 ;
+    border-left: 1px solid #1A1D20 ;
+}
+
+.song:hover {
+    background-color: #1A1D20;
+    border: 1px solid #00b30962;
+}
+
+.songName {
+    width: 300px;
+    text-align: left;
+}
+
+.albumName {
+    width: 200px;
+    text-align: left;   
+}
+
+.artistName {
+    width: 200px;
+    text-align: left;   
+}
+
+.songLength {
+    width: 100px;
+    text-align: left;  
+}
+
+.songDate {
+    width: 150px;
+    text-align: left;  
+}
+
+.playButton {
+    cursor: pointer ;
+    height: 25px;
+    width: 25px;
+}
+
+.song-list > li > iframe {
+    border: none;
 }
 
 .Home {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
 }
 
 .firstSong {
-    list-style: none;
-    margin-top: 55px;
     margin-bottom: 0px;
     width: 100%;
+    min-height: 40vh;
+}
+
+.firstSongIframe {
+    border: none;
+    float: left;
+    margin-right: 40px;
+}
+
+.moreLess {
+    background-color: transparent;
+    color: rgb(0, 179, 9);
+    border: none;
+}
+
+.firstSongDescription {
+    width: 100%;
+    padding-top: 20px;
+    text-align: left;
 }

@@ -59,34 +59,33 @@ const sendNewSong = async () => {
         className="addNewSongModal"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>Add New Song</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="addNewSongForm" >
-            <label for="fname">Name:</label>
-            <input type="text" onChange={(e)=> setSongName(e.target.value)} /><br />
-            <label for="lname">Album:</label>
+            <label >Name:</label>
+            <input type="text" onChange={(e)=> setSongName(e.target.value)} required/><br />
+            <label >Album:</label>
             <input type="text" onChange={(e)=> setSongAlbum(e.target.value)} /><br />
-            <label for="lname">Artist:</label>
+            <label >Artist:</label>
             <input type="text" onChange={(e)=> setSongArtist(e.target.value)} /><br />
-            <label for="lname">Lycris:</label>
+            <label >Lycris:</label>
             <input type="text" onChange={(e)=> setSongLycris(e.target.value)} /><br />
-            <label for="lname">Length:</label>
+            <label >Length:</label>
             <input type="text" onChange={(e)=> setSongLength(e.target.value)} /><br />
-            <label for="lname">Track Number:</label>
+            <label >Track Number:</label>
             <input type="text" onChange={(e)=> setSongTrackNumber(e.target.value)} /><br />
-            <label for="lname">Created_At:</label>
+            <label >Created_At:</label>
             <input type="text" onChange={(e)=> setSongCreated(e.target.value)} /><br />
-            <label for="lname">Youtube Link:</label>
+            <label >Youtube Link:</label>
             <input type="text" onChange={(e)=> setSongLink(e.target.value)} /><br />
-            <input type="submit" value="Submit"  />
           </form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
             </Button>
-          <Button variant="primary" onClick={sendNewSong} >Understood</Button>
+          <Button variant="primary" onClick={()=> {sendNewSong(); handleClose()}} >Submit</Button>
         </Modal.Footer>
       </Modal>
     </>

@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import './Home.css';
 import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
+import FirstSong from './FirstSong';
+import ListOfSongs from './ListOfSongs';
 
-function Home(params) {
+
+function Home() {
 
     const [songList, setSongsList] = useState([])
 
@@ -27,28 +30,13 @@ function Home(params) {
         return video_id;
     }
 
-    const firstSong = songList.map((song, index) => (
-        <li key={song.title + index}>
-            <iframe width="100%" height="400vh" src={`https://www.youtube.com/embed/${getIdSong(song.youtube_link)}`} title={song.title}></iframe>
-        </li>
-    )).splice(0, 1)
-
-    const listToPrint = songList.map((song, index) => (
-        <li key={song.title + index}>
-            <div>{song.title}</div>
-            <iframe width="200" height="112" src={`https://www.youtube.com/embed/${getIdSong(song.youtube_link)}`} title={song.title}></iframe>
-        </li>
-    )).splice(1, songList.length - 1)
-
-
     return (
         <>
             <NavBar setSongsList={setSongsList} />
             <div className="songContainer" >
                 <div className='Home'>
-                    <div className="firstSong" >{firstSong}</div>
-                    <ol className='song-list'>
-                        {listToPrint}</ol>
+                    <FirstSong songList={songList} getIdSong={getIdSong} />
+                    <ListOfSongs songList={songList} getIdSong={getIdSong} />
                 </div>
             </div>
         </>

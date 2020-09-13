@@ -1,19 +1,54 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Albums from './components/Albums/Albums';
+import OneAlbum from './components/Albums/OneAlbum';
 import Artists from './components/Artists/Artists';
+import OneArtist from './components/Artists/OneArtist';
 import Playlists from './components/Playlists/Playlists';
+import OnePlaylist from './components/Playlists/OnePlaylist';
+import NavBar from './components/NavBar/NavBar';
 
 function App() {
+
+
+ 
   return (
     <div className="App">
-       <Router>
-        <Route path="/" exact component={Home} />
-        <Route path="/Albums" exact component={Albums} />
-        <Route path="/Artists" exact component={Artists} />
-        <Route path="/Playlists" exact component={Playlists} />
-      </Router>
+      <Router>
+    <Switch>
+      <Route path="/albums/:id">
+        <NavBar />
+        <OneAlbum />
+      </Route>
+      <Route path="/playlists/:id">
+      <NavBar />
+        <OnePlaylist />
+      </Route>
+      <Route path="/artists/:id">
+      <NavBar />
+        <OneArtist />
+      </Route>
+      <Route path="/playlists">
+      <NavBar />
+        <Playlists  />
+    </Route>  
+    <Route path="/artists">
+    <NavBar />
+        <Artists  />
+    </Route> 
+      <Route path="/albums">
+      <NavBar />
+        <Albums />
+    </Route> 
+      {/* <Route path="/about">
+        <About/>
+      </Route>  */}
+      <Route path="/">
+      <Home />
+      </Route>
+    </Switch>
+    </Router>
     </div>
   );
 }

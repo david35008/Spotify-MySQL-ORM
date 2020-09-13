@@ -38,7 +38,11 @@ app.get("/", (req, res) => {
 })
 
 app.get("/songs", (req, res) => {
-  connection.query("SELECT * FROM songs", (err, result, fields) => {
+  connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
+  FROM songs 
+  JOIN albums ON songs.album_ID = albums.album_ID 
+  JOIN artists ON songs.artist_ID = artists.artist_ID
+  ORDER BY upload_at DESC;`, (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.")
       throw err
@@ -62,7 +66,11 @@ app.get("/song/:id", (req, res) => {
 })
 
 app.get("/search_song/:title", (req, res) => {
-  connection.query(`SELECT * FROM songs WHERE title LIKE '%${req.params.title}%'`, (err, result, fields) => {
+  connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
+  FROM songs 
+  JOIN albums ON songs.album_ID = albums.album_ID 
+  JOIN artists ON songs.artist_ID = artists.artist_ID 
+  WHERE title LIKE '%${req.params.title}%'`, (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -97,7 +105,10 @@ app.get("/artists", (req, res) => {
 })
 
 app.get("/artist/:id", (req, res) => {
-    connection.query(`SELECT * FROM artists WHERE artist_ID= ${req.params.id}`, (err, result) => {
+    connection.query(`SELECT  artists.*,  songs.* ,albums.name AS album_name , artists.name AS artist_name FROM artists 
+    JOIN songs ON songs.artist_ID = artists.artist_ID
+    JOIN albums ON songs.album_ID = albums.album_ID
+    WHERE artists.artist_ID= ${req.params.id}`, (err, result) => {
       if (err) {
         res.status(400).send("An error occurred.");
         throw err
@@ -145,7 +156,10 @@ app.get("/albums", (req, res) => {
 })
 
 app.get("/album/:id", (req, res) => {
-  connection.query(`SELECT * FROM albums WHERE album_ID= ${req.params.id}`, (err, result, fields) => {
+  connection.query(`SELECT  albums.*,  songs.* ,albums.name AS album_name , artists.name AS artist_name FROM albums 
+  JOIN songs ON songs.album_ID = albums.album_ID
+  JOIN artists ON songs.artist_ID = artists.artist_ID
+  WHERE albums.album_ID=${req.params.id}`, (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
