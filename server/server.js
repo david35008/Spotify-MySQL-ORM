@@ -49,7 +49,20 @@ app.get("/songs", (req, res) => {
 })
 
 app.get("/song/:id", (req, res) => {
-  connection.query(`SELECT * FROM songs WHERE song_ID= ${req.params.id}`, (err, result, fields) => {
+  connection.query(`SELECT * FROM songs WHERE song_ID= ${req.params.id}`, (err, result) => {
+    if (err) {
+      res.status(400).send("An error occurred.");
+      throw err
+    } else if (result.length < 1) {
+      res.status(404).send("There is no such song");
+    } else {
+      res.json(result);
+    }
+  });
+})
+
+app.get("/search_song/:title", (req, res) => {
+  connection.query(`SELECT * FROM songs WHERE title LIKE '%${req.params.title}%'`, (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -96,6 +109,19 @@ app.get("/artist/:id", (req, res) => {
     });
 })
 
+app.get("/search_artist/:title", (req, res) => {
+  connection.query(`SELECT * FROM artists WHERE name LIKE '%${req.params.title}%'`, (err, result, fields) => {
+    if (err) {
+      res.status(400).send("An error occurred.");
+      throw err
+    } else if (result.length < 1) {
+      res.status(404).send("There is no such song");
+    } else {
+      res.json(result);
+    }
+  });
+})
+
 app.get("/top_artists/:limit", (req, res) => {
   connection.query(`SELECT * FROM artists LIMIT ${req.params.limit}`, (err, result) => {
     if (err) {
@@ -125,6 +151,19 @@ app.get("/album/:id", (req, res) => {
       throw err
     } else if (result.length < 1) {
       res.status(404).send("There is no such album");
+    } else {
+      res.json(result);
+    }
+  });
+})
+
+app.get("/search_album/:title", (req, res) => {
+  connection.query(`SELECT * FROM albums WHERE name LIKE '%${req.params.title}%'`, (err, result, fields) => {
+    if (err) {
+      res.status(400).send("An error occurred.");
+      throw err
+    } else if (result.length < 1) {
+      res.status(404).send("There is no such song");
     } else {
       res.json(result);
     }
