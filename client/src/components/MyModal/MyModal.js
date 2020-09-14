@@ -69,7 +69,7 @@ const sendNewSong = async () => {
             <input type="text" onChange={(e)=> setSongAlbum(e.target.value)} /><br />
             <label >Artist:</label>
             <input type="text" onChange={(e)=> setSongArtist(e.target.value)} /><br />
-            <label >Lycris:</label>
+            <label >Lyrics:</label>
             <input type="text" onChange={(e)=> setSongLycris(e.target.value)} /><br />
             <label >Length:</label>
             <input type="text" onChange={(e)=> setSongLength(e.target.value)} /><br />

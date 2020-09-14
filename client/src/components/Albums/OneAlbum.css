@@ -3,7 +3,7 @@
     flex-direction: column;
 }
 
-.AlbumContainer {
+.OneAlbumContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-around

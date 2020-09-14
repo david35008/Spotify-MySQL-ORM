@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './OneAlbum.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ListOfSongs from '../Home/ListOfSongs';
+import ListOfSongs from '../Songs/ListOfSongs';
 
 
 function OneAlbum() {
@@ -34,16 +34,16 @@ function OneAlbum() {
 
     return (
         <div className='OneAlbum'>
-            <div className='AlbumContainer'>
+            <div className='OneAlbumContainer'>
             <img src={album.cover_img} alt={album.name} height='300px' />
             <div className='OneAlbumDescription'>
             <div>Name: {album.name}</div>
-            <div>Artist: {album.artist_ID}</div>
+            <div>Artist: {album.artist_name}</div>
             <div>created_at: {new Date(album.created_at).toDateString()}</div>
             <div>upload_at{new Date(album.upload_at).toDateString()}</div>
             </div>
             </div>
-            <ListOfSongs className='albumSongsList' songList={songList} getIdSong={getIdSong} />
+            <ListOfSongs className='albumSongsList' songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0}/>
         </div>
     )
 

@@ -5,8 +5,6 @@ import ReadMore from '../ReadMore/ReadMore';
 
 function FirstSong({ songList, getIdSong }) {
 
-
-
     let firstSong = <div></div>
     if (songList.[0]) {
         let song = songList[0];

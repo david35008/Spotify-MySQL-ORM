@@ -4,7 +4,7 @@ import { Container, Row, Col, Nav } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
 
-function SideBar({ menuClass }) {
+function SideBar({ menuClass, ToggleMenu }) {
 
 
     return (
@@ -13,10 +13,10 @@ function SideBar({ menuClass }) {
                 <Col xs={2} >
                     <div className="sidebar-heading">Menu</div>
                     <Nav className="mr-auto" >
-                        <Link className="refButton" to='/' >Home</Link>
-                        <Link className="refButton" to='/albums' >Albums</Link>
-                        <Link className="refButton" to='/Artists'>Artists</Link>
-                        <Link className="refButton" to='/Playlists'>Playlists</Link>
+                        <Link className="refButton" to='/' onClick={ToggleMenu}>Home</Link>
+                        <Link className="refButton" to='/albums' onClick={ToggleMenu}>Albums</Link>
+                        <Link className="refButton" to='/Artists' onClick={ToggleMenu}>Artists</Link>
+                        <Link className="refButton" to='/Playlists' onClick={ToggleMenu}>Playlists</Link>
                     </Nav>
                 </Col>
             </Row>

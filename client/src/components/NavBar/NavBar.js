@@ -44,14 +44,13 @@ function NavBar({ setSongsList }) {
                 setSongsList([{ title: "not found a match", youtube_link: "" }])
             }
         }
-        debugger
         setInputValue('')
         inputRef.current.value = ""
     }
 
     return (
         <>
-            <SideBar menuClass={menuClass} />
+            <SideBar menuClass={menuClass} ToggleMenu={ToggleMenu}/>
             {openModal && <MyModal openModal={openModal} setOpenModal={setOpenModal} />}
             <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
                 <Button onClick={ToggleMenu} bg="dark" variant="dark" aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigtion" >
@@ -62,7 +61,7 @@ function NavBar({ setSongsList }) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                     </Nav>
-                    <Button bg="dark" variant="dark" onClick={()=>setOpenModal((state)=> !state)}    >Add New</Button>
+                    <Button bg="dark" variant="dark" onClick={() => setOpenModal((state) => !state)}    >Add New</Button>
                     <NavDropdown title="Search By" id="basic-nav-dropdown">
                         <NavDropdown.Item onClick={handleClick}>Song</NavDropdown.Item>
                         <NavDropdown.Item onClick={handleClick}>Album</NavDropdown.Item>

@@ -1,0 +1,29 @@
+.Album {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+    border-bottom: 1px solid ;
+}
+
+.AlbumContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
+
+.ArtistDescription {
+    display: grid;
+    grid-template-rows: 3fr 1fr 1fr;
+    text-align: left;
+}
+
+.ArtistName {
+    font-size: 25px;
+}
+
+.ArtistSongsList {
+   float: right;
+    width: 700px;
+    height: 200px;
+    overflow: auto;
+}

@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './Home.css';
 import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
-import FirstSong from './FirstSong';
-import ListOfSongs from './ListOfSongs';
-
+import FirstSong from '../Songs/FirstSong';
+import ListOfSongs from '../Songs/ListOfSongs';
 
 function Home() {
 
