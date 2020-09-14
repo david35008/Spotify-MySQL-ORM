@@ -35,15 +35,15 @@ function OneAlbum() {
     return (
         <div className='OneAlbum'>
             <div className='OneAlbumContainer'>
-            <img src={album.cover_img} alt={album.name} height='300px' />
-            <div className='OneAlbumDescription'>
-            <div>Name: {album.name}</div>
-            <div>Artist: {album.artist_name}</div>
-            <div>created_at: {new Date(album.created_at).toDateString()}</div>
-            <div>upload_at{new Date(album.upload_at).toDateString()}</div>
+                <img src={album.cover_img} alt={album.name} height='300px' />
+                <div className='OneAlbumDescription'>
+                    <div>Name: {album.name}</div>
+                    <div>Artist: {album.artist_name}</div>
+                    {album.created_at && <div>created_at: {new Date(album.created_at).toDateString()}</div>}
+                    {album.upload_at && <div>upload_at{new Date(album.upload_at).toDateString()}</div>}
+                </div>
             </div>
-            </div>
-            <ListOfSongs className='albumSongsList' songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0}/>
+            <ListOfSongs className='albumSongsList' songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0} />
         </div>
     )
 

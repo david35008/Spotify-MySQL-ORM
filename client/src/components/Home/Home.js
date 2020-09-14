@@ -31,7 +31,7 @@ function Home() {
 
     return (
         <>
-            <NavBar setSongsList={setSongsList} />
+            <NavBar setList={setSongsList} serchType='song' />
             <div className="songContainer" >
                 <div className='Home'>
                     <FirstSong songList={songList} getIdSong={getIdSong} />

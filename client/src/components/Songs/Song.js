@@ -7,7 +7,7 @@ import './Song.css';
 import playbutton from '../../images/playbutton.png';
 
 function Song({ song, index, getIdSong, albumDisplay, artistDisplay }) {
-    
+
     const [openModal, setOpenModal] = useState(false)
     const handleClose = () => setOpenModal(false);
 
@@ -21,7 +21,10 @@ function Song({ song, index, getIdSong, albumDisplay, artistDisplay }) {
             <Link to={`/albums/${song.album_ID}`} style={{ display: albumDisplay }} className='albumName' >{song.album_name}</Link><br />
             <Link to={`/artists/${song.artist_ID}`} style={{ display: artistDisplay }} className='artistName' >{song.artist_name}</Link>
             <div className='songLength' >{song.length} </div>
-            <div className='songDate' >{new Date(song.created_at).toDateString()}</div>
+            {song.created_at ?
+                <div className='songDate' >{new Date(song.created_at).toDateString()}</div>
+                : <div className='songDate' ></div>
+            }
             <img className='playButton' src={playbutton} alt={''} onClick={() => setOpenModal(true)} />
         </li>
     )

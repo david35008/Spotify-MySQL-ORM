@@ -1,27 +1,27 @@
-.Album {
+.PlayList {
     display: flex;
     flex-direction: row;
     margin-bottom: 5px;
     border-bottom: 1px solid ;
 }
 
-.AlbumContainer {
+.PlayListContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-around
 }
 
-.AlbumDescription {
+.PlayListDescription {
     display: grid;
     grid-template-rows: 3fr 1fr 1fr;
     text-align: left;
 }
 
-.AlbumName {
+.PlayListName {
     font-size: 25px;
 }
 
-.AlbumSongsList {
+.PlayListSongsList {
    float: right;
     width: 700px;
     height: 200px;

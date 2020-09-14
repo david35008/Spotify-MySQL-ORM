@@ -5,13 +5,11 @@ import Albums from './components/Albums/ListOfAlbums';
 import OneAlbum from './components/Albums/OneAlbum';
 import Artists from './components/Artists/ListOfArtists';
 import OneArtist from './components/Artists/OneArtist';
-import Playlists from './components/Playlists/Playlists';
+import ListOfPlaylists from './components/Playlists/ListOfPlaylists';
 import OnePlaylist from './components/Playlists/OnePlaylist';
 import NavBar from './components/NavBar/NavBar';
 
 function App() {
-
-console.log("***********")
  
   return (
     <div className="App">
@@ -31,14 +29,12 @@ console.log("***********")
       </Route>
       <Route path="/playlists">
       <NavBar />
-        <Playlists  />
+        <ListOfPlaylists  />
     </Route>  
     <Route path="/artists">
-    <NavBar />
         <Artists  />
     </Route> 
       <Route path="/albums">
-      <NavBar />
         <Albums />
     </Route> 
       {/* <Route path="/about">

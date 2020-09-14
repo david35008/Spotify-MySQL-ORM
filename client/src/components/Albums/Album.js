@@ -5,7 +5,7 @@ import './Album.css';
 import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
 
-function Album({ album_ID, index }) {
+function Album({ album_ID, index, albumDisplay = 'inline', artistDisplay = 'inline' }) {
 
     const [songList, setSongsList] = useState([])
     const [album, setAlbums] = useState([])
@@ -36,14 +36,14 @@ function Album({ album_ID, index }) {
             <div className='AlbumContainer'>
                 <img src={album.cover_img} alt={album.name} height='200' width='300' />
                 <div className='AlbumDescription'>
-                    <Link to={`/albums/${album.album_ID}`} className='AlbumName' > {album.name}</Link>
-                    <Link to={`/artists/${album.artist_ID}`} className='AlbumArtist' > {album.artist_name}</Link>
-                    <div className='AlbumCreated_at'>Created_at: {new Date(album.created_at).toDateString()}</div>
-                    <div className='AlbumUpload_at' >Upload_at{new Date(album.upload_at).toDateString()}</div>
+                    <Link to={`/albums/${album.album_ID}`} style={{ display: albumDisplay }} className='AlbumName' > {album.name}</Link>
+                    <Link to={`/artists/${album.artist_ID}`} style={{ display: artistDisplay }} className='AlbumArtist' > {album.artist_name}</Link>
+                    {album.created_at&&<div className='AlbumCreated_at'>Created_at: {new Date(album.created_at).toDateString()}</div>}
+                    {album.upload_at&&<div className='AlbumUpload_at' >Upload_at{new Date(album.upload_at).toDateString()}</div>}
                 </div>
             </div>
             <div className='AlbumSongsList' >
-                <ListOfSongs songList={songList} getIdSong={getIdSong} split={0} albumDisplay={"none"} />
+                <ListOfSongs songList={songList} getIdSong={getIdSong} split={0} albumDisplay={"none"} artistDisplay={"none"} />
             </div>
         </div>
 

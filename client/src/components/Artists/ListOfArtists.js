@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ListOfArtists.css';
 import axios from 'axios';
+import NavBar from '../NavBar/NavBar';
 import Artist from './Artist';
 
 function ListOfArtists(params) {
@@ -28,6 +29,7 @@ function ListOfArtists(params) {
 
     return (
         <>
+          <NavBar setList={setArtistsList} serchType='artist' />
             <h1>Top Artists</h1>
             <ol>
                 {listToPrint}

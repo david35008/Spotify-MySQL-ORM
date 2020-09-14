@@ -37,8 +37,8 @@ function Artist({ artist_ID, index }) {
                 <img src={artist.cover_img} alt={artist.name} height='200' width='300' />
                 <div className='ArtistDescription'>
                     <Link to={`/artists/${artist.artist_ID}`} className='ArtistName' > {artist.name}</Link>
-                    <div className='ArtistCreated_at'>Created_at: {new Date(artist.created_at).toDateString()}</div>
-                    <div className='ArtistUpload_at' >Upload_at{new Date(artist.upload_at).toDateString()}</div>
+                    {artist.created_at&&<div className='ArtistCreated_at'>Created_at: {new Date(artist.created_at).toDateString()}</div>}
+                    {artist.upload_at&&<div className='ArtistUpload_at' >Upload_at{new Date(artist.upload_at).toDateString()}</div>}
                 </div>
             </div>
             <div className='ArtistSongsList' >
