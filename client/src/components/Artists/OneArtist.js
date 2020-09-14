@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './OneArtist.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import ListOfSongs from '../Home/ListOfSongs';
+import ListOfSongs from '../Songs/ListOfSongs';
 
 
 function OneArtist() {
@@ -43,7 +43,7 @@ function OneArtist() {
             <div>upload_at{new Date(artist.upload_at).toDateString()}</div>
             </div>
             </div>
-            <ListOfSongs songList={songList} getIdSong={getIdSong} />
+            <ListOfSongs songList={songList} getIdSong={getIdSong} artistDisplay={"none"} split={0} />
         </div>
     )
 
