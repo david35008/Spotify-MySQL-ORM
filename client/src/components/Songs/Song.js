@@ -6,7 +6,7 @@ import { Modal } from 'react-bootstrap';
 import './Song.css';
 import playbutton from '../../images/playbutton.png';
 
-function Song({ song, index, getIdSong, albumDisplay, artistDisplay }) {
+function Song({ query, song, index, getIdSong, albumDisplay, artistDisplay }) {
 
     const [openModal, setOpenModal] = useState(false)
     const handleClose = () => setOpenModal(false);
@@ -17,7 +17,7 @@ function Song({ song, index, getIdSong, albumDisplay, artistDisplay }) {
                 <iframe className="PlaySongModal" width="500vh" height="370vh" src={`https://www.youtube.com/embed/${getIdSong(song.youtube_link)}`} title={song.title} />
                 <ReadMore color={'black'} content={song.lyrics} maxChar="65" />
             </Modal>
-            <div className='songName' >{song.title}</div>
+            <Link to={`/song/${song.song_ID}?${query.path}=${query.id}`} className='songName' >{song.title}</Link>
             <Link to={`/albums/${song.album_ID}`} style={{ display: albumDisplay }} className='albumName' >{song.album_name}</Link><br />
             <Link to={`/artists/${song.artist_ID}`} style={{ display: artistDisplay }} className='artistName' >{song.artist_name}</Link>
             <div className='songLength' >{song.length} </div>

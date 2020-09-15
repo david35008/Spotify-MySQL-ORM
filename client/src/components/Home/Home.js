@@ -35,7 +35,7 @@ function Home() {
             <div className="songContainer" >
                 <div className='Home'>
                     <FirstSong songList={songList} getIdSong={getIdSong} />
-                    <ListOfSongs songList={songList} getIdSong={getIdSong} />
+                    <ListOfSongs query={{ path: "all_song", id: "a" }} songList={songList} getIdSong={getIdSong} />
                 </div>
             </div>
         </>

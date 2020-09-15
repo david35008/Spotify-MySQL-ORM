@@ -43,7 +43,7 @@ function Album({ album_ID, index, albumDisplay = 'inline', artistDisplay = 'inli
                 </div>
             </div>
             <div className='AlbumSongsList' >
-                <ListOfSongs songList={songList} getIdSong={getIdSong} split={0} albumDisplay={"none"} artistDisplay={"none"} />
+                <ListOfSongs query={{ path: "album", id: album.album_ID}} songList={songList} getIdSong={getIdSong} split={0} albumDisplay={"none"} artistDisplay={"none"} />
             </div>
         </div>
 

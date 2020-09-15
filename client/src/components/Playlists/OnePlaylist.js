@@ -8,7 +8,7 @@ import ListOfSongs from '../Songs/ListOfSongs';
 function OnePlaylist(params) {
 
     const { id } = useParams()
-    const [playlist, setPlaylist] = useState([])
+    const [playList, setPlaylist] = useState([])
     const [songList, setSongsList] = useState([])
 
     useEffect(() => {
@@ -35,14 +35,14 @@ function OnePlaylist(params) {
     return (
         <div className='OnePlayList'>
             <div className='OnePlayListContainer'>
-            <img src={playlist.playlist_cover} alt={playlist.playlist_name} height='300px' />
+            <img src={playList.playlist_cover} alt={playList.playlist_name} height='300px' />
             <div className='OnePlayListDescription'>
-            <div>Name: {playlist.playlist_name}</div>
-            <div>created_at: {new Date(playlist.created_at).toDateString()}</div>
-            <div>upload_at{new Date(playlist.upload_at).toDateString()}</div>
+            <div>Name: {playList.playlist_name}</div>
+            <div>created_at: {new Date(playList.created_at).toDateString()}</div>
+            <div>upload_at{new Date(playList.upload_at).toDateString()}</div>
             </div>
             </div>
-            <ListOfSongs className='PlayListSongsList' songList={songList} getIdSong={getIdSong} split={0}/>
+            <ListOfSongs query={{ path: "playlist", id: playList.playlist_ID}} className='PlayListSongsList' songList={songList} getIdSong={getIdSong} split={0}/>
         </div>
     )
 

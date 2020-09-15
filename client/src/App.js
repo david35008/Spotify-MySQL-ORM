@@ -8,43 +8,51 @@ import OneArtist from './components/Artists/OneArtist';
 import ListOfPlaylists from './components/Playlists/ListOfPlaylists';
 import OnePlaylist from './components/Playlists/OnePlaylist';
 import NavBar from './components/NavBar/NavBar';
+import NotFound from './components/NotFound/NotFound'
+import OneSong from './components/Songs/OneSong';
 
 function App() {
- 
+
   return (
     <div className="App">
       <Router>
-    <Switch>
-      <Route path="/albums/:id">
-        <NavBar />
-        <OneAlbum />
-      </Route>
-      <Route path="/playlists/:id">
-      <NavBar />
-        <OnePlaylist />
-      </Route>
-      <Route path="/artists/:id">
-      <NavBar />
-        <OneArtist />
-      </Route>
-      <Route path="/playlists">
-      <NavBar />
-        <ListOfPlaylists  />
-    </Route>  
-    <Route path="/artists">
-        <Artists  />
-    </Route> 
-      <Route path="/albums">
-        <Albums />
-    </Route> 
-      {/* <Route path="/about">
+        <Switch>
+          <Route  path="/song/:id">
+            <OneSong />
+          </Route>
+          <Route  path="/albums/:id">
+            <NavBar />
+            <OneAlbum />
+          </Route>
+          <Route  path="/playlists/:id">
+            <NavBar />
+            <OnePlaylist />
+          </Route>
+          <Route  path="/artists/:id">
+            <NavBar />
+            <OneArtist />
+          </Route>
+          <Route exact path="/playlists">
+            <NavBar />
+            <ListOfPlaylists />
+          </Route>
+          <Route exact path="/artists">
+            <Artists />
+          </Route>
+          <Route exact path="/albums">
+            <Albums />
+          </Route>
+          {/* <Route path="/about">
         <About/>
       </Route>  */}
-      <Route path="/">
-      <Home />
-      </Route>
-    </Switch>
-    </Router>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

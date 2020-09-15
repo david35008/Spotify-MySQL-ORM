@@ -3,7 +3,16 @@ import { Link } from 'react-router-dom';
 import ReadMore from '../ReadMore/ReadMore';
 
 
-function FirstSong({ songList, getIdSong }) {
+function FirstSong({ songList }) {
+
+    const getIdSong = (songId) => {
+        let video_id = songId.split("v=")[1];
+        const ampersandPosition = video_id.indexOf("&");
+        if (ampersandPosition !== -1) {
+            video_id = video_id.substring(0, ampersandPosition);
+        }
+        return video_id;
+    }
 
     let firstSong = <div></div>
     if (songList.[0]) {

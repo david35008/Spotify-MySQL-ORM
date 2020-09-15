@@ -2,7 +2,16 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Song from './Song';
 
-function ListOfSongs({ songList, getIdSong, split = 1 ,albumDisplay = 'inline', artistDisplay = 'inline'}) {
+function ListOfSongs({ query, songList, split = 1 ,albumDisplay = 'inline', artistDisplay = 'inline'}) {
+
+    const getIdSong = (songId) => {
+        let video_id = songId.split("v=")[1];
+        const ampersandPosition = video_id.indexOf("&");
+        if (ampersandPosition !== -1) {
+            video_id = video_id.substring(0, ampersandPosition);
+        }
+        return video_id;
+    }
 
     return (
         <ol className='song-list'>
@@ -15,7 +24,7 @@ function ListOfSongs({ songList, getIdSong, split = 1 ,albumDisplay = 'inline', 
                 <span >Play:</span>
             </li>}
             {songList.map((song, index) => (
-                <Song key={Math.random()} song={song} getIdSong={getIdSong} index={index} albumDisplay={albumDisplay} artistDisplay={artistDisplay} />
+                <Song query={query} key={Math.random()} song={song} getIdSong={getIdSong} index={index} albumDisplay={albumDisplay} artistDisplay={artistDisplay} />
             )).splice(split, songList.length - split)}
         </ol>
     )

@@ -53,11 +53,15 @@ app.get("/songs", (req, res) => {
 })
 
 app.get("/song/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
   FROM songs 
   JOIN albums ON songs.album_ID = albums.album_ID 
   JOIN artists ON songs.artist_ID = artists.artist_ID
-  ORDER BY upload_at DESC WHERE song_ID= ${req.params.id}`, (err, result) => {
+  WHERE song_ID=${req.params.id}
+  ORDER BY upload_at DESC`, (err, result) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -109,6 +113,9 @@ app.get("/artists", (req, res) => {
 })
 
 app.get("/artist/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
     connection.query(`SELECT  artists.*,  songs.* ,albums.name AS album_name , artists.name AS artist_name FROM artists 
     JOIN songs ON songs.artist_ID = artists.artist_ID
     JOIN albums ON songs.album_ID = albums.album_ID
@@ -160,6 +167,9 @@ app.get("/albums", (req, res) => {
 })
 
 app.get("/album/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   connection.query(`SELECT  albums.*,  songs.* ,albums.name AS album_name , artists.name AS artist_name FROM albums 
   JOIN songs ON songs.album_ID = albums.album_ID
   JOIN artists ON songs.artist_ID = artists.artist_ID
@@ -211,6 +221,10 @@ app.get("/playlists", (req, res) => {
 })
 
 app.get("/playlist/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
+
   connection.query(`SELECT songs.*, 
   playlists.name AS playlist_name,
   playlists.playlist_ID,
@@ -310,6 +324,9 @@ app.post("/playlist", (req, res) => {
 })
 
 app.put("/song/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   if (!req.body) {
       res.status(400).send("content missing")
   }
@@ -325,6 +342,9 @@ app.put("/song/:id", (req, res) => {
 })
 
 app.put("/artist/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   if (!req.body) {
       res.status(400).send("content missing")
   }
@@ -340,6 +360,9 @@ app.put("/artist/:id", (req, res) => {
 })
 
 app.put("/album/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
     if (!req.body) {
         res.status(400).send("content missing")
     }
@@ -355,6 +378,9 @@ app.put("/album/:id", (req, res) => {
 })
 
 app.put("/playlist/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   if (!req.body) {
       res.status(400).send("content missing")
   }
@@ -370,6 +396,9 @@ app.put("/playlist/:id", (req, res) => {
 })
 
 app.delete("/song/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   connection.query(`DELETE FROM songs WHERE song_ID= ${req.params.id}`, (err, result) => {
       if (err) res.send("An error occurred.");
       res.send("One song deleted");
@@ -378,6 +407,9 @@ app.delete("/song/:id", (req, res) => {
 })
 
 app.delete("/artist/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   connection.query(`DELETE FROM artists WHERE artist_ID= ${req.params.id}`, (err, result) => {
       if (err) res.send("An error occurred.");
       res.send("One artist deleted");
@@ -385,6 +417,9 @@ app.delete("/artist/:id", (req, res) => {
 })
 
 app.delete("/album/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   connection.query(`DELETE FROM albums WHERE album_ID= ${req.params.id}`, (err, result) => {
       if (err) res.send("An error occurred.");
       res.send("One album deleted");
@@ -392,6 +427,9 @@ app.delete("/album/:id", (req, res) => {
 })
 
 app.delete("/playlist/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
   connection.query(`DELETE FROM playlists WHERE playlist_ID= ${req.params.id}`, (err, result) => {
       if (err) res.send("An error occurred.");
       res.send("One playlist deleted");

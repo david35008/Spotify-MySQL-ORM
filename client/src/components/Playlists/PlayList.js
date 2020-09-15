@@ -44,7 +44,7 @@ function PlayList({ playList_ID, index }) {
                 </div>
             </div>
             <div className='AlbumSongsList' >
-                <ListOfSongs songList={songList} getIdSong={getIdSong} split={0} />
+                <ListOfSongs query={{ path: "playlist", id: playList.playlist_ID}} songList={songList} getIdSong={getIdSong} split={0} />
             </div>
         </div>
 
