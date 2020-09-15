@@ -6,7 +6,7 @@ import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../NotFound/NotFound';
 
 
-function OneAlbum() {
+function OneAlbum({ getIdSong }) {
 
     const { id } = useParams()
     const [album, setAlbums] = useState([])
@@ -24,31 +24,22 @@ function OneAlbum() {
         })();
     }, [id]);
 
-    const getIdSong = (songId) => {
-        let video_id = songId.split("v=")[1];
-        const ampersandPosition = video_id.indexOf("&");
-        if (ampersandPosition !== -1) {
-            video_id = video_id.substring(0, ampersandPosition);
-        }
-        return video_id;
-    }
-
     return (
         (songList.length > 0) ? (<div className='OneAlbum'>
             <div className='OneAlbumContainer'>
                 <img src={album.cover_img} alt={album.name} height='300px' />
                 <div className='OneAlbumDescription'>
-                    <div>Name: {album.name}</div>
+                    <div>Name: {album.album_name}</div>
                     <div>Artist: {album.artist_name}</div>
                     {album.created_at && <div>created_at: {new Date(album.created_at).toDateString()}</div>}
                     {album.upload_at && <div>upload_at{new Date(album.upload_at).toDateString()}</div>}
                 </div>
             </div>
-            <ListOfSongs query={{ path: "album", id: album.album_ID}} className='albumSongsList' songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0} />
+            <ListOfSongs query={{ path: "album", id: album.album_ID }} className='albumSongsList' songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0} />
         </div>)
-        :
-        <NotFound />
-        )
+            :
+            <NotFound />
+    )
 
 }
 

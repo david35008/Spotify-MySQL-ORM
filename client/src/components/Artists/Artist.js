@@ -5,7 +5,7 @@ import './Artist.css';
 import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
 
-function Artist({ artist_ID, index }) {
+function Artist({ artist_ID, getIdSong }) {
 
     const [songList, setSongsList] = useState([])
     const [artist, setArtist] = useState([])
@@ -22,21 +22,12 @@ function Artist({ artist_ID, index }) {
         })();
     }, [artist_ID]);
 
-    const getIdSong = (songId) => {
-        let video_id = songId.split("v=")[1];
-        const ampersandPosition = video_id.indexOf("&");
-        if (ampersandPosition !== -1) {
-            video_id = video_id.substring(0, ampersandPosition);
-        }
-        return video_id;
-    }
-
     return (
         <div className='Artist'>
             <div className='ArtistContainer'>
                 <img src={artist.cover_img} alt={artist.name} height='200' width='300' />
                 <div className='ArtistDescription'>
-                    <Link to={`/artists/${artist.artist_ID}`} className='ArtistName' > {artist.name}</Link>
+                    <Link to={`/artist/${artist.artist_ID}`} className='ArtistName' > {artist.artist_name}</Link>
                     {artist.created_at && <div className='ArtistCreated_at'>Created_at: {new Date(artist.created_at).toDateString()}</div>}
                     {artist.upload_at && <div className='ArtistUpload_at' >Upload_at{new Date(artist.upload_at).toDateString()}</div>}
                 </div>

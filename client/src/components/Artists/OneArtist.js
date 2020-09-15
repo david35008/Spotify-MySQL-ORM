@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './OneArtist.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-// import ListOfSongs from '../Songs/ListOfSongs';
 import Album from '../Albums/Album';
 
 
-function OneArtist() {
+function OneArtist({ getIdSong }) {
 
     const { id } = useParams()
     const [artist, setArtist] = useState([])
@@ -18,7 +17,6 @@ function OneArtist() {
                 const { data } = await axios.get(`/artist/${id}`);
                 setArtist(data[0])
                 setSongsList(data)
-                // debugger
             } catch (error) {
                 console.error(error.message);
             }
@@ -28,19 +26,18 @@ function OneArtist() {
     return (
         <div className='OneArtist'>
             <div className='ArtistContainer'>
-                <img src={artist.cover_img} alt={artist.name} height='300px' />
+                <img src={artist.cover_img} alt={artist.artist_name} height='300px' />
                 <div className='OneArtitstDescription'>
-                    <div>Name: {artist.name}</div>
+                    <div>Name: {artist.artist_name}</div>
                     {artist.created_at && <div>created_at: {new Date(artist.created_at).toDateString()}</div>}
                     {artist.upload_at && <div>upload_at{new Date(artist.upload_at).toDateString()}</div>}
                 </div>
             </div>
-           <ol className='OneArtistAlbums' > {[...new Set(songList.map((song) => {
+            <ol className='OneArtistAlbums' > {[...new Set(songList.map((song) => {
                 return song.album_ID
             }))].map((id, index) => {
-              return  <Album album_ID={id} index={index} albumDisplay={"none"}  artistDisplay={"none"}/>
+                return <Album key={Math.random()} album_ID={id} index={index} artistDisplay={"none"} />
             })}</ol>
-            {/* <ListOfSongs songList={songList} getIdSong={getIdSong} artistDisplay={"none"} albumDisplay={"none"} split={0} /> */}
         </div>
     )
 

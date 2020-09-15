@@ -5,7 +5,7 @@ import NavBar from '../NavBar/NavBar';
 import Album from './Album';
 
 
-function ListOfAlbums() {
+function ListOfAlbums({ getIdSong }) {
 
     const [albumsList, setAlbumsList] = useState([])
 
@@ -23,7 +23,7 @@ function ListOfAlbums() {
     const listToPrint = albumsList.map((album, index) => {
         return (
             <li key={album.name + index}>
-                < Album index={index} album_ID={album.album_ID} />
+                < Album index={index} album_ID={album.album_ID} getIdSong={getIdSong} />
             </li>
         )
     })
@@ -31,7 +31,7 @@ function ListOfAlbums() {
 
     return (
         <>
-        <NavBar setList={setAlbumsList} serchType='album'/>
+            <NavBar setList={setAlbumsList} serchType='album' />
             <h1>Top Albums</h1>
             <ol>
                 {listToPrint}

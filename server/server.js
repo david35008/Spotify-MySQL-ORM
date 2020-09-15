@@ -73,12 +73,12 @@ app.get("/song/:id", (req, res) => {
   });
 })
 
-app.get("/search_song/:title", (req, res) => {
+app.get("/search_song/:name", (req, res) => {
   connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
   FROM songs 
   JOIN albums ON songs.album_ID = albums.album_ID 
   JOIN artists ON songs.artist_ID = artists.artist_ID 
-  WHERE title LIKE '%${req.params.title}%'`, (err, result, fields) => {
+  WHERE name LIKE '%${req.params.name}%'`, (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -91,7 +91,11 @@ app.get("/search_song/:title", (req, res) => {
 })
 
 app.get("/top_songs/:limit", (req, res) => {
-  connection.query(`SELECT * FROM songs LIMIT ${req.params.limit}`, (err, result) => {
+  connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name, albums.cover_img 
+  FROM songs 
+  JOIN albums ON songs.album_ID = albums.album_ID 
+  JOIN artists ON songs.artist_ID = artists.artist_ID
+  ORDER BY upload_at DESC LIMIT ${req.params.limit}`, (err, result) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -102,7 +106,7 @@ app.get("/top_songs/:limit", (req, res) => {
 })
 
 app.get("/artists", (req, res) => {
-  connection.query("SELECT * FROM artists", (err, result) => {
+  connection.query("SELECT artists.*, artists.name AS artist_name FROM artists", (err, result) => {
     if (err) {
       res.status(400).send("An error occurred.")
       throw err
@@ -156,7 +160,7 @@ app.get("/top_artists/:limit", (req, res) => {
 })
 
 app.get("/albums", (req, res) => {
-  connection.query("SELECT * FROM albums", (err, result, fields) => {
+  connection.query("SELECT albums.*, albums.name AS album_name FROM albums", (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.")
       throw err

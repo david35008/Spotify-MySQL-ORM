@@ -7,6 +7,7 @@ import { Navbar, Nav,
     //  NavDropdown,
       Form, FormControl, Button } from 'react-bootstrap';
 import MyModal from '../MyModal/MyModal'
+import { Link } from 'react-router-dom';
 
 function NavBar({ setList, serchType = 'not work here' }) {
 
@@ -45,7 +46,7 @@ function NavBar({ setList, serchType = 'not work here' }) {
                 const { data } = await axios.get(`/${serachType}/${searchValue}`)
                 setList(data)
             } catch {
-                setList([{ title: "not found a match", youtube_link: "" }])
+                setList([{ name: "not found a match", youtube_link: "" }])
             }
         }
         setInputValue('')
@@ -60,7 +61,7 @@ function NavBar({ setList, serchType = 'not work here' }) {
                 <Button onClick={ToggleMenu} bg="dark" variant="dark" aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigtion" >
                     <span className="navbar-toggler-icon">  </span>
                 </Button>
-                <Navbar.Brand variant="success" href="/" >My Spotify</Navbar.Brand>
+                <Navbar.Brand variant="success"><Link  to='/' >My Spotify</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">

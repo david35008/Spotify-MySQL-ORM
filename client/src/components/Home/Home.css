@@ -90,3 +90,7 @@
     padding-top: 20px;
     text-align: left;
 }
+
+.ElementToCarusel {
+    list-style: none;
+}

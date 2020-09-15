@@ -13,40 +13,49 @@ import OneSong from './components/Songs/OneSong';
 
 function App() {
 
+  const getIdSong = (songId) => {
+    let video_id = songId.split("v=")[1];
+    const ampersandPosition = video_id.indexOf("&");
+    if (ampersandPosition !== -1) {
+      video_id = video_id.substring(0, ampersandPosition);
+    }
+    return video_id;
+  }
+
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route  path="/song/:id">
-            <OneSong />
+          <Route path="/song/:id">
+            <OneSong getIdSong={getIdSong} />
           </Route>
-          <Route  path="/albums/:id">
+          <Route path="/album/:id">
             <NavBar />
-            <OneAlbum />
+            <OneAlbum getIdSong={getIdSong} />
           </Route>
-          <Route  path="/playlists/:id">
+          <Route path="/playlist/:id">
             <NavBar />
-            <OnePlaylist />
+            <OnePlaylist getIdSong={getIdSong} />
           </Route>
-          <Route  path="/artists/:id">
+          <Route path="/artist/:id">
             <NavBar />
-            <OneArtist />
+            <OneArtist getIdSong={getIdSong} />
           </Route>
           <Route exact path="/playlists">
             <NavBar />
-            <ListOfPlaylists />
+            <ListOfPlaylists getIdSong={getIdSong} />
           </Route>
           <Route exact path="/artists">
-            <Artists />
+            <Artists getIdSong={getIdSong} />
           </Route>
           <Route exact path="/albums">
-            <Albums />
+            <Albums getIdSong={getIdSong} />
           </Route>
           {/* <Route path="/about">
         <About/>
       </Route>  */}
           <Route exact path="/">
-            <Home />
+            <Home getIdSong={getIdSong} />
           </Route>
           <Route path="*">
             <NotFound />

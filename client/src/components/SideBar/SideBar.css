@@ -10,6 +10,7 @@
 }
 
 .sidebar-wrapper-toggeled {
+    z-index: 1000;
     position: fixed;
     margin-top: 55px;
     top: 0;

@@ -29,7 +29,7 @@ function MyModal({ openModal, setOpenModal }) {
 
 const sendNewSong = async () => {
   const newSong = {
-    title: songName,
+    name: songName,
     album_ID: Number(songAlbum),
     artist_ID: Number(songArtist),
     lycris: songLycris,

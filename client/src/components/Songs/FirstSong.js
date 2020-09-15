@@ -18,11 +18,11 @@ function FirstSong({ songList }) {
     if (songList.[0]) {
         let song = songList[0];
         firstSong = (<div className="firstSong" >
-            <iframe className='firstSongIframe' width="45%" height="400vh" src={`https://www.youtube.com/embed/${getIdSong(song.youtube_link)}`} title={song.title}></iframe>
+            <iframe className='firstSongIframe' width="45%" height="400vh" src={`https://www.youtube.com/embed/${getIdSong(song.youtube_link)}`} title={song.name}></iframe>
             <div className='firstSongDescription' >
-                <div>Name: {song.title}</div>
-                <Link to={`/albums/${song.album_ID}`} >Album: {song.album_name}</Link><br/>
-                <Link to={`/artists/${song.artist_ID}`} >Artist: {song.artist_name}</Link>
+                <div>Name: {song.name}</div>
+                <Link to={`/album/${song.album_ID}`} >Album: {song.album_name}</Link><br/>
+                <Link to={`/artist/${song.artist_ID}`} >Artist: {song.artist_name}</Link>
                 <ReadMore content={song.lyrics} maxChar="65" />
                 <div>Length: {song.length} </div>
                 <div>Created: {new Date(song.created_at).toDateString()}</div>

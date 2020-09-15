@@ -4,7 +4,7 @@ import axios from 'axios';
 import NavBar from '../NavBar/NavBar';
 import Artist from './Artist';
 
-function ListOfArtists(params) {
+function ListOfArtists({ getIdSong }) {
 
     const [artistsList, setArtistsList] = useState([])
 
@@ -20,16 +20,17 @@ function ListOfArtists(params) {
     }, []);
 
     const listToPrint = artistsList.map((artist, index) => {
+        console.log(artist);
         return (
             <li key={artist.name + index}>
-                < Artist index={index} artist_ID={artist.artist_ID} />
+                < Artist index={index} artist_ID={artist.artist_ID} getIdSong={getIdSong} />
             </li>
         )
     })
 
     return (
         <>
-          <NavBar setList={setArtistsList} serchType='artist' />
+            <NavBar setList={setArtistsList} serchType='artist' />
             <h1>Top Artists</h1>
             <ol>
                 {listToPrint}
