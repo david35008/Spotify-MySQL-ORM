@@ -10,6 +10,7 @@ import OnePlaylist from './components/Playlists/OnePlaylist';
 import NavBar from './components/NavBar/NavBar';
 import NotFound from './components/NotFound/NotFound'
 import OneSong from './components/Songs/OneSong';
+import Admin from './components/Admin/Admin';
 
 function App() {
 
@@ -21,6 +22,14 @@ function App() {
     }
     return video_id;
   }
+
+  const breakPoints = [
+    { width: 1, itemsToShow: 1 },
+    { width: 450, itemsToShow: 2 },
+    { width: 700, itemsToShow: 3 },
+    { width: 1000, itemsToShow: 4 },
+    { width: 1200, itemsToShow: 5 },
+]
 
   return (
     <div className="App">
@@ -39,7 +48,7 @@ function App() {
           </Route>
           <Route path="/artist/:id">
             <NavBar />
-            <OneArtist getIdSong={getIdSong} />
+            <OneArtist getIdSong={getIdSong} breakPoints={breakPoints} />
           </Route>
           <Route exact path="/playlists">
             <NavBar />
@@ -51,11 +60,11 @@ function App() {
           <Route exact path="/albums">
             <Albums getIdSong={getIdSong} />
           </Route>
-          {/* <Route path="/about">
-        <About/>
-      </Route>  */}
+          <Route path="/admin">
+        <Admin />
+      </Route> 
           <Route exact path="/">
-            <Home getIdSong={getIdSong} />
+            <Home getIdSong={getIdSong} breakPoints={breakPoints}/>
           </Route>
           <Route path="*">
             <NotFound />

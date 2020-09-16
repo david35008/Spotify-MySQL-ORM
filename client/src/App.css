@@ -26,3 +26,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #b30000; 
 }
+
+.notFound {
+  font-size: 100px;
+}

@@ -6,7 +6,7 @@ import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from './ElementToCarusel';
 
 
-function Home({ getIdSong }) {
+function Home({ getIdSong, breakPoints }) {
 
     const [songList, setSongsList] = useState([])
     const [albums, setAlbums] = useState([]);
@@ -52,14 +52,6 @@ function Home({ getIdSong }) {
 
 
     }, []);
-
-    const breakPoints = [
-        { width: 1, itemsToShow: 1 },
-        { width: 450, itemsToShow: 2 },
-        { width: 700, itemsToShow: 3 },
-        { width: 1000, itemsToShow: 4 },
-        { width: 1200, itemsToShow: 5 },
-    ]
 
     return (
         <>

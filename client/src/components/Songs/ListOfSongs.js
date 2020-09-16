@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Song from './Song';
+import './ListOfSongs.css'
 
 function ListOfSongs({ query, songList, split = 1 ,albumDisplay = 'inline', artistDisplay = 'inline'}) {
 

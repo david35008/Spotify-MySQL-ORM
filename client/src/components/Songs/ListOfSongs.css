@@ -1,0 +1,17 @@
+.songContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.song-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 10px auto 0px auto ;
+}
+
+
+.song-list > li > iframe {
+    border: none;
+}
