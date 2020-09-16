@@ -5,27 +5,30 @@ import { useParams } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../NotFound/NotFound';
 
-
 function OneAlbum({ getIdSong }) {
 
-    const { id } = useParams()
-    const [album, setAlbums] = useState([])
-    const [songList, setSongsList] = useState([])
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [album, setAlbums] = useState();
+    const [songList, setSongsList] = useState([]);
 
     useEffect(() => {
         (async () => {
+            setLoading(true);
             try {
                 const { data } = await axios.get(`/album/${id}`);
-                setAlbums(data[0])
-                setSongsList(data)
+                setAlbums(data[0]);
+                setSongsList(data);
+                setLoading(false);
             } catch (error) {
+                setLoading(false);
                 console.error(error.message);
             }
         })();
     }, [id]);
 
     return (
-        (songList.length > 0) ? (<div className='OneAlbum'>
+        album ? (<div className='OneAlbum'>
             <div className='OneAlbumContainer'>
                 <img src={album.cover_img} alt={album.name} height='300px' />
                 <div className='OneAlbumDescription'>
@@ -38,9 +41,10 @@ function OneAlbum({ getIdSong }) {
             <ListOfSongs query={{ path: "album", id: album.album_ID }} className='albumSongsList' songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0} />
         </div>)
             :
+            !loading ?
             <NotFound />
-    )
-
-}
+            : <div></div>
+    );
+};
 
 export default OneAlbum;

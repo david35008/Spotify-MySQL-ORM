@@ -78,7 +78,7 @@ app.get("/search_song/:name", (req, res) => {
   FROM songs 
   JOIN albums ON songs.album_ID = albums.album_ID 
   JOIN artists ON songs.artist_ID = artists.artist_ID 
-  WHERE name LIKE '%${req.params.name}%'`, (err, result, fields) => {
+  WHERE songs.name LIKE '%${req.params.name}%'`, (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -120,10 +120,11 @@ app.get("/artist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
     return res.status(400).send('Id must be a number')
   }
-    connection.query(`SELECT  artists.*,  songs.* ,albums.name AS album_name , artists.name AS artist_name FROM artists 
-    JOIN songs ON songs.artist_ID = artists.artist_ID
-    JOIN albums ON songs.album_ID = albums.album_ID
-    WHERE artists.artist_ID= ${req.params.id}`, (err, result) => {
+    connection.query(`SELECT  artists.name, artists.created_at , artists.upload_at , artists.cover_img  AS image,
+    songs.* ,albums.cover_img , albums.name AS album_name, artists.name AS artist_name FROM artists 
+      JOIN songs ON songs.artist_ID = artists.artist_ID
+      JOIN albums ON songs.album_ID = albums.album_ID
+      WHERE artists.artist_ID= ${req.params.id}`, (err, result) => {
       if (err) {
         res.status(400).send("An error occurred.");
         throw err
@@ -136,7 +137,7 @@ app.get("/artist/:id", (req, res) => {
 })
 
 app.get("/search_artist/:title", (req, res) => {
-  connection.query(`SELECT * FROM artists WHERE name LIKE '%${req.params.title}%'`, (err, result, fields) => {
+  connection.query(`SELECT * FROM artists WHERE name LIKE '%${req.params.title.toLocaleLowerCase()}%'`, (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -178,6 +179,24 @@ app.get("/album/:id", (req, res) => {
   JOIN songs ON songs.album_ID = albums.album_ID
   JOIN artists ON songs.artist_ID = artists.artist_ID
   WHERE albums.album_ID=${req.params.id}`, (err, result, fields) => {
+    if (err) {
+      res.status(400).send("An error occurred.");
+      throw err
+    } else if (result.length < 1) {
+      res.status(404).send("There is no such album");
+    } else {
+      res.json(result);
+    }
+  });
+})
+
+app.get("/albums_ByArtist/:id", (req, res) => {
+  if (isNaN(Number(req.params.id))) {
+    return res.status(400).send('Id must be a number')
+  }
+  connection.query(`select albums.* from albums
+  join  artists on artists.artist_ID=albums.artist_id
+  where artists.artist_ID=${req.params.id}`, (err, result, fields) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -271,9 +290,10 @@ app.post("/song", (req, res) => {
   }
   const { body } = req;
   const queryString = `INSERT INTO songs SET ?`;
-  console.log(body)
+  // console.log((body.created_at))
   connection.query(queryString, body, (err, result) => {
       if (err) {
+        console.log(err);
           res.status(400).send("An error occurred.");
       } else {
           res.send("1 song successfully inserted into db");
