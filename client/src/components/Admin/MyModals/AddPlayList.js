@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+import './MyModal.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button } from 'react-bootstrap';
+import axios from 'axios';
+
+function AddPlayList({ openModal, setOpenModal, formatDate }) {
+
+    const [playListName, setPlayListName] = useState('');
+    const [playListCreated, setPlayListCreated] = useState('');
+    const [playListImageLink, setplayListImageLink] = useState('');
+    const [userId, setUsetId] = useState('');
+
+    const sendNewPlayList = async () => {
+        const sendNewPlayList = {
+            name: playListName,
+            created_at: playListCreated,
+            upload_at: formatDate(new Date()),
+            cover_img: playListImageLink,
+            user_ID: userId
+        };
+        await axios.post('/playlist', sendNewPlayList);
+    };
+
+    const handleClose = () => setOpenModal(false);
+
+    return (
+        <>
+            <Modal
+                show={openModal}
+                onHide={handleClose}
+                onEscapeKeyDown={handleClose}
+                backdrop="static"
+                keyboard={false}
+                className="addNewModal"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Add New PlayList</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form className="addNewForm" >
+                        <label >Name:</label>
+                        <input type="text" onChange={(e) => setPlayListName(e.target.value)} required/><br />
+                        <label >Created_At:</label>
+                        <input type="date" onChange={(e) => setPlayListCreated(e.target.value)} required/><br />
+                        <label >Image Link:</label>
+                        <input type="text" onChange={(e) => setplayListImageLink(e.target.value)} required/><br />
+                        <label >User ID:</label>
+                        <input type="text" onChange={(e) => setUsetId(e.target.value)} required/><br />
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+            </Button>
+                    <Button variant="primary" onClick={sendNewPlayList} >Submit</Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+    );
+};
+
+export default AddPlayList;

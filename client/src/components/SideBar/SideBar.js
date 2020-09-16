@@ -17,6 +17,7 @@ function SideBar({ menuClass, ToggleMenu }) {
                         <Link className="refButton" to='/albums' onClick={ToggleMenu}>Albums</Link>
                         <Link className="refButton" to='/Artists' onClick={ToggleMenu}>Artists</Link>
                         <Link className="refButton" to='/Playlists' onClick={ToggleMenu}>Playlists</Link>
+                        <Link className="refButton" to='/Admin' onClick={ToggleMenu}>Admin</Link>
                     </Nav>
                 </Col>
             </Row>

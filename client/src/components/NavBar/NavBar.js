@@ -6,7 +6,7 @@ import SideBar from '../SideBar/SideBar.js';
 import { Navbar, Nav,
     //  NavDropdown,
       Form, FormControl, Button } from 'react-bootstrap';
-import MyModal from '../MyModal/MyModal'
+// import MyModal from '../MyModal/MyModal';
 import { Link } from 'react-router-dom';
 
 function NavBar({ setList, serchType = 'not work here' }) {
@@ -16,7 +16,7 @@ function NavBar({ setList, serchType = 'not work here' }) {
     // const [serachType, setSearchType] = useState(`search_${serchType}`)
     // const [placeHolder, setPlaceHolder] = useState(`Search ${serchType}...`)
     const [inputValue, setInputValue] = useState('')
-    const [openModal, setOpenModal] = useState(false)
+    // const [openModal, setOpenModal] = useState(false)
 
     const inputRef = useRef();
 
@@ -56,7 +56,7 @@ function NavBar({ setList, serchType = 'not work here' }) {
     return (
         <>
             <SideBar menuClass={menuClass} ToggleMenu={ToggleMenu} />
-            {openModal && <MyModal openModal={openModal} setOpenModal={setOpenModal} />}
+            {/* {openModal && <MyModal openModal={openModal} setOpenModal={setOpenModal} />} */}
             <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
                 <Button onClick={ToggleMenu} bg="dark" variant="dark" aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigtion" >
                     <span className="navbar-toggler-icon">  </span>
@@ -66,7 +66,7 @@ function NavBar({ setList, serchType = 'not work here' }) {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                     </Nav>
-                    <Button bg="dark" variant="dark" onClick={() => setOpenModal((state) => !state)}    >Add New</Button>
+                    {/* <Button bg="dark" variant="dark" onClick={() => setOpenModal((state) => !state)}    >Add New</Button> */}
                     {/* <NavDropdown title="Search By" id="basic-nav-dropdown">
                         <NavDropdown.Item onClick={changeSearchType}>Song</NavDropdown.Item>
                         <NavDropdown.Item onClick={changeSearchType}>Album</NavDropdown.Item>
