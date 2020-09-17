@@ -5,6 +5,7 @@ import AddAlbum from './MyModals/AddAlbum';
 import AddArtist from './MyModals/AddArtist';
 import AddPlayList from './MyModals/AddPlayList';
 import AddUser from './MyModals/AddUser';
+import AddSongToPlayList from './MyModals/AddSongToPlayList';
 
 function Admin() {
 
@@ -13,6 +14,7 @@ function Admin() {
     const [openArtistModal, setOpenArtistModal] = useState(false);
     const [openPlayListModal, setOpenPlayListModal] = useState(false);
     const [openUserModal, setOpenUserModal] = useState(false);
+    const [ OpenSongToPlayListModal, setOpenSongToPlayListModal] =useState(false);
 
     function pad(num) { return ('00' + num).slice(-2) };
 
@@ -38,6 +40,8 @@ function Admin() {
             {openPlayListModal && <AddPlayList openModal={openPlayListModal} setOpenModal={setOpenPlayListModal} formatDate={formatDate}/>}
             <button onClick={(e)=> setOpenUserModal(true)}>Add new User</button>
             {openUserModal && <AddUser openModal={openUserModal} setOpenModal={setOpenUserModal} formatDate={formatDate}/>}
+            <button onClick={(e)=> setOpenSongToPlayListModal(true)}>Add Song To Playlist</button>
+            {OpenSongToPlayListModal && <AddSongToPlayList openModal={OpenSongToPlayListModal} setOpenModal={setOpenSongToPlayListModal} formatDate={formatDate}/>}
         </>
     );
 

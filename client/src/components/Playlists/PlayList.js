@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import './PlayList.css';
 import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
@@ -11,15 +11,12 @@ function PlayList({ playList_ID, getIdSong }) {
     const [playList, setPlayList] = useState([])
 
     useEffect(() => {
-        (async () => {
-            try {
-                const { data } = await axios.get(`/playList/${playList_ID}`);
-                setPlayList(data[0])
-                setSongsList(data)
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
+        read(`playList/${playList_ID}`)
+            .then(res => {
+                setPlayList(res[0])
+                setSongsList(res)
+            })
+            .catch(console.error)
     }, [playList_ID]);
 
     return (

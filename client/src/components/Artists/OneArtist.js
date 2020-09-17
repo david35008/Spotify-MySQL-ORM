@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './OneArtist.css';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import { useParams } from 'react-router-dom';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from '../Home/ElementToCarusel';
@@ -16,20 +16,22 @@ function OneArtist({ getIdSong, breakPoints }) {
     const [albums, setAlbums] = useState([]);
 
     useEffect(() => {
-        (async () => {
-            setLoading(true);
-            try {
-                let { data } = await axios.get(`/artist/${id}`);
-                setArtist(data[0]);
-                setSongsList(data);
-                data = await axios.get(`/albums_ByArtist/${id}`);
-                setAlbums(data.data);
+        read(`artist/${id}`)
+            .then((res) => {
+                setArtist(res[0]);
+                setSongsList(res);
+            }).catch((err) => {
+                console.error(err);
                 setLoading(false);
-            } catch (error) {
+            });
+        read(`albums_ByArtist/${id}`)
+            .then((res) => {
+                setAlbums(res);
                 setLoading(false);
-                console.error(error.message);
-            }
-        })();
+            }).catch((err) => {
+                console.error(err);
+                setLoading(false);
+            });
     }, [id]);
 
     return (

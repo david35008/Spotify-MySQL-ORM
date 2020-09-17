@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './OneAlbum.css';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import { useParams } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../NotFound/NotFound';
@@ -13,18 +13,16 @@ function OneAlbum({ getIdSong }) {
     const [songList, setSongsList] = useState([]);
 
     useEffect(() => {
-        (async () => {
-            setLoading(true);
-            try {
-                const { data } = await axios.get(`/album/${id}`);
-                setAlbums(data[0]);
-                setSongsList(data);
+        read(`album/${id}`)
+            .then((res) => {
+                setAlbums(res[0]);
+                setSongsList(res);
                 setLoading(false);
-            } catch (error) {
+            })
+            .catch((err) => {
+                console.error(err)
                 setLoading(false);
-                console.error(error.message);
-            }
-        })();
+            })
     }, [id]);
 
     return (
@@ -42,8 +40,8 @@ function OneAlbum({ getIdSong }) {
         </div>)
             :
             !loading ?
-            <NotFound />
-            : <div></div>
+                <NotFound />
+                : <div></div>
     );
 };
 

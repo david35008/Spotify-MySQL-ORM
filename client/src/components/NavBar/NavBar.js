@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import './NavBar.css';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SideBar from '../SideBar/SideBar.js';
-import { Navbar, Nav,
+import {
+    Navbar, Nav,
     //  NavDropdown,
-      Form, FormControl, Button } from 'react-bootstrap';
+    Form, FormControl, Button
+} from 'react-bootstrap';
 // import MyModal from '../MyModal/MyModal';
 import { Link } from 'react-router-dom';
 
@@ -39,15 +41,15 @@ function NavBar({ setList, serchType = 'not work here' }) {
         setInputValue(input.target.value)
     }
 
-    const search = async () => {
+    const search = () => {
         const searchValue = inputValue.toLowerCase().trim()
         if (searchValue !== "") {
-            try {
-                const { data } = await axios.get(`/${serachType}/${searchValue}`)
-                setList(data)
-            } catch {
-                setList([{ name: "not found a match", youtube_link: "" }])
-            }
+            read(`${serachType}/${searchValue}`)
+                .then(res => setList(res))
+                .catch(err => {
+                    console.error(err);
+                    setList([{ name: "not found a match", youtube_link: "" }])
+                })
         }
         setInputValue('')
         inputRef.current.value = ""
@@ -61,7 +63,7 @@ function NavBar({ setList, serchType = 'not work here' }) {
                 <Button onClick={ToggleMenu} bg="dark" variant="dark" aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigtion" >
                     <span className="navbar-toggler-icon">  </span>
                 </Button>
-                <Navbar.Brand variant="success"><Link  to='/' >My Spotify</Link></Navbar.Brand>
+                <Navbar.Brand variant="success"><Link to='/' >My Spotify</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">

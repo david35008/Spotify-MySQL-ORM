@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './MyModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { create } from '../../Network/Ajax';
 
 function AddPlayList({ openModal, setOpenModal, formatDate }) {
 
@@ -11,7 +11,7 @@ function AddPlayList({ openModal, setOpenModal, formatDate }) {
     const [playListImageLink, setplayListImageLink] = useState('');
     const [userId, setUsetId] = useState('');
 
-    const sendNewPlayList = async () => {
+    const sendNewPlayList = () => {
         const sendNewPlayList = {
             name: playListName,
             created_at: playListCreated,
@@ -19,7 +19,9 @@ function AddPlayList({ openModal, setOpenModal, formatDate }) {
             cover_img: playListImageLink,
             user_ID: userId
         };
-        await axios.post('/playlist', sendNewPlayList);
+        create('playlist', sendNewPlayList)
+            .then((res) => console.log(res))
+            .catch((err) => console.error(err))
     };
 
     const handleClose = () => setOpenModal(false);
@@ -40,13 +42,13 @@ function AddPlayList({ openModal, setOpenModal, formatDate }) {
                 <Modal.Body>
                     <form className="addNewForm" >
                         <label >Name:</label>
-                        <input type="text" onChange={(e) => setPlayListName(e.target.value)} required/><br />
+                        <input type="text" onChange={(e) => setPlayListName(e.target.value)} required /><br />
                         <label >Created_At:</label>
-                        <input type="date" onChange={(e) => setPlayListCreated(e.target.value)} required/><br />
+                        <input type="date" onChange={(e) => setPlayListCreated(e.target.value)} required /><br />
                         <label >Image Link:</label>
-                        <input type="text" onChange={(e) => setplayListImageLink(e.target.value)} required/><br />
+                        <input type="text" onChange={(e) => setplayListImageLink(e.target.value)} required /><br />
                         <label >User ID:</label>
-                        <input type="text" onChange={(e) => setUsetId(e.target.value)} required/><br />
+                        <input type="text" onChange={(e) => setUsetId(e.target.value)} required /><br />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

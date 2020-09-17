@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import './Artist.css';
 import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
@@ -11,15 +11,12 @@ function Artist({ artist_ID, getIdSong }) {
     const [artist, setArtist] = useState([])
 
     useEffect(() => {
-        (async () => {
-            try {
-                const { data } = await axios.get(`/artist/${artist_ID}`);
-                setArtist(data[0])
-                setSongsList(data.concat())
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
+        read(`artist/${artist_ID}`)
+        .then(res => {
+            setArtist(res[0])
+            setSongsList(res)
+        })
+        .catch(console.error)
     }, [artist_ID]);
 
     return (

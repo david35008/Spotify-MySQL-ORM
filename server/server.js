@@ -90,12 +90,12 @@ app.get("/search_song/:name", (req, res) => {
   });
 })
 
-app.get("/top_songs/:limit", (req, res) => {
+app.get("/top_songs", (req, res) => {
   connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name, albums.cover_img 
   FROM songs 
   JOIN albums ON songs.album_ID = albums.album_ID 
   JOIN artists ON songs.artist_ID = artists.artist_ID
-  ORDER BY upload_at DESC LIMIT ${req.params.limit}`, (err, result) => {
+  ORDER BY upload_at DESC LIMIT 20`, (err, result) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -149,8 +149,8 @@ app.get("/search_artist/:title", (req, res) => {
   });
 })
 
-app.get("/top_artists/:limit", (req, res) => {
-  connection.query(`SELECT * FROM artists LIMIT ${req.params.limit}`, (err, result) => {
+app.get("/top_artists", (req, res) => {
+  connection.query(`SELECT * FROM artists LIMIT 20`, (err, result) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -221,8 +221,8 @@ app.get("/search_album/:title", (req, res) => {
   });
 })
 
-app.get("/top_albums/:limit", (req, res) => {
-  connection.query(`SELECT * FROM albums LIMIT ${req.params.limit}`, (err, result) => {
+app.get("/top_albums", (req, res) => {
+  connection.query(`SELECT * FROM albums LIMIT 20`, (err, result) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -273,8 +273,8 @@ app.get("/playlist/:id", (req, res) => {
   });
 })
 
-app.get("/top_playlists/:limit", (req, res) => {
-  connection.query(`SELECT * FROM playlists LIMIT ${req.params.limit}`, (err, result) => {
+app.get("/top_playlists", (req, res) => {
+  connection.query(`SELECT * FROM playlists LIMIT 20`, (err, result) => {
     if (err) {
       res.status(400).send("An error occurred.");
       throw err
@@ -290,13 +290,12 @@ app.post("/song", (req, res) => {
   }
   const { body } = req;
   const queryString = `INSERT INTO songs SET ?`;
-  // console.log((body.created_at))
   connection.query(queryString, body, (err, result) => {
       if (err) {
         console.log(err);
           res.status(400).send("An error occurred.");
       } else {
-          res.send("1 song successfully inserted into db");
+          res.json("1 song successfully inserted into db");
       }
   });
 })
@@ -415,6 +414,22 @@ app.put("/playlist/:id", (req, res) => {
           res.send("An error occurred.");
       } else {
           res.send("1 playlist updated");
+      }
+  })
+})
+
+app.post("/playlists_songs/", (req, res) => {
+  if (!req.body) {
+      res.status(400).send("content missing")
+  }
+  const { body } = req;
+  console.log(body);
+  const queryString = `INSERT INTO playlists_songs SET ?`;
+    connection.query(queryString, body, (err, result) => {
+      if (err) {
+          res.status(400).send("An error occurred.");
+      } else {
+          res.send("1 playlist successfully inserted into db");
       }
   })
 })

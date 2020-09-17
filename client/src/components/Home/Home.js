@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './Home.css';
 import NavBar from '../NavBar/NavBar';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from './ElementToCarusel';
+
 
 
 function Home({ getIdSong, breakPoints }) {
@@ -14,43 +15,18 @@ function Home({ getIdSong, breakPoints }) {
     const [playlists, setPlaylists] = useState([]);
 
     useEffect(() => {
-        (async () => {
-            try {
-                const { data } = await axios.get('/top_songs/20');
-                setSongsList(data)
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
-
-        (async () => {
-            try {
-                const { data } = await axios.get('/top_albums/20');
-                setAlbums(data)
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
-
-        (async () => {
-            try {
-                const { data } = await axios.get('/top_artists/20');
-                setArtists(data)
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
-
-        (async () => {
-            try {
-                const { data } = await axios.get('/top_playlists/20');
-                setPlaylists(data)
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
-
-
+        read('top_songs')
+            .then(res => setSongsList(res))
+            .catch(console.error)
+        read('top_albums')
+            .then(res => setAlbums(res))
+            .catch(console.error)
+        read('top_artists')
+            .then(res => setArtists(res))
+            .catch(console.error)
+        read('top_playlists')
+            .then(res => setPlaylists(res))
+            .catch(console.error)
     }, []);
 
     return (

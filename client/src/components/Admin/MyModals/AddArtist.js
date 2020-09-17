@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './MyModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { create } from '../../Network/Ajax';
 
 function AddArtist({ openModal, setOpenModal, formatDate }) {
 
@@ -10,14 +10,16 @@ function AddArtist({ openModal, setOpenModal, formatDate }) {
     const [artistCreated, setArtistCreated] = useState('');
     const [artistImageLink, setArtistImageLink] = useState('');
 
-    const sendNewArtist = async () => {
+    const sendNewArtist = () => {
         const newArtist = {
             name: artistName,
             created_at: artistCreated,
             upload_at: formatDate(new Date()),
             cover_img: artistImageLink
         };
-        await axios.post('/artist', newArtist);
+        create('artist', newArtist)
+            .then((res) => console.log(res))
+            .catch((err) => console.error(err))
     };
 
     const handleClose = () => setOpenModal(false);
@@ -38,11 +40,11 @@ function AddArtist({ openModal, setOpenModal, formatDate }) {
                 <Modal.Body>
                     <form className="addNewForm" >
                         <label >Name:</label>
-                        <input type="text" onChange={(e) => setArtistName(e.target.value)} required/><br />
+                        <input type="text" onChange={(e) => setArtistName(e.target.value)} required /><br />
                         <label >Created_At:</label>
-                        <input type="date" onChange={(e) => setArtistCreated(e.target.value)} required/><br />
+                        <input type="date" onChange={(e) => setArtistCreated(e.target.value)} required /><br />
                         <label >Image Link:</label>
-                        <input type="text" onChange={(e) => setArtistImageLink(e.target.value)} required/><br />
+                        <input type="text" onChange={(e) => setArtistImageLink(e.target.value)} required /><br />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

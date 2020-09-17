@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './MyModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { create } from '../../Network/Ajax';
 
-function AddUser({ openModal, setOpenModal,formatDate }) {
+function AddUser({ openModal, setOpenModal, formatDate }) {
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -14,7 +14,7 @@ function AddUser({ openModal, setOpenModal,formatDate }) {
   const [userRememberToken, setUserRememberToken] = useState(false);
   const [userCreated, setUserCreated] = useState('');
 
-  const sendNewUser = async () => {
+  const sendNewUser = () => {
     const newUser = {
       name: userName,
       email: userEmail,
@@ -25,7 +25,9 @@ function AddUser({ openModal, setOpenModal,formatDate }) {
       created_at: userCreated,
       upload_at: formatDate(new Date())
     };
-    await axios.post('/user', newUser);
+    create('/user', newUser)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err))
   };
 
   const handleClose = () => setOpenModal(false);
@@ -46,19 +48,19 @@ function AddUser({ openModal, setOpenModal,formatDate }) {
         <Modal.Body>
           <form className="addNewForm" >
             <label >UserName:</label>
-            <input type="text" onChange={(e) => setUserName(e.target.value)} required/><br />
+            <input type="text" onChange={(e) => setUserName(e.target.value)} required /><br />
             <label >Password:</label>
-            <input type="password" onChange={(e) => setUserPassword(e.target.value)} required/><br />
+            <input type="password" onChange={(e) => setUserPassword(e.target.value)} required /><br />
             <label >Email:</label>
-            <input type="email" onChange={(e) => setUserEmail(e.target.value)} required/><br />
+            <input type="email" onChange={(e) => setUserEmail(e.target.value)} required /><br />
             <label >User Is Admin?</label>
-            <input type="checkbox" onClick={(e) =>  setUserIsAdmin(e.target.checked)} /><br />
+            <input type="checkbox" onClick={(e) => setUserIsAdmin(e.target.checked)} /><br />
             <label >Preferences:</label>
-            <input type="text" onChange={(e) => setUserPreferences(e.target.value)} required/><br />
+            <input type="text" onChange={(e) => setUserPreferences(e.target.value)} required /><br />
             <label >Remember Token?</label>
             <input type="checkbox" onChange={(e) => setUserRememberToken(e.target.checked)} /><br />
             <label >Created_At:</label>
-            <input type="date" onChange={(e) => setUserCreated(e.target.value)} required/><br />
+            <input type="date" onChange={(e) => setUserCreated(e.target.value)} required /><br />
           </form>
         </Modal.Body>
         <Modal.Footer>

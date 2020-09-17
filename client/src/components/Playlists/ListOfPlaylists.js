@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ListOfPlaylists.css';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import PlayList from './PlayList';
 
@@ -9,24 +9,17 @@ function ListOfPlaylists({ getIdSong }) {
     const [playListsList, setPlayListsList] = useState([])
 
     useEffect(() => {
-        (async () => {
-            try {
-                const { data } = await axios.get('/playLists');
-                setPlayListsList(data)
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
+        read('playLists')
+            .then(res => setPlayListsList(res))
     }, []);
 
     const listToPrint = playListsList.map((playList, index) => {
         return (
             <li key={playList.name + index}>
-                < PlayList index={index} playList_ID={playList.playlist_ID} getIdSong={getIdSong}/>
+                < PlayList index={index} playList_ID={playList.playlist_ID} getIdSong={getIdSong} />
             </li>
         )
     })
-
 
     return (
         <>

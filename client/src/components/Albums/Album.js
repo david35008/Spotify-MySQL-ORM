@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import './Album.css';
 import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
@@ -11,15 +11,16 @@ function Album({ album_ID, getIdSong, albumDisplay = 'inline', artistDisplay = '
     const [album, setAlbums] = useState([])
 
     useEffect(() => {
-        (async () => {
-            try {
-                const { data } = await axios.get(`/album/${album_ID}`);
-                setAlbums(data[0])
-                setSongsList(data.concat())
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
+        let isMounted = true;
+        read(`album/${album_ID}`)
+            .then((res) => {
+                if (isMounted) {
+                    setAlbums(res[0])
+                    setSongsList(res)
+                }
+            })
+            .catch(console.error)
+        return () => { isMounted = false };
     }, [album_ID]);
 
     return (

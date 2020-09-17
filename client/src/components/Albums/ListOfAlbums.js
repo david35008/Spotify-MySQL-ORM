@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ListOfAlbums.css';
-import axios from 'axios';
+import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import Album from './Album';
 
@@ -10,14 +10,9 @@ function ListOfAlbums({ getIdSong }) {
     const [albumsList, setAlbumsList] = useState([])
 
     useEffect(() => {
-        (async () => {
-            try {
-                const { data } = await axios.get('/albums');
-                setAlbumsList(data)
-            } catch (error) {
-                console.error(error.message);
-            }
-        })();
+        read('albums')
+            .then(res => setAlbumsList(res))
+            .catch(console.error)
     }, []);
 
     const listToPrint = albumsList.map((album, index) => {

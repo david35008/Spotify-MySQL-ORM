@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './MyModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { create } from '../../Network/Ajax';
 
 function AddAlbum({ openModal, setOpenModal, formatDate }) {
 
@@ -11,7 +11,7 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
     const [albumCreated, setAlbumCreated] = useState('');
     const [albumImageLink, setAlbumImageLink] = useState('');
 
-    const sendNewAlbum = async () => {
+    const sendNewAlbum = () => {
         const newAlbum = {
             name: albumName,
             artist_ID: albumArtist,
@@ -19,7 +19,9 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
             upload_at: formatDate(new Date()),
             cover_img: albumImageLink
         };
-        await axios.post('/album', newAlbum);
+        create('album', newAlbum)
+            .then((res) => console.log(res))
+            .catch((err) => console.error(err))
     };
 
     const handleClose = () => setOpenModal(false);
@@ -40,13 +42,13 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
                 <Modal.Body>
                     <form className="addNewForm" >
                         <label >Name:</label>
-                        <input type="text" onChange={(e) => setAlbumName(e.target.value)} required/><br />
+                        <input type="text" onChange={(e) => setAlbumName(e.target.value)} required /><br />
                         <label >Artist:</label>
-                        <input type="number" onChange={(e) => setAlbumArtist(e.target.value)} required/><br />
+                        <input type="number" onChange={(e) => setAlbumArtist(e.target.value)} required /><br />
                         <label >Created_At:</label>
-                        <input type="date" onChange={(e) => setAlbumCreated(e.target.value)} required/><br />
+                        <input type="date" onChange={(e) => setAlbumCreated(e.target.value)} required /><br />
                         <label >Image Link:</label>
-                        <input type="text" onChange={(e) => setAlbumImageLink(e.target.value)} required/><br />
+                        <input type="text" onChange={(e) => setAlbumImageLink(e.target.value)} required /><br />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
