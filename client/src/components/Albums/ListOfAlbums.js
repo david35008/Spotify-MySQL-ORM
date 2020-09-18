@@ -17,7 +17,7 @@ function ListOfAlbums({ getIdSong }) {
 
     const listToPrint = albumsList.map((album, index) => {
         return (
-            <li key={album.name + index}>
+            <li key={album.name + album.album_ID}>
                 < Album index={index} album_ID={album.album_ID} getIdSong={getIdSong} />
             </li>
         )
@@ -27,8 +27,8 @@ function ListOfAlbums({ getIdSong }) {
     return (
         <>
             <NavBar setAlbums={setAlbumsList} searchTypeProps='Search_Album' />
-            <h1>Albums</h1>
-            <ol>
+            <h1 className='albumTitle' >Albums</h1><hr/>
+            <ol className='ArtistList' >
                 {listToPrint}
             </ol>
         </>

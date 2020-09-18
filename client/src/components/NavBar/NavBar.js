@@ -148,6 +148,3 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
 }
 
 export default NavBar;
-
-
-

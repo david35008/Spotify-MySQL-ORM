@@ -26,12 +26,11 @@ function Album({ album_ID, getIdSong, albumDisplay = 'inline', artistDisplay = '
     return (
         <div className='Album'>
             <div className='AlbumContainer'>
-                <img src={album.cover_img} alt={album.album_name} height='200' width='300' />
+                <img src={album.cover_img} alt={album.album_name} className='albums_img' />
                 <div className='AlbumDescription'>
                     <Link to={`/album/${album.album_ID}`} style={{ display: albumDisplay }} className='AlbumName' > {album.album_name}</Link>
                     <Link to={`/artist/${album.artist_ID}`} style={{ display: artistDisplay }} className='AlbumArtist' > {album.artist_name}</Link>
-                    {album.created_at && <div className='AlbumCreated_at'>Created_at: {new Date(album.created_at).toDateString()}</div>}
-                    {album.upload_at && <div className='AlbumUpload_at' >Upload_at{new Date(album.upload_at).toDateString()}</div>}
+                    {album.created_at && <div className='AlbumCreated_at'>{new Date(album.created_at).toDateString()}</div>}
                 </div>
             </div>
             <div className='AlbumSongsList' >

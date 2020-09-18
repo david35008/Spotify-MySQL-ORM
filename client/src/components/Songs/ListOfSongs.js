@@ -26,7 +26,7 @@ function ListOfSongs({ query, songList, split = 1, albumDisplay = 'inline', arti
     return (
         <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
             {songList.map((song, index) => (
-                <Song query={query} key={Math.random()} song={song} getIdSong={getIdSong} index={index} albumDisplay={albumDisplay} artistDisplay={artistDisplay} />
+                <Song query={query} key={song.name + song.song_ID} song={song} getIdSong={getIdSong} index={index} albumDisplay={albumDisplay} artistDisplay={artistDisplay} />
             )).splice(split, songList.length - split)}
         </Carousel>
     )

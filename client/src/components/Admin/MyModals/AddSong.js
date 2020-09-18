@@ -58,6 +58,7 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
     read(`album/${albumID}`)
       .then((res) => {
         setSongTrackNumber(Math.max(...res.map((album) => album.track_number)) + 1)
+        console.log(Math.max(...res.map((album) => album.track_number)) + 1);
       })
       .catch((err) => {
         console.error(err);

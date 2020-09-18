@@ -28,7 +28,7 @@ function OneAlbum({ getIdSong }) {
     return (
         album ? (<div className='OneAlbum'>
             <div className='OneAlbumContainer'>
-                <img src={album.cover_img} alt={album.name} height='300px' />
+                <img src={album.cover_img} alt={album.name} className='OneAlbumImage' />
                 <div className='OneAlbumDescription'>
                     <div>Name: {album.album_name}</div>
                     <div>Artist: {album.artist_name}</div>
@@ -36,7 +36,9 @@ function OneAlbum({ getIdSong }) {
                     {album.upload_at && <div>upload_at{new Date(album.upload_at).toDateString()}</div>}
                 </div>
             </div>
-            <ListOfSongs query={{ path: "album", id: album.album_ID }} className='albumSongsList' songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0} />
+            <div className='albumSongsList' >
+                <ListOfSongs query={{ path: "album", id: album.album_ID }} songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0} />
+            </div>
         </div>)
             :
             !loading ?

@@ -5,8 +5,6 @@ function ReadMore({ content, maxChar, color }) {
 
     const text = isSliced ? content.slice(0, maxChar) : content;
 
-    
-
     return (
         <>
             {isSliced
@@ -21,7 +19,7 @@ function ReadMore({ content, maxChar, color }) {
                 )
                 : (
                     <div>
-                        <p style={color&&{color: "black"}} >
+                        <p style={color&&{color: "black"}} className='readMore' >
                             Lyrics: {('  ')} {text}
                             {!(content.length <= maxChar)
                                 && (

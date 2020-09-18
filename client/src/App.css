@@ -30,3 +30,13 @@ body {
 .notFound {
   font-size: 100px;
 }
+
+.brcpxa {
+ color: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.ikyGAt:hover {
+  box-shadow: none !important;
+}

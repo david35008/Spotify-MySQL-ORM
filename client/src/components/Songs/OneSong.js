@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from "react-router-dom";
-import './Song.css';
+import './OneSong.css';
 import { read } from '../Network/Ajax';
 import NotFound from '../NotFound/NotFound';
 import SongsListForOneSong from '../Songs/SongsListForOneSong';
@@ -16,7 +16,7 @@ import ReactPlayer from 'react-player/youtube';
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
-function OneSong({ getIdSong }) {
+function OneSong() {
     const query = useQuery();
     const { id } = useParams()
     const [song, setSong] = useState()
@@ -49,37 +49,49 @@ function OneSong({ getIdSong }) {
         // eslint-disable-next-line
     }, [id])
 
-
+    let views = '10,000';
 
     const queryIdKey = useLocation().search.split("=");
 
     return (
         song ?
-            <div>
-                <Navbar setList={setList} />
-                <ReactPlayer 
-                className='firstSongIframe' 
-                onEnded={()=> alert('end')} 
-                playing={false} 
-                controls={true} 
-                url={song.youtube_link}  
-                ></ReactPlayer >
-                <div className='views'> views</div>
-                <img className='shareButton' src={shareButton} alt={''} onClick={() => alert('i am share button')} />
-                <img className='likeButton' src={like} alt={''} onClick={() => alert('i am like button')} />
-                <img className='dislikeButton' src={disLike} alt={''} onClick={() => alert('i am dislike button')} />
-                <img className='addToPlayListButton' src={addToPlayList} alt={''} onClick={() => alert('i am addToPlayList button')} />
-                <div>Name: {song.name}</div>
-                <Link to={`/album/${song.album_ID}`} >Album: {song.album_name}</Link><br />
-                <Link to={`/artist/${song.artist_ID}`} >Artist: {song.artist_name}</Link>
-                <ReadMore content={song.lyrics} maxChar="65" />
-                <div>Length: {song.length} </div>
-                <div>Created: {new Date(song.created_at).toDateString()}</div>
-                <div>Upload: {new Date(song.upload_at).toDateString()} </div>
-                <SongsListForOneSong query={{ path: queryIdKey[0].substring(1), id: queryIdKey[1] }} songList={list.filter((element) =>
-                    element.song_ID !== song.song_ID
-                )} split={0} />
+            <div className='songPage' >
 
+                <Navbar setList={setList} />
+                <div className='descriptionArea' >
+
+                    <ReactPlayer
+                        className='iframe'
+                        onEnded={() => alert('end')}
+                        width='600px'
+                        playing={false}
+                        controls={true}
+                        url={song.youtube_link}
+                    ></ReactPlayer >
+
+                    <div className='oneSongTitle' >
+                    <Link to={`/artist/${song.artist_ID}`} >{song.artist_name} - </Link>
+                    <span>{song.name}</span>
+                    <div className='oneSongLength' >Length: {song.length} </div>
+                    </div>
+                    <div className='buttonsArea' >
+                        <span className='views'>{views} views</span>
+                        <img className='shareButton' src={shareButton} alt={''} onClick={() => alert('i am share button')} />
+                        <img className='likeButton' src={like} alt={''} onClick={() => alert('i am like button')} />
+                        <img className='dislikeButton' src={disLike} alt={''} onClick={() => alert('i am dislike button')} />
+                        <img className='addToPlayListButton' src={addToPlayList} alt={''} onClick={() => alert('i am addToPlayList button')} />
+                    </div>
+                    <Link to={`/album/${song.album_ID}`} className='oneSongAlbum' >Album: {song.album_name}</Link><br />
+                    <ReadMore content={song.lyrics} maxChar="50" />
+                    <div>Created: {new Date(song.created_at).toDateString()}</div>
+                    <div>Upload: {new Date(song.upload_at).toDateString()} </div>
+                </div>
+                <div className='songRightSide'>
+                    <h3 className='Suggestions'>Suggestions of the same kind:</h3>
+                    <SongsListForOneSong query={{ path: queryIdKey[0].substring(1), id: queryIdKey[1] }} songList={list.filter((element) =>
+                        element.song_ID !== song.song_ID
+                    )} split={0} />
+                </div>
             </div> :
             !loading ?
                 <NotFound />

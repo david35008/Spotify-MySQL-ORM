@@ -1,0 +1,158 @@
+.songPage {
+    display: flex;
+    flex-direction: row;
+}
+
+.descriptionArea {
+    display: flex;
+    flex-direction: column;
+}
+
+.iframe{
+    margin-top: 50px;
+    margin-left: 50px;
+}
+
+.oneSongTitle {
+    text-align: left;
+    margin-left: 80px;
+    font-size: 25px;
+}
+
+.oneSongLength {
+    font-size: 15px;
+}
+
+.buttonsArea {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 550px;
+    margin: auto;
+    margin-left: 100px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.oneSongAlbum {
+    text-align: left;
+    margin-left: 80px;
+}
+
+.readMore {
+    margin: auto;
+    max-width: 580px;
+}
+
+.Suggestions {
+    margin-top: 70px;
+    margin-left: 80px;
+}
+
+
+.song-list {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    /* margin: 10px auto 0px auto ; */
+    background-color:rgba(211, 211, 211, 0.534);
+    color: black;
+    border: 1px solid rgb(66, 55, 55);
+    border-radius: 10px;
+    max-width: 580px;
+    width: 400px;
+    height: 400px;
+    overflow: auto;
+    padding: 0px;
+    margin-left: 100px;
+}
+
+.songRightSide {
+    display: flex;
+    flex-direction: column;
+}
+
+.song {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 0px 0px 0px ;
+    border-bottom: 1px solid rgb(82, 73, 73) ;
+}
+
+.song:hover {
+    background-color: #999ca0;
+    border: 1px solid #ffffff62;
+}
+
+.songName {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    color: black !important;
+    width: 300px;
+    text-align: left;
+}
+
+.nameAlbumArtist {
+    margin-left: 10px;
+}
+
+.albumName {
+    color: black !important;
+    width: 200px;
+    text-align: left;   
+}
+
+.artistName {
+    color: black !important;
+    width: 200px;
+    text-align: left;   
+}
+
+.songLength {
+    width: 100px;
+    text-align: left;  
+}
+
+.songDate {
+    width: 150px;
+    text-align: left;  
+}
+
+.shareButton {
+    cursor: pointer ;
+    height: 25px;
+    width: 25px;
+}
+
+.likeButton {
+    cursor: pointer ;
+    height: 25px;
+    width: 25px;
+}
+
+.dislikeButton {
+    cursor: pointer ;
+    height: 25px;
+    width: 25px;
+}
+
+.addToPlayListButton {
+    cursor: pointer ;
+    height: 25px;
+    width: 25px;
+}
+
+.firstSong {
+    margin-bottom: 0px;
+    width: 100%;
+    min-height: 40vh;
+}
+
+.moreLess {
+    background-color: transparent;
+    color: rgb(0, 179, 9);
+    border: none;
+}

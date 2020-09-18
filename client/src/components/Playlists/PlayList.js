@@ -22,7 +22,7 @@ function PlayList({ playList_ID, getIdSong }) {
     return (
         <div className='PlayList'>
             <div className='PlayListContainer'>
-                <img src={playList.playlist_cover} alt={playList.playlist_name} height='200' width='300' />
+                <img src={playList.playlist_cover} alt={playList.playlist_name} className='playListImage' />
                 <div className='PlayListDescription'>
                     <Link to={`/playlist/${playList.playlist_ID}`} className='PlayListName' > {playList.playlist_name}</Link>
                     {/* <Link to={`/artists/${playList.artist_ID}`} className='AlbumArtist' > {playList.artist_name}</Link> */}

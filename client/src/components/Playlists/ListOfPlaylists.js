@@ -15,16 +15,14 @@ function ListOfPlaylists({ getIdSong }) {
 
     const listToPrint = playListsList.map((playList, index) => {
         return (
-            <li key={playList.name + index}>
-                < PlayList index={index} playList_ID={playList.playlist_ID} getIdSong={getIdSong} />
-            </li>
+            < PlayList key={playList.name + playList.playList_ID} index={index} playList_ID={playList.playlist_ID} getIdSong={getIdSong} />
         )
     })
 
     return (
         <>
             <NavBar setPlaylists={setPlayListsList} searchTypeProps='Search_Playlist' />
-            <h1>PlayLists</h1>
+            <h1 className='playlistTitle' >PlayLists</h1>
             <ol>
                 {listToPrint}
             </ol>

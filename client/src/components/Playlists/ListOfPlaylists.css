@@ -1,3 +1,8 @@
+.playlistTitle {
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 /* .OnePlayList {
     display: flex;
     flex-direction: column;
@@ -13,3 +18,4 @@
     text-align: left;
     font-size: 30px;
 } */
+

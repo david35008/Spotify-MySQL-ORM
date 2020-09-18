@@ -115,7 +115,7 @@ app.get("/artist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
     return res.status(400).json('Id must be a number')
   }
-    DataBase.query(`SELECT  artists.name, artists.created_at , artists.upload_at , artists.cover_img  AS image,
+    DataBase.query(`SELECT  artists.name, artists.created_at , artists.upload_at , artists.cover_img  AS image, artists.description,
     songs.* ,albums.cover_img , albums.name AS album_name, artists.name AS artist_name FROM artists 
       JOIN songs ON songs.artist_ID = artists.artist_ID
       JOIN albums ON songs.album_ID = albums.album_ID

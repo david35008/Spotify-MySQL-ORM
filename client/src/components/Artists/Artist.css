@@ -1,33 +1,46 @@
-/* .Artist {
+.Artist {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    border-bottom: 1px solid lightslategray;
+}
+
+.Artist-img {
+      height: 309px;
+      width: 550px;
+}
+
+.artistTitle {
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.ArtistContainer {
     display: flex;
     flex-direction: row;
-    margin-bottom: 5px;
-    border-bottom: 1px solid ;
-} */
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
 
-/* .ArtistContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around
-} */
-
-/* .AlbumDescription {
+.ArtistDescription {
+    margin-top: 20px;
+    margin-right: 200px;
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
     display: grid;
-    grid-template-rows: 2fr 3fr 1fr 1fr;
+    grid-template-rows: 2fr 1fr 1fr;
     text-align: left;
-} */
+}
 
-.AlbumName {
-    font-size: 25px;
+.ArtistName {
+    font-size: 40px !important;
 }
 
 .AlbumArtist {
-    font-size: 20px;
+    font-size: 40px !important;
 }
 
-/* .AlbumSongsList {
-   float: right;
-    width: 700px;
-    height: 200px;
-    overflow: auto;
-} */
+.OneArtistAlbumCarusel {
+    display: flex;
+    flex-direction: column;
+}

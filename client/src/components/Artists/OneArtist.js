@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './OneArtist.css';
+import { Link } from 'react-router-dom';
 import { read } from '../Network/Ajax';
 import { useParams } from 'react-router-dom';
 import Carousel from 'react-elastic-carousel';
@@ -20,6 +21,7 @@ function OneArtist({ getIdSong, breakPoints }) {
             .then((res) => {
                 setArtist(res[0]);
                 setSongsList(res);
+                debugger
             }).catch((err) => {
                 console.error(err);
                 setLoading(false);
@@ -38,24 +40,40 @@ function OneArtist({ getIdSong, breakPoints }) {
         artist ?
             <div className='OneArtist'>
                 <div className='ArtistContainer'>
-                    <img src={artist.image} alt={artist.artist_name} height='300px' />
-                    <div className='OneArtitstDescription'>
-                        <div>Name: {artist.artist_name}</div>
-                        {artist.created_at && <div>created_at: {new Date(artist.created_at).toDateString()}</div>}
-                        {artist.upload_at && <div>upload_at{new Date(artist.upload_at).toDateString()}</div>}
+                    <img src={artist.image} alt={artist.artist_name} className='artistImage' />
+                    <div className='OneArtitstDescriptionContainer'>
+                        <div>{artist.artist_name}</div>
+                        <div className='OneArtitstDescription'>About: {artist.description}</div>
+                        {artist.created_at && <div className='artisrCreatedAt' >created_at: {new Date(artist.created_at).toDateString()}</div>}
                     </div>
                 </div>
-                <Carousel className='OneArtistAlbums' color="white" breakPoints={breakPoints} enableAutoPlay>
-                    {albums.map((album) =>
-                        <ElementToCarusel query={{ path: "album", id: artist.artist_ID }} key={Math.random()} element={album} getIdSong={getIdSong} />
-                    )}
-                </Carousel>
 
-                <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
+                <div className='OneArtistSongList' >
+                    <Carousel className='OneArtistAlbums' color="white" breakPoints={breakPoints} enableAutoPlay>
+                        {albums.map((album) =>
+                            <ElementToCarusel query={{ path: "album", id: artist.artist_ID }} key={album.cover_img + album.name} element={album} getIdSong={getIdSong} />
+                        )}
+                    </Carousel>
+                    <ol className='song-list'>
+                        {songList.map((song, index) => (
+                            <li className='song' key={Math.random()}>
+                                <Link to={`/song/${song.song_ID}?artist=${artist.artist_ID}`} className='songName' >
+                                    <span>  <img className='imgList' height='70px' width='100px' src={song.cover_img} alt={''} /></span>
+                                    <span className='nameAlbumArtist'>
+                                        <div> {song.name} </div>
+                                        <span className='albumName' >{song.album_name}</span><br />
+                                        <span className='artistName' >{song.artist_name}</span>
+                                    </span>
+                                </Link>
+                            </li>
+                        )).splice(0, songList.length - 0)}
+                    </ol>
+                </div>
+                {/* <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
                     {songList.map((song) => (
-                        <ElementToCarusel query={{ path: "song", id: song.artist_ID }} artist={true} key={Math.random()} element={song} getIdSong={getIdSong} />
+                        <ElementToCarusel query={{ path: "song", id: song.artist_ID }} artist={true} key={song.cover_img + song.name} element={song} getIdSong={getIdSong} />
                     ))}
-                </Carousel>
+                </Carousel> */}
             </div>
             :
             !loading ?

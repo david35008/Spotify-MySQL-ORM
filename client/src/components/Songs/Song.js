@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Song.css';
+import './ListOfSongs.css';
 import SongIcon from '../../images/SongIcon.png';
 
 function Song({ query, song, albumDisplay, artistDisplay }) {

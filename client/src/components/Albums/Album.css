@@ -1,29 +1,32 @@
-/* .Album {
+.Album {
     display: flex;
-    flex-direction: row;
-    margin-bottom: 5px;
-    border-bottom: 1px solid ;
-} */
-/* 
+    flex-direction: column;
+    margin-bottom: 15px;
+    border-bottom: 1px solid lightslategray;
+}
+
+.albums_img {
+    height: 309px;
+     width: 550px;
+}
+
 .AlbumContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-around
-} */
-
-/* .AlbumDescription {
-    display: grid;
-    grid-template-rows: 3fr 1fr 1fr;
-    text-align: left;
-} */
-
-.AlbumName {
-    font-size: 25px;
+    justify-content: space-around;
+    margin-bottom: 20px;
 }
 
-/* .AlbumSongsList {
-   float: right;
-    width: 700px;
-    height: 200px;
-    overflow: auto;
-} */
+.AlbumDescription {
+    margin-top: 20px;
+    margin-right: 200px;
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr;
+    text-align: left;
+}
+
+.AlbumName {
+    font-size: 40px !important;
+}

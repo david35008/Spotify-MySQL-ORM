@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './ListOfArtists.css';
+import './Artist.css';
 import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import Artist from './Artist';
@@ -16,16 +16,14 @@ function ListOfArtists({ getIdSong }) {
 
     const listToPrint = artistsList.map((artist, index) => {
         return (
-            <li key={artist.name + index}>
-                < Artist index={index} artist_ID={artist.artist_ID} getIdSong={getIdSong} />
-            </li>
+            < Artist index={index} key={artist.name + artist.artist_ID} artist_ID={artist.artist_ID} getIdSong={getIdSong} />
         )
     })
 
     return (
         <>
             <NavBar setArtists={setArtistsList} searchTypeProps='Search_Artist' />
-            <h1>Artists</h1>
+            <h1 className='artistTitle' >Artists</h1>
             <ol>
                 {listToPrint}
             </ol>

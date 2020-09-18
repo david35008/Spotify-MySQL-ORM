@@ -22,11 +22,10 @@ function Artist({ artist_ID, getIdSong }) {
     return (
         <div className='Artist'>
             <div className='ArtistContainer'>
-                <img src={artist.cover_img} alt={artist.name} height='200' width='300' />
+                <img src={artist.cover_img} alt={artist.name} className='Artist-img'/>
                 <div className='ArtistDescription'>
                     <Link to={`/artist/${artist.artist_ID}`} className='ArtistName' > {artist.artist_name}</Link>
                     {artist.created_at && <div className='ArtistCreated_at'>Created_at: {new Date(artist.created_at).toDateString()}</div>}
-                    {artist.upload_at && <div className='ArtistUpload_at' >Upload_at{new Date(artist.upload_at).toDateString()}</div>}
                 </div>
             </div>
             <div className='ArtistSongsList' >
