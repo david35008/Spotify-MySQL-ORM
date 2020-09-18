@@ -40,21 +40,21 @@ function Home({ getIdSong, breakPoints }) {
             </Carousel>
             <br /><br />
             <h2 className='listTitle'>Top Albums</h2>
-            <Carousel color="white" breakPoints={breakPoints} >
+            <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
                 {albums.map((album) => (
                     <ElementToCarusel query={{ path: "album", id: album.album_ID }} key={Math.random()} element={album} getIdSong={getIdSong} />
                 ))}
             </Carousel>
             <br /><br />
             <h2 className='listTitle'>Top Artists</h2>
-            <Carousel color="white" breakPoints={breakPoints} >
+            <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
                 {artists.map((artist) => (
                     <ElementToCarusel query={{ path: "artist", id: artist.artist_ID }} key={Math.random()} element={artist} getIdSong={getIdSong} />
                 ))}
             </Carousel>
             <br /><br />
             <h2 className='listTitle'>Top Playlists</h2>
-            <Carousel color="white" breakPoints={breakPoints} >
+            <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
                 {playlists.map((playlist) => (
                     <ElementToCarusel query={{ path: "playlist", id: playlist.playlist_ID }} key={Math.random()} element={playlist} getIdSong={getIdSong} />
                 ))}

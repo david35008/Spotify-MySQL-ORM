@@ -1,9 +1,18 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Song from './Song';
-import './ListOfSongs.css'
+import './ListOfSongs.css';
+import Carousel from 'react-elastic-carousel';
 
-function ListOfSongs({ query, songList, split = 1 ,albumDisplay = 'inline', artistDisplay = 'inline'}) {
+function ListOfSongs({ query, songList, split = 1, albumDisplay = 'inline', artistDisplay = 'inline' }) {
+
+    const breakPoints = [
+        { width: 1, itemsToShow: 1 },
+        { width: 450, itemsToShow: 2 },
+        { width: 700, itemsToShow: 3 },
+        { width: 1000, itemsToShow: 4 },
+        { width: 1200, itemsToShow: 5 },
+    ]
 
     const getIdSong = (songId) => {
         let video_id = songId.split("v=")[1];
@@ -15,19 +24,11 @@ function ListOfSongs({ query, songList, split = 1 ,albumDisplay = 'inline', arti
     }
 
     return (
-        <ol className='song-list'>
-            {songList.length > split && <li key={Math.random()} className='song'>
-                <span className='songName'>Name:</span>
-                <span style={{display: albumDisplay}} className='albumName'>Album:</span>
-                <span style={{display: artistDisplay}} className='artistName'>Artist:</span>
-                <span className='songLength'>Length:</span>
-                <span className='songDate'>Created At:</span>
-                <span >Play:</span>
-            </li>}
+        <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
             {songList.map((song, index) => (
                 <Song query={query} key={Math.random()} song={song} getIdSong={getIdSong} index={index} albumDisplay={albumDisplay} artistDisplay={artistDisplay} />
             )).splice(split, songList.length - split)}
-        </ol>
+        </Carousel>
     )
 }
 

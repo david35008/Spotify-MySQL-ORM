@@ -15,3 +15,7 @@
 .song-list > li > iframe {
     border: none;
 }
+
+.songNameGlobal {
+    list-style: none;
+}

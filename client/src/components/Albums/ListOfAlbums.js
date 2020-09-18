@@ -27,7 +27,7 @@ function ListOfAlbums({ getIdSong }) {
     return (
         <>
             <NavBar setAlbums={setAlbumsList} searchTypeProps='Search_Album' />
-            <h1>Top Albums</h1>
+            <h1>Albums</h1>
             <ol>
                 {listToPrint}
             </ol>

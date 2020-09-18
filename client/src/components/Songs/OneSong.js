@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 import './Song.css';
 import { read } from '../Network/Ajax';
 import NotFound from '../NotFound/NotFound';
-import ListOfSongs from '../Songs/ListOfSongs';
+import SongsListForOneSong from '../Songs/SongsListForOneSong';
 import { Link } from 'react-router-dom';
 import ReadMore from '../ReadMore/ReadMore';
 import Navbar from '../NavBar/NavBar';
@@ -11,6 +11,7 @@ import shareButton from '../../images/shareButton.png';
 import like from '../../images/like.png';
 import disLike from '../../images/disLike.png';
 import addToPlayList from '../../images/addToPlayList.png';
+import ReactPlayer from 'react-player/youtube';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -56,7 +57,13 @@ function OneSong({ getIdSong }) {
         song ?
             <div>
                 <Navbar setList={setList} />
-                <iframe className='firstSongIframe' width="45%" height="400vh" src={`https://www.youtube.com/embed/${getIdSong(song.youtube_link)}?autoplay=1`} title={song.name} ></iframe>
+                <ReactPlayer 
+                className='firstSongIframe' 
+                onEnded={()=> alert('end')} 
+                playing={false} 
+                controls={true} 
+                url={song.youtube_link}  
+                ></ReactPlayer >
                 <div className='views'> views</div>
                 <img className='shareButton' src={shareButton} alt={''} onClick={() => alert('i am share button')} />
                 <img className='likeButton' src={like} alt={''} onClick={() => alert('i am like button')} />
@@ -69,7 +76,7 @@ function OneSong({ getIdSong }) {
                 <div>Length: {song.length} </div>
                 <div>Created: {new Date(song.created_at).toDateString()}</div>
                 <div>Upload: {new Date(song.upload_at).toDateString()} </div>
-                <ListOfSongs query={{ path: queryIdKey[0].substring(1), id: queryIdKey[1] }} songList={list.filter((element) =>
+                <SongsListForOneSong query={{ path: queryIdKey[0].substring(1), id: queryIdKey[1] }} songList={list.filter((element) =>
                     element.song_ID !== song.song_ID
                 )} split={0} />
 
