@@ -24,7 +24,7 @@ function ListOfArtists({ getIdSong }) {
 
     return (
         <>
-            <NavBar setList={setArtistsList} serchType='artist' />
+            <NavBar setArtists={setArtistsList} searchTypeProps='Search_Artist' />
             <h1>Top Artists</h1>
             <ol>
                 {listToPrint}

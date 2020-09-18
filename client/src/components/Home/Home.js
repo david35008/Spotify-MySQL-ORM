@@ -31,7 +31,7 @@ function Home({ getIdSong, breakPoints }) {
 
     return (
         <>
-            <NavBar setList={setSongsList} serchType='song' />
+            <NavBar songList={songList} albums={albums} artists={artists} playlists={playlists} setSongsList={setSongsList} setAlbums={setAlbums} setArtists={setArtists} setPlaylists={setPlaylists} searchTypeProps='Search_Song' />
             <h2 className='listTitle'>Top Songs</h2>
             <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
                 {songList.map((song) => (

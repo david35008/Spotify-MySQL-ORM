@@ -19,33 +19,32 @@ app.use(morgan(function (tokens, req, res) {
   }
 }));
 
-const connection = mysql.createConnection({
+const DataBase = mysql.createConnection({
   host: "localhost",
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATA_BASE
 });
 
-connection.connect((err) => {
-  if (err) { throw err }
+DataBase.connect((err) => {
+  if (err) { console.error(err) }
   else {
-    console.log(`Connected to my sql! on ${process.env.DATA_BASE} DB`);
+    console.log(`Connected to my sql! on ${process.env.DATA_BASE} DataBase`);
   }
 });
 
 app.get("/", (req, res) => {
-  res.send("This is a rest api, that serves a Music Streaming service")
+  res.json("This is a rest api, that serves a Music Streaming service")
 })
 
 app.get("/songs", (req, res) => {
-  connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
+  DataBase.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
   FROM songs 
   JOIN albums ON songs.album_ID = albums.album_ID 
   JOIN artists ON songs.artist_ID = artists.artist_ID
   ORDER BY upload_at DESC;`, (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.")
-      throw err
+      res.status(400).json("An error occurred.");
     } else {
       res.json(result);
     }
@@ -54,19 +53,18 @@ app.get("/songs", (req, res) => {
 
 app.get("/song/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
-  connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
+  DataBase.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
   FROM songs 
   JOIN albums ON songs.album_ID = albums.album_ID 
   JOIN artists ON songs.artist_ID = artists.artist_ID
   WHERE song_ID=${req.params.id}
   ORDER BY upload_at DESC`, (err, result) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else if (result.length < 1) {
-      res.status(404).send("There is no such song");
+      res.status(404).json("There is no such song");
     } else {
       res.json(result);
     }
@@ -74,16 +72,15 @@ app.get("/song/:id", (req, res) => {
 })
 
 app.get("/search_song/:name", (req, res) => {
-  connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name 
+  DataBase.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name , albums.cover_img 
   FROM songs 
   JOIN albums ON songs.album_ID = albums.album_ID 
   JOIN artists ON songs.artist_ID = artists.artist_ID 
   WHERE songs.name LIKE '%${req.params.name}%'`, (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else if (result.length < 1) {
-      res.status(404).send("There is no such song");
+      res.status(404).json("There is no such song");
     } else {
       res.json(result);
     }
@@ -91,14 +88,13 @@ app.get("/search_song/:name", (req, res) => {
 })
 
 app.get("/top_songs", (req, res) => {
-  connection.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name, albums.cover_img 
+  DataBase.query(`SELECT songs.* , albums.name AS album_name , artists.name AS artist_name, albums.cover_img 
   FROM songs 
   JOIN albums ON songs.album_ID = albums.album_ID 
   JOIN artists ON songs.artist_ID = artists.artist_ID
   ORDER BY upload_at DESC LIMIT 20`, (err, result) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else {
       res.json(result);
     }
@@ -106,10 +102,9 @@ app.get("/top_songs", (req, res) => {
 })
 
 app.get("/artists", (req, res) => {
-  connection.query("SELECT artists.*, artists.name AS artist_name FROM artists", (err, result) => {
+  DataBase.query("SELECT artists.*, artists.name AS artist_name FROM artists", (err, result) => {
     if (err) {
-      res.status(400).send("An error occurred.")
-      throw err
+      res.status(400).json("An error occurred.")
     } else {
       res.json(result);
     }
@@ -118,18 +113,17 @@ app.get("/artists", (req, res) => {
 
 app.get("/artist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
-    connection.query(`SELECT  artists.name, artists.created_at , artists.upload_at , artists.cover_img  AS image,
+    DataBase.query(`SELECT  artists.name, artists.created_at , artists.upload_at , artists.cover_img  AS image,
     songs.* ,albums.cover_img , albums.name AS album_name, artists.name AS artist_name FROM artists 
       JOIN songs ON songs.artist_ID = artists.artist_ID
       JOIN albums ON songs.album_ID = albums.album_ID
       WHERE artists.artist_ID= ${req.params.id}`, (err, result) => {
       if (err) {
-        res.status(400).send("An error occurred.");
-        throw err
+        res.status(400).json("An error occurred.");
       } else if (result.length < 1) {
-        res.status(404).send("There is no such artist");
+        res.status(404).json("There is no such artist");
       } else {
         res.json(result);
       }
@@ -137,12 +131,11 @@ app.get("/artist/:id", (req, res) => {
 })
 
 app.get("/search_artist/:title", (req, res) => {
-  connection.query(`SELECT * FROM artists WHERE name LIKE '%${req.params.title.toLocaleLowerCase()}%'`, (err, result, fields) => {
+  DataBase.query(`SELECT * FROM artists WHERE name LIKE '%${req.params.title.toLocaleLowerCase()}%'`, (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else if (result.length < 1) {
-      res.status(404).send("There is no such song");
+      res.status(404).json("There is no such song");
     } else {
       res.json(result);
     }
@@ -150,10 +143,9 @@ app.get("/search_artist/:title", (req, res) => {
 })
 
 app.get("/top_artists", (req, res) => {
-  connection.query(`SELECT * FROM artists LIMIT 20`, (err, result) => {
+  DataBase.query(`SELECT * FROM artists LIMIT 20`, (err, result) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else {
       res.json(result);
     }
@@ -161,10 +153,9 @@ app.get("/top_artists", (req, res) => {
 })
 
 app.get("/albums", (req, res) => {
-  connection.query("SELECT albums.*, albums.name AS album_name FROM albums", (err, result, fields) => {
+  DataBase.query("SELECT albums.*, albums.name AS album_name FROM albums", (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.")
-      throw err
+      res.status(400).json("An error occurred.")
     } else {
       res.json(result);
     }
@@ -173,17 +164,16 @@ app.get("/albums", (req, res) => {
 
 app.get("/album/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
-  connection.query(`SELECT  albums.*,  songs.* ,albums.name AS album_name , artists.name AS artist_name FROM albums 
+  DataBase.query(`SELECT  albums.*,  songs.* ,albums.name AS album_name , artists.name AS artist_name FROM albums 
   JOIN songs ON songs.album_ID = albums.album_ID
   JOIN artists ON songs.artist_ID = artists.artist_ID
   WHERE albums.album_ID=${req.params.id}`, (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else if (result.length < 1) {
-      res.status(404).send("There is no such album");
+      res.status(404).json("There is no such album");
     } else {
       res.json(result);
     }
@@ -192,16 +182,15 @@ app.get("/album/:id", (req, res) => {
 
 app.get("/albums_ByArtist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
-  connection.query(`select albums.* from albums
+  DataBase.query(`select albums.* from albums
   join  artists on artists.artist_ID=albums.artist_id
   where artists.artist_ID=${req.params.id}`, (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else if (result.length < 1) {
-      res.status(404).send("There is no such album");
+      res.status(404).json("There is no such album");
     } else {
       res.json(result);
     }
@@ -209,12 +198,11 @@ app.get("/albums_ByArtist/:id", (req, res) => {
 })
 
 app.get("/search_album/:title", (req, res) => {
-  connection.query(`SELECT * FROM albums WHERE name LIKE '%${req.params.title}%'`, (err, result, fields) => {
+  DataBase.query(`SELECT * FROM albums WHERE name LIKE '%${req.params.title}%'`, (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else if (result.length < 1) {
-      res.status(404).send("There is no such song");
+      res.status(404).json("There is no such song");
     } else {
       res.json(result);
     }
@@ -222,10 +210,9 @@ app.get("/search_album/:title", (req, res) => {
 })
 
 app.get("/top_albums", (req, res) => {
-  connection.query(`SELECT * FROM albums LIMIT 20`, (err, result) => {
+  DataBase.query(`SELECT * FROM albums LIMIT 20`, (err, result) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else {
       res.json(result);
     }
@@ -233,10 +220,9 @@ app.get("/top_albums", (req, res) => {
 })
 
 app.get("/playlists", (req, res) => {
-  connection.query("SELECT * FROM playlists", (err, result, fields) => {
+  DataBase.query("SELECT * FROM playlists", (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.")
-      throw err
+      res.status(400).json("An error occurred.")
     } else {
       res.json(result);
     }
@@ -245,10 +231,10 @@ app.get("/playlists", (req, res) => {
 
 app.get("/playlist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
 
-  connection.query(`SELECT songs.*, 
+  DataBase.query(`SELECT songs.*, 
   playlists.name AS playlist_name,
   playlists.playlist_ID,
   playlists.created_at AS playlist_create,
@@ -263,10 +249,23 @@ app.get("/playlist/:id", (req, res) => {
     JOIN playlists ON playlists_songs.playlist_ID = playlists.playlist_ID
     WHERE playlists_songs.playlist_ID = ${req.params.id}`, (err, result, fields) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else if (result.length < 1) {
-      res.status(404).send("There is no such playlist");
+      res.status(404).json("There is no such playlist");
+    } else {
+      res.json(result);
+    }
+  });
+})
+
+app.get("/search_playlist/:name", (req, res) => {
+  DataBase.query(`SELECT playlists.* 
+  FROM playlists 
+  WHERE playlists.name LIKE '%${req.params.name}%'`, (err, result, fields) => {
+    if (err) {
+      res.status(400).json("An error occurred.");
+    } else if (result.length < 1) {
+      res.status(404).json("There is no such song");
     } else {
       res.json(result);
     }
@@ -274,10 +273,9 @@ app.get("/playlist/:id", (req, res) => {
 })
 
 app.get("/top_playlists", (req, res) => {
-  connection.query(`SELECT * FROM playlists LIMIT 20`, (err, result) => {
+  DataBase.query(`SELECT * FROM playlists LIMIT 20`, (err, result) => {
     if (err) {
-      res.status(400).send("An error occurred.");
-      throw err
+      res.status(400).json("An error occurred.");
     } else {
       res.json(result);
     }
@@ -286,14 +284,14 @@ app.get("/top_playlists", (req, res) => {
 
 app.post("/song", (req, res) => {
   if (!req.body) {
-      res.status(400).send("content missing")
+      res.status(400).json("content missing")
   }
   const { body } = req;
   const queryString = `INSERT INTO songs SET ?`;
-  connection.query(queryString, body, (err, result) => {
+  DataBase.query(queryString, body, (err, result) => {
       if (err) {
         console.log(err);
-          res.status(400).send("An error occurred.");
+          res.status(400).json("An error occurred.");
       } else {
           res.json("1 song successfully inserted into db");
       }
@@ -302,181 +300,190 @@ app.post("/song", (req, res) => {
 
 app.post("/album", (req, res) => {
   if (!req.body) {
-      res.status(400).send("content missing")
+      res.status(400).json("content missing")
   }
   const { body } = req;
   const queryString = `INSERT INTO albums SET ?`;
-  connection.query(queryString, body, (err, result) => {
+  DataBase.query(queryString, body, (err, result) => {
       if (err) {
-          res.status(400).send("An error occurred.");
+          res.status(400).json("An error occurred.");
       } else {
-          res.send("1 album successfully inserted into db");
+          res.json("1 album successfully inserted into db");
       }
   });
 })
 
 app.post("/artist", (req, res) => {
   if (!req.body) {
-      res.status(400).send("content missing")
+      res.status(400).json("content missing")
   }
   const { body } = req
   const queryString = `INSERT INTO artists 
           SET ?`;
-  connection.query(queryString, body, (err, data) => {
+  DataBase.query(queryString, body, (err, data) => {
       if (err) {
-          res.status(400).send("An error occurred.");
+          res.status(400).json("An error occurred.");
       } else {
-          res.send("1 artist successfully inserted into db");
+          res.json("1 artist successfully inserted into db");
       }
   });
 })
 
 app.post("/playlist", (req, res) => {
   if (!req.body) {
-      res.status(400).send("content missing")
+      res.status(400).json("content missing")
   }
   const { body } = req;
   const queryString = `INSERT INTO playlists SET ?`;
-  connection.query(queryString, body, (err, result) => {
+  DataBase.query(queryString, body, (err, result) => {
       if (err) {
-          res.status(400).send("An error occurred.");
+          res.status(400).json("An error occurred.");
       } else {
-          res.send("1 playlist successfully inserted into db");
+          res.json("1 playlist successfully inserted into db");
       }
   });
 })
 
+app.post("/playlists_songs/", (req, res) => {
+  if (!req.body) {
+      res.status(400).json("content missing")
+  }
+  const { body } = req;
+  console.log(body);
+  const queryString = `INSERT INTO playlists_songs SET ?`;
+    DataBase.query(queryString, body, (err, result) => {
+      if (err) {
+          res.status(400).json("An error occurred.");
+      } else {
+          res.json("1 playlists_songs successfully inserted into db");
+      }
+  })
+})
+
 app.put("/song/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
   if (!req.body) {
-      res.status(400).send("content missing")
+      res.status(400).json("content missing")
   }
   const { body } = req;
   const queryString = `UPDATE songs SET ? WHERE song_ID=${req.params.id}`;
-  connection.query(queryString, body, (err, result) => {
+  DataBase.query(queryString, body, (err, result) => {
       if (err) {
-          res.send("An error occurred.");
+          res.json("An error occurred.");
       } else {
-          res.send("1 song updated");
+          res.json("1 song updated");
       }
   })
 })
 
 app.put("/artist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
   if (!req.body) {
-      res.status(400).send("content missing")
+      res.status(400).json("content missing")
   }
   const { body } = req;
   const queryString = `UPDATE artists SET ? WHERE artist_ID=${req.params.id}`;
-  connection.query(queryString, body, (err, result) => {
+  DataBase.query(queryString, body, (err, result) => {
       if (err) {
-          res.send("An error occurred.");
+          res.json("An error occurred.");
       } else {
-          res.send("1 artist updated");
+          res.json("1 artist updated");
       }
   })
 })
 
 app.put("/album/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
     if (!req.body) {
-        res.status(400).send("content missing")
+        res.status(400).json("content missing")
     }
     const { body } = req;
     const queryString = `UPDATE albums SET ? WHERE album_ID=${req.params.id}`;
-    connection.query(queryString, body, (err, result) => {
+    DataBase.query(queryString, body, (err, result) => {
         if (err) {
-            res.send("An error occurred.");
+            res.json("An error occurred.");
         } else {
-            res.send("1 album updated");
+            res.json("1 album updated");
         }
     })
 })
 
 app.put("/playlist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
   if (!req.body) {
-      res.status(400).send("content missing")
+      res.status(400).json("content missing")
   }
   const { body } = req;
   const queryString = `UPDATE playlists SET ? WHERE playlist_ID=${req.params.id}`;
-  connection.query(queryString, body, (err, result) => {
+  DataBase.query(queryString, body, (err, result) => {
       if (err) {
-          res.send("An error occurred.");
+          res.json("An error occurred.");
       } else {
-          res.send("1 playlist updated");
-      }
-  })
-})
-
-app.post("/playlists_songs/", (req, res) => {
-  if (!req.body) {
-      res.status(400).send("content missing")
-  }
-  const { body } = req;
-  console.log(body);
-  const queryString = `INSERT INTO playlists_songs SET ?`;
-    connection.query(queryString, body, (err, result) => {
-      if (err) {
-          res.status(400).send("An error occurred.");
-      } else {
-          res.send("1 playlist successfully inserted into db");
+          res.json("1 playlist updated");
       }
   })
 })
 
 app.delete("/song/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
-  connection.query(`DELETE FROM songs WHERE song_ID= ${req.params.id}`, (err, result) => {
-      if (err) res.send("An error occurred.");
-      res.send("One song deleted");
+  DataBase.query(`DELETE FROM songs WHERE song_ID= ${req.params.id}`, (err, result) => {
+      if (err) res.json("An error occurred.");
+      res.json("One song deleted");
   });
 
 })
 
 app.delete("/artist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
-  connection.query(`DELETE FROM artists WHERE artist_ID= ${req.params.id}`, (err, result) => {
-      if (err) res.send("An error occurred.");
-      res.send("One artist deleted");
+  DataBase.query(`DELETE FROM artists WHERE artist_ID= ${req.params.id}`, (err, result) => {
+      if (err) res.json("An error occurred.");
+      res.json("One artist deleted");
   });
 })
 
 app.delete("/album/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
-  connection.query(`DELETE FROM albums WHERE album_ID= ${req.params.id}`, (err, result) => {
-      if (err) res.send("An error occurred.");
-      res.send("One album deleted");
+  DataBase.query(`DELETE FROM albums WHERE album_ID= ${req.params.id}`, (err, result) => {
+      if (err) res.json("An error occurred.");
+      res.json("One album deleted");
   });
 })
 
 app.delete("/playlist/:id", (req, res) => {
   if (isNaN(Number(req.params.id))) {
-    return res.status(400).send('Id must be a number')
+    return res.status(400).json('Id must be a number')
   }
-  connection.query(`DELETE FROM playlists WHERE playlist_ID= ${req.params.id}`, (err, result) => {
-      if (err) res.send("An error occurred.");
-      res.send("One playlist deleted");
+  DataBase.query(`DELETE FROM playlists WHERE playlist_ID= ${req.params.id}`, (err, result) => {
+      if (err) res.json("An error occurred.");
+      res.json("One playlist deleted");
   });
 })
 
+app.delete("/playlists_songs/", (req, res) => {
+console.log(req.query);
+  DataBase.query(`DELETE FROM playlists_songs WHERE playlist_ID= ${req.query.playlistID}
+  AND song_ID = ${req.query.songID}`, (err, result) => {
+    if (err) res.json("An error occurred.");
+    res.json("One playlists_songs deleted");
+  })
+})
+
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' });
+  response.status(404).json({ error: 'unknown endpoint' });
 };
 
 app.use(unknownEndpoint);
@@ -485,7 +492,7 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message);
 
   if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' });
+    return response.status(400).json({ error: 'malformatted id' });
   };
 
   next(error);

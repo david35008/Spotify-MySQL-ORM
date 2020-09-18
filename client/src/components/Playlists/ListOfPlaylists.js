@@ -23,7 +23,7 @@ function ListOfPlaylists({ getIdSong }) {
 
     return (
         <>
-            <NavBar setList={setPlayListsList} serchType='playlist' />
+            <NavBar setPlaylists={setPlayListsList} searchTypeProps='Search_Playlist' />
             <h1>Top PlayLists</h1>
             <ol>
                 {listToPrint}

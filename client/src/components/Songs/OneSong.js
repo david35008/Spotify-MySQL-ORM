@@ -7,6 +7,10 @@ import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
 import ReadMore from '../ReadMore/ReadMore';
 import Navbar from '../NavBar/NavBar';
+import shareButton from '../../images/shareButton.png';
+import like from '../../images/like.png';
+import disLike from '../../images/disLike.png';
+import addToPlayList from '../../images/addToPlayList.png';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -53,6 +57,11 @@ function OneSong({ getIdSong }) {
             <div>
                 <Navbar setList={setList} />
                 <iframe className='firstSongIframe' width="45%" height="400vh" src={`https://www.youtube.com/embed/${getIdSong(song.youtube_link)}?autoplay=1`} title={song.name} ></iframe>
+                <div className='views'> views</div>
+                <img className='shareButton' src={shareButton} alt={''} onClick={() => alert('i am share button')} />
+                <img className='likeButton' src={like} alt={''} onClick={() => alert('i am like button')} />
+                <img className='dislikeButton' src={disLike} alt={''} onClick={() => alert('i am dislike button')} />
+                <img className='addToPlayListButton' src={addToPlayList} alt={''} onClick={() => alert('i am addToPlayList button')} />
                 <div>Name: {song.name}</div>
                 <Link to={`/album/${song.album_ID}`} >Album: {song.album_name}</Link><br />
                 <Link to={`/artist/${song.artist_ID}`} >Artist: {song.artist_name}</Link>
