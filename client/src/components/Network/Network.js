@@ -1,7 +1,9 @@
 function Network(endPoint, { body, ...customConfig } = {}) {
 
     const headers = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json;charset=utf-8'"
+        // 'Content-Type': 'application/x-www-form-urlencoded'
+        // 'content-type': 'foo/bar'
     };
 
     const url = `/${endPoint}`;
@@ -16,7 +18,7 @@ function Network(endPoint, { body, ...customConfig } = {}) {
         ...(body ? { body: JSON.stringify(body) } : {}),
     };
 
-    // console.log(`Sending ${config.method} to ${url} with data:`, body);
+    console.log(`Sending ${config.method} to ${url} with data:`, body);
 
     return fetch(url, config).then(async (response) => {
         // if (response.status === 401) {

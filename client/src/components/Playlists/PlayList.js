@@ -11,7 +11,7 @@ function PlayList({ playList_ID, getIdSong }) {
     const [playList, setPlayList] = useState([])
 
     useEffect(() => {
-        read(`playList/${playList_ID}`)
+        read(`playLists/byId/${playList_ID}`)
             .then(res => {
                 setPlayList(res[0])
                 setSongsList(res)

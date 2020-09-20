@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from "react-router-dom";
 import './OneSong.css';
 import { read } from '../Network/Ajax';
-import NotFound from '../NotFound/NotFound';
+import NotFound from '../Services/NotFound';
 import SongsListForOneSong from '../Songs/SongsListForOneSong';
 import { Link } from 'react-router-dom';
 import ReadMore from '../ReadMore/ReadMore';
@@ -24,18 +24,18 @@ function OneSong() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        read(`song/${id}`)
+        read(`songs/byId/${id}`)
             .then((res) => setSong(res[0]))
             .catch(console.error);
-        let path = 'top_songs';
+        let path = 'songs/top';
         if (query.get("artist")) {
-            path = `artist/${query.get("artist")}`;
+            path = `artists/byId/${query.get("artist")}`;
         }
         else if (query.get("album")) {
-            path = `album/${query.get("album")}`;
+            path = `albums/byId/${query.get("album")}`;
         }
         else if (query.get("playlist")) {
-            path = `playlist/${query.get("playlist")}`;
+            path = `playlists/byId/${query.get("playlist")}`;
         }
         read(path)
             .then((res) => {

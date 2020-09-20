@@ -39,7 +39,7 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
   })
 
   const getAlbumsList = (artistID) => {
-    read(`albums_ByArtist/${artistID}`)
+    read(`albums/byArtist/${artistID}`)
       .then((res) => {
         setAlbumsList(res)
       })
@@ -55,7 +55,7 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
   })
 
   const getTrackNumber = (albumID) => {
-    read(`album/${albumID}`)
+    read(`albums/byId/${albumID}`)
       .then((res) => {
         setSongTrackNumber(Math.max(...res.map((album) => album.track_number)) + 1)
         console.log(Math.max(...res.map((album) => album.track_number)) + 1);
@@ -77,7 +77,7 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
       upload_at: formatDate(new Date()),
       youtube_link: songLink
     };
-    create('song', newSong)
+    create('songs', newSong)
       .then((res) => console.log(res))
       .catch((err) => {
         console.error(err);

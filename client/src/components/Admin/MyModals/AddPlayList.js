@@ -19,7 +19,7 @@ function AddPlayList({ openModal, setOpenModal, formatDate }) {
             cover_img: playListImageLink,
             user_ID: userId
         };
-        create('playlist', sendNewPlayList)
+        create('playlists', sendNewPlayList)
             .then((res) => console.log(res))
             .catch((err) => console.error(err))
     };

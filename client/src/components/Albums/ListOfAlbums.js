@@ -3,9 +3,9 @@ import './ListOfAlbums.css';
 import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import Album from './Album';
+import getIdSong from '../Services/GetYTId';
 
-
-function ListOfAlbums({ getIdSong }) {
+function ListOfAlbums() {
 
     const [albumsList, setAlbumsList] = useState([])
 
@@ -17,9 +17,7 @@ function ListOfAlbums({ getIdSong }) {
 
     const listToPrint = albumsList.map((album, index) => {
         return (
-            <li key={album.name + album.album_ID}>
-                < Album index={index} album_ID={album.album_ID} getIdSong={getIdSong} />
-            </li>
+            < Album  key={album.name + album.album_ID} index={index} album_ID={album.album_ID} getIdSong={getIdSong} />
         )
     })
 
@@ -27,7 +25,7 @@ function ListOfAlbums({ getIdSong }) {
     return (
         <>
             <NavBar setAlbums={setAlbumsList} searchTypeProps='Search_Album' />
-            <h1 className='albumTitle' >Albums</h1><hr/>
+            <h1 className='albumTitle' >Albums</h1><hr />
             <ol className='ArtistList' >
                 {listToPrint}
             </ol>

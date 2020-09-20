@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums, setArtists, setPlaylists, searchTypeProps = 'not work here' }) {
 
     const [searchType, setSearchType] = useState(`${searchTypeProps}`)
-    const [placeHolder, setPlaceHolder] = useState(`${searchTypeProps.replace('_', ' ')}...`)
+    const [placeHolder, setPlaceHolder] = useState(`Search ${searchTypeProps}...`)
     const [inputValue, setInputValue] = useState('')
     const [prevList, setPrevList] = useState();
     const [prevType, setPrevType] = useState();
@@ -26,9 +26,9 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
         }
     }
 
-    const changeSearchType = (placeHolderName) => {
-        setPlaceHolder(`Search ${placeHolderName.target.innerText}...`)
-        setSearchType(`Search_${placeHolderName.target.innerText}`);
+    const changeSearchType = (event) => {
+        setPlaceHolder(`Search ${event.target.innerText}...`)
+        setSearchType(`${event.target.innerText}`);
     }
 
     const handleChange = (input) => {
@@ -40,21 +40,21 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
         console.log(searchType);
         const searchValue = inputValue.toLowerCase().trim()
         if (searchValue !== "") {
-            read(`${searchType}/${searchValue}`)
+            read(`${searchType}/byName/${searchValue}`)
                 .then(res => {
                     if (prevList) {
                         if (prevType !== searchType) {
-                            switch (prevType.split('_')[1]) {
-                                case 'Song':
+                            switch (prevType) {
+                                case 'Songs':
                                     setSongsList(prevList)
                                     break;
-                                case 'Album':
+                                case 'Albums':
                                     setAlbums(prevList)
                                     break;
-                                case 'Artist':
+                                case 'Artists':
                                     setArtists(prevList)
                                     break;
-                                case 'Playlist':
+                                case 'Playlists':
                                     setPlaylists(prevList)
                                     break;
                                 default:
@@ -62,23 +62,23 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
                             }
                         }
                     }
-                    switch (searchType.split('_')[1]) {
-                        case 'Song':
+                    switch (searchType) {
+                        case 'Songs':
                             setPrevType(searchType);
                             setPrevList(songList);
                             setSongsList(res)
                             break;
-                        case 'Album':
+                        case 'Albums':
                             setPrevType(searchType);
                             setPrevList(albums);
                             setAlbums(res)
                             break;
-                        case 'Artist':
+                        case 'Artists':
                             setPrevType(searchType);
                             setPrevList(artists);
                             setArtists(res)
                             break;
-                        case 'Playlist':
+                        case 'Playlists':
                             setPrevType(searchType);
                             setPrevList(playlists);
                             setPlaylists(res)
@@ -92,16 +92,16 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
                     alert(`No Match Found on ${searchTypeProps.replace('_', ' ')}`)
                     if (prevList) {
                         switch (prevType.split('_')[1]) {
-                            case 'Song':
+                            case 'Songs':
                                 setSongsList(prevList)
                                 break;
-                            case 'Album':
+                            case 'Albums':
                                 setAlbums(prevList)
                                 break;
-                            case 'Artist':
+                            case 'Artists':
                                 setArtists(prevList)
                                 break;
-                            case 'Playlist':
+                            case 'Playlists':
                                 setPlaylists(prevList)
                                 break;
                             default:
@@ -127,11 +127,11 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
                     <Nav className="mr-auto">
                     </Nav>
                     {searchTypeProps !== 'not work here' && <>
-                        {searchTypeProps === 'Search_Song' && <NavDropdown title="Search By" id="basic-nav-dropdown">
-                            <NavDropdown.Item onClick={changeSearchType}>Song</NavDropdown.Item>
-                            <NavDropdown.Item onClick={changeSearchType}>Album</NavDropdown.Item>
-                            <NavDropdown.Item onClick={changeSearchType}>Artist</NavDropdown.Item>
-                            <NavDropdown.Item onClick={changeSearchType}>Playlist</NavDropdown.Item>
+                        {searchTypeProps === 'Songs' && <NavDropdown title="Search By" id="basic-nav-dropdown">
+                            <NavDropdown.Item onClick={changeSearchType}>Songs</NavDropdown.Item>
+                            <NavDropdown.Item onClick={changeSearchType}>Albums</NavDropdown.Item>
+                            <NavDropdown.Item onClick={changeSearchType}>Artists</NavDropdown.Item>
+                            <NavDropdown.Item onClick={changeSearchType}>Playlists</NavDropdown.Item>
                         </NavDropdown>}
                         <Form inline>
                             <FormControl ref={inputRef} type="text" placeholder={placeHolder} onChange={handleChange} className="mr-sm-2" />

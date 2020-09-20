@@ -17,7 +17,7 @@ function AddArtist({ openModal, setOpenModal, formatDate }) {
             upload_at: formatDate(new Date()),
             cover_img: artistImageLink
         };
-        create('artist', newArtist)
+        create('artists', newArtist)
             .then((res) => console.log(res))
             .catch((err) => console.error(err))
     };

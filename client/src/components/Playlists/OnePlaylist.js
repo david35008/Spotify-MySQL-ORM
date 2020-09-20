@@ -3,9 +3,10 @@ import './ListOfPlaylists.css';
 import { read } from '../Network/Ajax';
 import { useParams } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
-import NotFound from '../NotFound/NotFound';
+import NotFound from '../Services/NotFound';
+import getIdSong from '../Services/GetYTId';
 
-function OnePlaylist({ getIdSong }) {
+function OnePlaylist() {
 
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ function OnePlaylist({ getIdSong }) {
     const [songList, setSongsList] = useState([]);
 
     useEffect(() => {
-        read(`playlist/${id}`)
+        read(`playlists/byId/${id}`)
             .then((res) => {
                 setPlaylist(res[0]);
                 setSongsList(res);

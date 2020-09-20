@@ -5,10 +5,11 @@ import { read } from '../Network/Ajax';
 import { useParams } from 'react-router-dom';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from '../Home/ElementToCarusel';
-import NotFound from '../NotFound/NotFound';
+import NotFound from '../Services/NotFound';
+import getIdSong from '../Services/GetYTId';
+import breakPoints from '../Services/breakPoints';
 
-
-function OneArtist({ getIdSong, breakPoints }) {
+function OneArtist() {
 
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
@@ -17,23 +18,28 @@ function OneArtist({ getIdSong, breakPoints }) {
     const [albums, setAlbums] = useState([]);
 
     useEffect(() => {
-        read(`artist/${id}`)
+        let isMounted = true;
+        read(`artists/byId/${id}`)
             .then((res) => {
-                setArtist(res[0]);
-                setSongsList(res);
-                debugger
+                if (isMounted) {
+                    setArtist(res[0]);
+                    setSongsList(res);
+                }
             }).catch((err) => {
                 console.error(err);
                 setLoading(false);
             });
-        read(`albums_ByArtist/${id}`)
+        read(`albums/byArtist/${id}`)
             .then((res) => {
-                setAlbums(res);
-                setLoading(false);
+                if (isMounted) {
+                    setAlbums(res);
+                    setLoading(false);
+                }
             }).catch((err) => {
                 console.error(err);
                 setLoading(false);
             });
+            return () => { isMounted = false };
     }, [id]);
 
     return (

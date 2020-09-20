@@ -3,8 +3,9 @@ import './Artist.css';
 import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import Artist from './Artist';
+import getIdSong from '../Services/GetYTId';
 
-function ListOfArtists({ getIdSong }) {
+function ListOfArtists() {
 
     const [artistsList, setArtistsList] = useState([])
 

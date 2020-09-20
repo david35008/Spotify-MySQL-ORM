@@ -3,8 +3,9 @@ import './ListOfPlaylists.css';
 import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import PlayList from './PlayList';
+import getIdSong from '../Services/GetYTId';
 
-function ListOfPlaylists({ getIdSong }) {
+function ListOfPlaylists() {
 
     const [playListsList, setPlayListsList] = useState([])
 

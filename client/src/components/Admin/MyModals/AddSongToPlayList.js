@@ -46,7 +46,7 @@ function AddSongToPlayList({ openModal, setOpenModal, formatDate }) {
             song_ID: song,
             playlist_ID: PlayList
         }
-        create('playlists_songs', newConneaction)
+        create('playlists/songs', newConneaction)
             .then((res) => console.log(res))
             .catch((err) => console.error(err))
     }

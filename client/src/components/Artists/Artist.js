@@ -11,7 +11,7 @@ function Artist({ artist_ID, getIdSong }) {
     const [artist, setArtist] = useState([])
 
     useEffect(() => {
-        read(`artist/${artist_ID}`)
+        read(`artists/byId/${artist_ID}`)
         .then(res => {
             setArtist(res[0])
             setSongsList(res)

@@ -12,7 +12,7 @@ function Album({ album_ID, getIdSong, albumDisplay = 'inline', artistDisplay = '
 
     useEffect(() => {
         let isMounted = true;
-        read(`album/${album_ID}`)
+        read(`albums/byId/${album_ID}`)
             .then((res) => {
                 if (isMounted) {
                     setAlbums(res[0])

@@ -19,7 +19,7 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
             upload_at: formatDate(new Date()),
             cover_img: albumImageLink
         };
-        create('album', newAlbum)
+        create('albums', newAlbum)
             .then((res) => console.log(res))
             .catch((err) => console.error(err))
     };
@@ -55,7 +55,7 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
             </Button>
-                    <Button variant="primary" onClick={sendNewAlbum()} >Submit</Button>
+                    <Button variant="primary" onClick={sendNewAlbum} >Submit</Button>
                 </Modal.Footer>
             </Modal>
         </>
