@@ -5,6 +5,8 @@ const songs = require('./Routes/songs');
 const albums = require('./Routes/albums');
 const artists = require('./Routes/artists');
 const playlists = require('./Routes/playlists');
+const users = require('./Routes/users');
+const jwt = require('jsonwebtoken');
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -23,6 +25,25 @@ app.use(morgan(function (tokens, req, res) {
   }
 }));
 
+app.use('/users', users);
+
+app.use(ensureToken);
+
+function ensureToken(req, res, next) {
+  const bearerHeader = req.headers['authorization'];
+  if (typeof bearerHeader !== 'undefined') {
+    jwt.verify(bearerHeader, 'my_secret_key', (error, data) => {
+      if (error) {
+        res.status(403).send('incoreccet token');
+      } else {
+        res.token = bearerHeader;
+        next();
+      }
+    })
+  } else {
+    res.sendStatus(403);
+  }
+}
 app.use('/songs', songs);
 
 app.use('/albums', albums);

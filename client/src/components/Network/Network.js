@@ -1,7 +1,24 @@
 function Network(endPoint, { body, ...customConfig } = {}) {
 
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        var allcookies = decodedCookie.split(';');
+        for (let i = 0; i < allcookies.length; i++) {
+            let cookie = allcookies[i];
+            while (cookie.charAt(0) === ' ') {
+                cookie = cookie.substring(1);
+            }
+            if (cookie.indexOf(name) === 0) {
+                return cookie.substring(name.length, cookie.length);
+            }
+        }
+        return "";
+    }
+
     const headers = {
-        "Content-Type": "application/json;charset=utf-8'"
+        "Content-Type": "application/json;charset=utf-8'",
+        "Authorization": `${getCookie('token')}`
     };
 
     const url = `/${endPoint}`;
@@ -19,18 +36,14 @@ function Network(endPoint, { body, ...customConfig } = {}) {
     // console.log(`Sending ${config.method} to ${url} with data:`, body);
 
     return fetch(url, config).then(async (response) => {
-        // if (response.status === 401) {
-        //   logout();
-        //   location.assign(location);
-        //   return;
-        // }
-        const data = await response.json();
+        const data = await response;
         if (response.ok) {
             // console.log(`Got response ${response.status}`, data);
-            return data;
+            return data.json();
         } else {
-            console.error(`${response.status} : '${data.message}'`);
-            return Promise.reject(`${response.status} : '${data.message}'`);
+            // console.error(`${response.status} : '${data.message}'`);
+            // return Promise.reject(`${response.status} : '${data.json()}'`);
+            throw response
         }
     });
 }
@@ -41,7 +54,3 @@ Network.put = (endPoint, body) => Network(endPoint, { method: "PUT", ...body });
 Network.delete = (endPoint) => Network(endPoint, { method: "DELETE" });
 
 export default Network;
-
-// function logout() {
-//   localStorage.removeItem(localStorageKey);
-// }

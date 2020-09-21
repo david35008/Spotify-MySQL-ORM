@@ -1,10 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
+import { Logged } from '../Services/Aouthorizetion';
 import './NavBar.css';
 import { read } from '../Network/Ajax';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SideBar from '../SideBar/SideBar.js';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums, setArtists, setPlaylists, searchTypeProps = 'not work here' }) {
 
@@ -14,9 +16,13 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
     const [prevList, setPrevList] = useState();
     const [prevType, setPrevType] = useState();
 
+    const [cookies, setCookie, removeCookie]  = useCookies()
+
     const inputRef = useRef();
 
     const [menuClass, setMenuClass] = useState("sidebar-wrapper")
+
+    const value = useContext(Logged);
 
     const ToggleMenu = () => {
         if (menuClass === "sidebar-wrapper") {
@@ -36,8 +42,6 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
     }
 
     const search = () => {
-        console.log(prevType);
-        console.log(searchType);
         const searchValue = inputValue.toLowerCase().trim()
         if (searchValue !== "") {
             read(`${searchType}/byName/${searchValue}`)
@@ -114,6 +118,12 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
         inputRef.current.value = ""
     }
 
+const handleLogOut = () => {
+    removeCookie('name')
+    removeCookie('token')
+    value.setIsLogged(false);
+}
+
     return (
         <>
             <SideBar menuClass={menuClass} ToggleMenu={ToggleMenu} />
@@ -121,7 +131,8 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
                 <Button onClick={ToggleMenu} bg="dark" variant="dark" aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigtion" >
                     <span className="navbar-toggler-icon">  </span>
                 </Button>
-                <Navbar.Brand variant="success"><Link to='/' >My Spotify</Link></Navbar.Brand>
+                <Navbar.Brand variant="success"><Link to='/' >My Spotify, hello {cookies.name}</Link></Navbar.Brand>
+                <Button onClick={handleLogOut} >log out </Button>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">

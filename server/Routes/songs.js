@@ -59,7 +59,7 @@ songsRouter.get("/top", (req, res) => {
   JOIN artists ON songs.artist_ID = artists.artist_ID
   ORDER BY upload_at DESC LIMIT 20`, (err, result) => {
     if (err) {
-      res.status(400).json("An error occurred.");
+      res.status(400).json({message: "An error occurred."});
     } else {
       res.json(result);
     }

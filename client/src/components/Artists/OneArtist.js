@@ -54,7 +54,7 @@ function OneArtist() {
                 </div>
 
                 <div className='OneArtistSongList' >
-                    <Carousel className='OneArtistAlbums' color="white" breakPoints={breakPoints} enableAutoPlay>
+                    <Carousel className='OneArtistAlbums' color="white" breakPoints={breakPoints} >
                         {albums.map((album) =>
                             <ElementToCarusel query={{ path: "album", id: artist.artist_ID }} key={album.cover_img + album.name} element={album}/>
                         )}
