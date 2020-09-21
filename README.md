@@ -2,9 +2,13 @@
 
 This is my spotify app!
 The app serves a song interface similar to spotify.
+The app include login Authentication, node+express, mysql DB.
 
-<!-- glitch link:
-https://david35008-ticket-manager-glitch.glitch.me/ -->
+my gif:
+# ![gif](./readme-files/my-app.gif)
 
 my ERD:
 # ![pictue](./readme-files/my-ERD.png)
+
+my DataBase:
+https://github.com/david35008/my-spotify/blob/for-submit/readme-files/MySpotifyDB.txt
