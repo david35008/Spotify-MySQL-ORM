@@ -3,7 +3,6 @@ import './Artist.css';
 import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import Artist from './Artist';
-import getIdSong from '../Services/GetYTId';
 
 function ListOfArtists() {
 
@@ -17,7 +16,7 @@ function ListOfArtists() {
 
     const listToPrint = artistsList.map((artist, index) => {
         return (
-            < Artist index={index} key={artist.name + artist.artist_ID} artist_ID={artist.artist_ID} getIdSong={getIdSong} />
+            < Artist index={index} key={artist.name + artist.artist_ID} artist_ID={artist.artist_ID} />
         )
     })
 

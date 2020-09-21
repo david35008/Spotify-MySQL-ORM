@@ -3,7 +3,6 @@ import './ListOfPlaylists.css';
 import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import PlayList from './PlayList';
-import getIdSong from '../Services/GetYTId';
 
 function ListOfPlaylists() {
 
@@ -16,7 +15,7 @@ function ListOfPlaylists() {
 
     const listToPrint = playListsList.map((playList, index) => {
         return (
-            < PlayList key={playList.name + playList.playList_ID} index={index} playList_ID={playList.playlist_ID} getIdSong={getIdSong} />
+            < PlayList key={playList.name + playList.playList_ID} index={index} playList_ID={playList.playlist_ID}/>
         )
     })
 

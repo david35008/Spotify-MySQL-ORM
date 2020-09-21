@@ -4,7 +4,6 @@ import { read } from '../Network/Ajax';
 import { useParams } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../Services/NotFound';
-import getIdSong from '../Services/GetYTId';
 
 function OneAlbum() {
 
@@ -38,7 +37,7 @@ function OneAlbum() {
                 </div>
             </div>
             <div className='albumSongsList' >
-                <ListOfSongs query={{ path: "album", id: album.album_ID }} songList={songList} getIdSong={getIdSong} albumDisplay={"none"} split={0} />
+                <ListOfSongs query={{ path: "album", id: album.album_ID }} songList={songList} albumDisplay={"none"} />
             </div>
         </div>)
             :

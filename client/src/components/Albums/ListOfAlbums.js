@@ -3,7 +3,6 @@ import './ListOfAlbums.css';
 import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
 import Album from './Album';
-import getIdSong from '../Services/GetYTId';
 
 function ListOfAlbums() {
 
@@ -17,7 +16,7 @@ function ListOfAlbums() {
 
     const listToPrint = albumsList.map((album, index) => {
         return (
-            < Album  key={album.name + album.album_ID} index={index} album_ID={album.album_ID} getIdSong={getIdSong} />
+            < Album  key={album.name + album.album_ID} index={index} album_ID={album.album_ID} />
         )
     })
 

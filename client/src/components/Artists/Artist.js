@@ -5,7 +5,7 @@ import './Artist.css';
 import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
 
-function Artist({ artist_ID, getIdSong }) {
+function Artist({ artist_ID }) {
 
     const [songList, setSongsList] = useState([])
     const [artist, setArtist] = useState([])
@@ -29,7 +29,7 @@ function Artist({ artist_ID, getIdSong }) {
                 </div>
             </div>
             <div className='ArtistSongsList' >
-                <ListOfSongs query={{ path: "artist", id: artist.artist_ID }} songList={songList} getIdSong={getIdSong} split={0} artistDisplay={"none"} />
+                <ListOfSongs query={{ path: "artist", id: artist.artist_ID }} songList={songList} artistDisplay={"none"} />
             </div>
         </div>
 

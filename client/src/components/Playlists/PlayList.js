@@ -5,7 +5,7 @@ import './PlayList.css';
 import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
 
-function PlayList({ playList_ID, getIdSong }) {
+function PlayList({ playList_ID }) {
 
     const [songList, setSongsList] = useState([])
     const [playList, setPlayList] = useState([])
@@ -31,7 +31,7 @@ function PlayList({ playList_ID, getIdSong }) {
                 </div>
             </div>
             <div className='AlbumSongsList' >
-                <ListOfSongs query={{ path: "playlist", id: playList.playlist_ID }} songList={songList} getIdSong={getIdSong} split={0} />
+                <ListOfSongs query={{ path: "playlist", id: playList.playlist_ID }} songList={songList} />
             </div>
         </div>
 

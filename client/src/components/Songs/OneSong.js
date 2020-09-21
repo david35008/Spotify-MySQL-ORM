@@ -16,12 +16,13 @@ import ReactPlayer from 'react-player/youtube';
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
+
 function OneSong() {
     const query = useQuery();
-    const { id } = useParams()
-    const [song, setSong] = useState()
-    const [list, setList] = useState([])
-    const [loading, setLoading] = useState(true)
+    const { id } = useParams();
+    const [song, setSong] = useState();
+    const [list, setList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         read(`songs/byId/${id}`)
@@ -47,7 +48,7 @@ function OneSong() {
                 setLoading(false);
             });
         // eslint-disable-next-line
-    }, [id])
+    }, [id]);
 
     let views = '10,000';
 
@@ -99,4 +100,4 @@ function OneSong() {
     )
 }
 
-export default OneSong
+export default OneSong;

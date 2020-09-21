@@ -6,8 +6,7 @@ import { useParams } from 'react-router-dom';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from '../Home/ElementToCarusel';
 import NotFound from '../Services/NotFound';
-import getIdSong from '../Services/GetYTId';
-import breakPoints from '../Services/breakPoints';
+import { GetYTId, breakPoints } from '../Services/globalVariables';
 
 function OneArtist() {
 
@@ -57,14 +56,14 @@ function OneArtist() {
                 <div className='OneArtistSongList' >
                     <Carousel className='OneArtistAlbums' color="white" breakPoints={breakPoints} enableAutoPlay>
                         {albums.map((album) =>
-                            <ElementToCarusel query={{ path: "album", id: artist.artist_ID }} key={album.cover_img + album.name} element={album} getIdSong={getIdSong} />
+                            <ElementToCarusel query={{ path: "album", id: artist.artist_ID }} key={album.cover_img + album.name} element={album}/>
                         )}
                     </Carousel>
                     <ol className='song-list'>
                         {songList.map((song, index) => (
                             <li className='song' key={Math.random()}>
                                 <Link to={`/song/${song.song_ID}?artist=${artist.artist_ID}`} className='songName' >
-                                    <span>  <img className='imgList' height='70px' width='100px' src={song.cover_img} alt={''} /></span>
+                                    <span>  <img className='imgList' height='70px' width='100px' src={`https://img.youtube.com/vi/${GetYTId(song.youtube_link)}/0.jpg`} alt={''} /></span>
                                     <span className='nameAlbumArtist'>
                                         <div> {song.name} </div>
                                         <span className='albumName' >{song.album_name}</span><br />
@@ -72,14 +71,9 @@ function OneArtist() {
                                     </span>
                                 </Link>
                             </li>
-                        )).splice(0, songList.length - 0)}
+                        ))}
                     </ol>
                 </div>
-                {/* <Carousel color="white" breakPoints={breakPoints} enableAutoPlay>
-                    {songList.map((song) => (
-                        <ElementToCarusel query={{ path: "song", id: song.artist_ID }} artist={true} key={song.cover_img + song.name} element={song} getIdSong={getIdSong} />
-                    ))}
-                </Carousel> */}
             </div>
             :
             !loading ?

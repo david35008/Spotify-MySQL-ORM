@@ -7,6 +7,7 @@ const artists = require('./Routes/artists');
 const playlists = require('./Routes/playlists');
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(morgan(function (tokens, req, res) {

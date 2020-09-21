@@ -5,7 +5,7 @@ import './Album.css';
 import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
 
-function Album({ album_ID, getIdSong, albumDisplay = 'inline', artistDisplay = 'inline' }) {
+function Album({ album_ID, albumDisplay = 'inline', artistDisplay = 'inline' }) {
 
     const [songList, setSongsList] = useState([])
     const [album, setAlbums] = useState([])
@@ -34,7 +34,7 @@ function Album({ album_ID, getIdSong, albumDisplay = 'inline', artistDisplay = '
                 </div>
             </div>
             <div className='AlbumSongsList' >
-                <ListOfSongs query={{ path: "album", id: album.album_ID }} songList={songList} getIdSong={getIdSong} split={0} albumDisplay={"none"} artistDisplay={"none"} />
+                <ListOfSongs query={{ path: "album", id: album.album_ID }} songList={songList} albumDisplay={"none"} artistDisplay={"none"} />
             </div>
         </div>
 

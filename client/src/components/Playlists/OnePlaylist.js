@@ -4,7 +4,6 @@ import { read } from '../Network/Ajax';
 import { useParams } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../Services/NotFound';
-import getIdSong from '../Services/GetYTId';
 
 function OnePlaylist() {
 
@@ -37,7 +36,7 @@ function OnePlaylist() {
                         <div>upload_at{new Date(playList.upload_at).toDateString()}</div>
                     </div>
                 </div>
-                <ListOfSongs query={{ path: "playlist", id: playList.playlist_ID }} className='PlayListSongsList' songList={songList} getIdSong={getIdSong} split={0} />
+                <ListOfSongs query={{ path: "playlist", id: playList.playlist_ID }} className='PlayListSongsList' songList={songList} />
             </div>
             :
             !loading ?
