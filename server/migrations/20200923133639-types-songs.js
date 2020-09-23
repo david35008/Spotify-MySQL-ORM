@@ -11,7 +11,7 @@ module.exports = {
       allowNull: false
     })
     await queryInterface.changeColumn("songs", "name", {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       allowNull: false
     })
   },
@@ -26,7 +26,7 @@ module.exports = {
       allowNull: true
     })
     await queryInterface.changeColumn("songs", "name", {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       allowNull: true
     })
   }

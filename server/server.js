@@ -25,32 +25,32 @@ app.use(morgan(function (tokens, req, res) {
   }
 }));
 
-app.use('/users', users);
+// app.use('/users', users);
 
-app.use(ensureToken);
+// app.use(ensureToken);
 
-function ensureToken(req, res, next) {
-  const bearerHeader = req.headers['authorization'];
-  if (typeof bearerHeader !== 'undefined') {
-    jwt.verify(bearerHeader, 'my_secret_key', (error, data) => {
-      if (error) {
-        res.status(403).send('incoreccet token');
-      } else {
-        res.token = bearerHeader;
-        next();
-      }
-    })
-  } else {
-    res.sendStatus(403);
-  }
-}
-app.use('/songs', songs);
+// function ensureToken(req, res, next) {
+//   const bearerHeader = req.headers['authorization'];
+//   if (typeof bearerHeader !== 'undefined') {
+//     jwt.verify(bearerHeader, 'my_secret_key', (error, data) => {
+//       if (error) {
+//         res.status(403).send('incoreccet token');
+//       } else {
+//         res.token = bearerHeader;
+//         next();
+//       }
+//     })
+//   } else {
+//     res.sendStatus(403);
+//   }
+// }
+// app.use('/songs', songs);
 
-app.use('/albums', albums);
+// app.use('/albums', albums);
 
 app.use('/artists', artists);
 
-app.use('/playlists', playlists);
+// app.use('/playlists', playlists);
 
 const unknownEndpoint = (request, response) => {
   response.status(404).json({ error: 'unknown endpoint' });

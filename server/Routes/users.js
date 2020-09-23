@@ -21,8 +21,8 @@ usersRouter.post('/register', async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        created_at: formatDate(new Date()),
-        upload_at: formatDate(new Date())
+        createdAt: formatDate(new Date()),
+        updatedAt: formatDate(new Date())
     }
     DataBase.query(`INSERT INTO users Set ?`, newUser, (err, result) => {
         if (err) {
