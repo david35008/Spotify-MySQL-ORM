@@ -32,7 +32,10 @@ app.use(ensureToken);
 function ensureToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
-    jwt.verify(bearerHeader, 'my_secret_key', (error, data) => {
+    let decoded = jwt.decode(bearerHeader);
+    console.log(new Date(decoded.exp- Math.floor(Date.now() / 1000)).getSeconds());
+
+    jwt.verify(bearerHeader, process.env.SECRET_KEY, (error, data) => {
       if (error) {
         res.status(403).send('incoreccet token');
       } else {

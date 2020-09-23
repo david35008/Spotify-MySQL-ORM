@@ -35,7 +35,7 @@ usersRouter.post('/register', async (req, res) => {
 })
 
 usersRouter.post("/valid", (req, res) => {
-    jwt.verify(req.body.token, 'my_secret_key', (error, data) => {
+    jwt.verify(req.body.token, process.env.SECRET_KEY, (error, data) => {
         if (error) {
             res.sendStatus(403);
         } else {
@@ -53,9 +53,14 @@ usersRouter.post("/logIn", (req, res) => {
             res.status(400).json("An error occurred.");
         } else if (result[0]) {
             if (await bcrypt.compare(password, result[0].password)) {
-                console.log(result[0].user_ID);
                 const user = result[0].user_ID
-                const token = jwt.sign({ user }, 'my_secret_key')
+                const token = jwt.sign({ 
+                    exp: Math.floor(Date.now() / 1000) + 10000,
+                    user
+                 }, process.env.SECRET_KEY)
+                res.cookie('name',  result[0].name)
+                res.cookie('token',  token)
+                res.cookie('isAdmin',  result[0].is_admin)
                 res.json({
                     name: result[0].name,
                     token
