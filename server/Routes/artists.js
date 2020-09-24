@@ -1,6 +1,6 @@
 const express = require('express');
 const artistsRouter = express.Router();
-const { Artist, Album, Song } = require('../models')
+const { Artist, Album, Song } = require('../models');
 const { Op } = require("sequelize");
 
 artistsRouter.get("/", async (req, res) => {
@@ -8,22 +8,20 @@ artistsRouter.get("/", async (req, res) => {
         const allArtists = await Artist.findAll();
         res.json(allArtists);
     } catch (e) {
-        res.json({ message: e.message })
-    }
-})
+        res.json({ message: e.message });
+    };
+});
 
 artistsRouter.get('/byId/:id', async (req, res) => {
     try {
         const result = await Artist.findByPk(req.params.id, {
-            attributes: ['id', 'name', 'createdAt', 'updatedAt', ['cover_img', 'image'], 'description'],
             include: [Album, Song]
-        })
+        });
         res.json(result);
     } catch (e) {
-        res.json({ message: e.message })
-    }
-})
-
+        res.json({ message: e.message });
+    };
+});
 
 artistsRouter.get("/byName/:name", async (req, res) => {
     try {
@@ -33,32 +31,31 @@ artistsRouter.get("/byName/:name", async (req, res) => {
                     [Op.like]: `%${req.params.name}%`
                 }
             }
-        })
+        });
         res.json(result);
     } catch (e) {
-        res.json({ message: e.message })
-    }
-})
+        res.json({ message: e.message });
+    };
+});
 
-artistsRouter.get("/top", async(req, res) => {
+artistsRouter.get("/top", async (req, res) => {
     try {
         const allArtists = await Artist.findAll({ limit: 20 });
         res.json(allArtists);
     } catch (e) {
-        res.json({ message: e.message })
-    }
-})
+        res.json({ message: e.message });
+    };
+});
 
 artistsRouter.post("/", async (req, res) => {
     try {
-        const { body } = req
-        const newAtrist = await Artist.create(body)
-        console.log(newAtrist);
-        res.json(newAtrist)
+        const { body } = req;
+        const newAtrist = await Artist.create(body);
+        res.json(newAtrist);
     } catch (e) {
-        res.json({ message: e.message })
-    }
-})
+        res.json({ message: e.message });
+    };
+});
 
 artistsRouter.put("/:id", async (req, res) => {
     try {
@@ -66,11 +63,11 @@ artistsRouter.put("/:id", async (req, res) => {
         const editArtist = await Artist.update(body, {
             where: { id: req.params.id }
         })
-        res.send(editArtist)
+        res.send(editArtist);
     } catch (e) {
-        res.json({ message: e.message })
-    }
-})
+        res.json({ message: e.message });
+    };
+});
 
 artistsRouter.delete("/:id", async (req, res) => {
     try {
@@ -79,8 +76,8 @@ artistsRouter.delete("/:id", async (req, res) => {
         })
         res.json(result);
     } catch (e) {
-        res.json({ message: e.message })
-    }
-})
+        res.json({ message: e.message });
+    };
+});
 
 module.exports = artistsRouter;

@@ -46,7 +46,7 @@ app.use(morgan(function (tokens, req, res) {
 // }
 // app.use('/songs', songs);
 
-// app.use('/albums', albums);
+app.use('/albums', albums);
 
 app.use('/artists', artists);
 
