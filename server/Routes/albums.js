@@ -78,6 +78,6 @@ albumsRouter.delete("/:id", async (req, res) => {
     } catch (e) {
         res.json({ message: e.message });
     };
-})
+});
 
 module.exports = albumsRouter;
