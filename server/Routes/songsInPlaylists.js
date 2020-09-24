@@ -1,8 +1,8 @@
 const express = require('express');
-const PlaylistsSongRouter = express.Router();
+const SongsInPlaylistsRouter = express.Router();
 const { Playlists_Song } = require('../models');
 
-PlaylistsSongRouter.post("/", async (req, res) => {
+SongsInPlaylistsRouter.post("/", async (req, res) => {
     try {
         const { body } = req;
         const newSongInPlaylist = await Playlists_Song.create(body);
@@ -12,7 +12,7 @@ PlaylistsSongRouter.post("/", async (req, res) => {
     };
 });
 
-PlaylistsSongRouter.delete("/", async (req, res) => {
+SongsInPlaylistsRouter.delete("/", async (req, res) => {
     const { song_id, playlist_id } = req.query;
     try {
         const result = await Playlists_Song.destroy({
@@ -24,4 +24,4 @@ PlaylistsSongRouter.delete("/", async (req, res) => {
     };
 });
 
-module.exports = PlaylistsSongRouter;
+module.exports = SongsInPlaylistsRouter;
