@@ -5,7 +5,7 @@ const songs = require('./Routes/songs');
 const albums = require('./Routes/albums');
 const artists = require('./Routes/artists');
 const playlists = require('./Routes/playlists');
-const PlaylistsSongs =require('./Routes/PlaylistsSongRouter');
+const playlistsSongs =require('./Routes/PlaylistsSongRouter');
 const users = require('./Routes/users');
 const jwt = require('jsonwebtoken');
 const app = express();
@@ -53,7 +53,7 @@ app.use('/artists', artists);
 
 app.use('/playlists', playlists);
 
-app.use('PlaylistsSongs', PlaylistsSongs)
+app.use('/playlistsSongs', playlistsSongs)
 
 const unknownEndpoint = (request, response) => {
   response.status(404).json({ error: 'unknown endpoint' });
