@@ -60,7 +60,7 @@ function OneSong() {
         else if (query.get("playlist")) {
             read(`playlists/byId/${query.get("playlist")}`)
                 .then((res) => {
-                    setList(res.Playlists_Songs.map((song) => song.Song))
+                    setList(res.PlaylistsSongs.map((song) => song.Song))
                     setLoading(false)
                 })
                 .catch((err) => {
@@ -98,11 +98,11 @@ function OneSong() {
                         width='600px'
                         playing={false}
                         controls={true}
-                        url={song.youtube_link}
+                        url={song.youtubeLink}
                     ></ReactPlayer >
 
                     <div className='oneSongTitle' >
-                        <Link to={`/artist/${song.artist_id}`} >{song.Artist.name} - </Link>
+                        <Link to={`/artist/${song.artistId}`} >{song.Artist.name} - </Link>
                         <span>{song.name}</span>
                         <div className='oneSongLength' >Length: {song.length} </div>
                     </div>
@@ -113,7 +113,7 @@ function OneSong() {
                         <img className='dislikeButton' src={disLike} alt={''} onClick={() => alert('i am dislike button')} />
                         <img className='addToPlayListButton' src={addToPlayList} alt={''} onClick={() => alert('i am addToPlayList button')} />
                     </div>
-                    <Link to={`/album/${song.artist_id}`} className='oneSongAlbum' >Album: {song.Album.name}</Link><br />
+                    <Link to={`/album/${song.artistId}`} className='oneSongAlbum' >Album: {song.Album.name}</Link><br />
                     <ReadMore content={song.lyrics} maxChar="50" />
                     <div>Created: {new Date(song.createdAt).toDateString()}</div>
                     <div>Upload: {new Date(song.updatedAt).toDateString()} </div>

@@ -28,7 +28,7 @@ app.use(morgan(function (tokens, req, res) {
 
 app.use('/users', users);
 
-app.use(ensureToken);
+// app.use(ensureToken);
 
 function ensureToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];

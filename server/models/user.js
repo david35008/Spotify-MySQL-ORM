@@ -10,20 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.hasMany(models.User_album,{
-        foreignKey:"email"
+      this.hasMany(models.User_album, {
+        foreignKey: "email"
       })
-      this.hasMany(models.User_playlist,{
-        foreignKey:"email"
+      this.hasMany(models.User_playlist, {
+        foreignKey: "email"
       })
-      this.hasMany(models.User_artist,{
-        foreignKey:"email"
+      this.hasMany(models.User_artist, {
+        foreignKey: "email"
       })
-      this.hasMany(models.User_song,{
-        foreignKey:"email"
+      this.hasMany(models.User_song, {
+        foreignKey: "email"
       })
-      this.hasMany(models.Interaction,{
-        foreignKey: 'user_id'
+      this.hasMany(models.Interaction, {
+        foreignKey: 'userId'
       })
 
     }
@@ -32,12 +32,19 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    is_admin: DataTypes.BOOLEAN,
+    isAdmin: {
+      field: "is_admin",
+      type: DataTypes.BOOLEAN
+    },
     prefrences: DataTypes.JSON,
-    remember_token: DataTypes.BOOLEAN
+    rememberToken: {
+      field: "remember_token",
+      type: DataTypes.BOOLEAN
+    }
   }, {
     sequelize,
     modelName: 'User',
+    paranoid: true
   });
   return User;
 };

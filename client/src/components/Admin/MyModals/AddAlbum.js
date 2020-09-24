@@ -14,10 +14,10 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
     const sendNewAlbum = () => {
         const newAlbum = {
             name: albumName,
-            artist_ID: albumArtist,
-            created_at: albumCreated,
-            upload_at: formatDate(new Date()),
-            cover_img: albumImageLink
+            artistId: albumArtist,
+            createdAt: albumCreated,
+            uploadAt: formatDate(new Date()),
+            coverImg: albumImageLink
         };
         create('albums', newAlbum)
             .then((res) => console.log(res))
@@ -45,7 +45,7 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
                         <input type="text" onChange={(e) => setAlbumName(e.target.value)} required /><br />
                         <label >Artist:</label>
                         <input type="number" onChange={(e) => setAlbumArtist(e.target.value)} required /><br />
-                        <label >Created_At:</label>
+                        <label >Created At:</label>
                         <input type="date" onChange={(e) => setAlbumCreated(e.target.value)} required /><br />
                         <label >Image Link:</label>
                         <input type="text" onChange={(e) => setAlbumImageLink(e.target.value)} required /><br />

@@ -14,10 +14,10 @@ function AddPlayList({ openModal, setOpenModal, formatDate }) {
     const sendNewPlayList = () => {
         const sendNewPlayList = {
             name: playListName,
-            created_at: playListCreated,
-            upload_at: formatDate(new Date()),
-            cover_img: playListImageLink,
-            user_ID: userId
+            createdAt: playListCreated,
+            uploadAt: formatDate(new Date()),
+            coverImg: playListImageLink,
+            userId: userId
         };
         create('playlists', sendNewPlayList)
             .then((res) => console.log(res))
@@ -43,7 +43,7 @@ function AddPlayList({ openModal, setOpenModal, formatDate }) {
                     <form className="addNewForm" >
                         <label >Name:</label>
                         <input type="text" onChange={(e) => setPlayListName(e.target.value)} required /><br />
-                        <label >Created_At:</label>
+                        <label >Created At:</label>
                         <input type="date" onChange={(e) => setPlayListCreated(e.target.value)} required /><br />
                         <label >Image Link:</label>
                         <input type="text" onChange={(e) => setplayListImageLink(e.target.value)} required /><br />

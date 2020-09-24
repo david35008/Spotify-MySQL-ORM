@@ -9,15 +9,15 @@ function PlayList({ playlist }) {
     return (
         <div className='PlayList'>
             <div className='PlayListContainer'>
-                <img src={playlist.cover_img} alt={playlist.name} className='playListImage' />
+                <img src={playlist.coverImg} alt={playlist.name} className='playListImage' />
                 <div className='PlayListDescription'>
                     <Link to={`/playlist/${playlist.id}`} className='PlayListName' > {playlist.name}</Link>
-                    <div className='PlayListCreated_at'>Created_at: {new Date(playlist.createdAt).toDateString()}</div>
-                    <div className='PlayListUpload_at' >Upload_at{new Date(playlist.updatedAt).toDateString()}</div>
+                    <div className='PlayListCreatedAt'>Created At: {new Date(playlist.createdAt).toDateString()}</div>
+                    <div className='PlayListUploadAt' >Upload At{new Date(playlist.updatedAt).toDateString()}</div>
                 </div>
             </div>
             <div className='AlbumSongsList' >
-                <ListOfSongs query={{ path: "playlist", id: playlist.id }} songList={playlist.Playlists_Songs.map((song) => song.Song)} />
+                <ListOfSongs query={{ path: "playlist", id: playlist.id }} songList={playlist.PlaylistsSongs.map((song) => song.Song)} />
             </div>
         </div>
 

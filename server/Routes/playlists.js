@@ -1,6 +1,6 @@
 const express = require('express');
 const playlistsRouter = express.Router();
-const { Song, Playlist, Artist, Album, Playlists_Song } = require('../models');
+const { Song, Playlist, Artist, Album,PlaylistsSong } = require('../models');
 const { Op } = require("sequelize");
 
 playlistsRouter.get("/", async (req, res) => {
@@ -8,7 +8,7 @@ playlistsRouter.get("/", async (req, res) => {
         const allPlaylists = await Playlist.findAll({
             include: [
                 {
-                    model: Playlists_Song,
+                    model: PlaylistsSong,
                     attributes: ["id"],
                     include: [{
                         model: Song,
@@ -28,7 +28,7 @@ playlistsRouter.get("/", async (req, res) => {
         });
         res.json(allPlaylists);
     } catch (e) {
-        res.json({ message: e.message });
+        res.json({ message: e });
     };
 });
 
@@ -37,7 +37,7 @@ playlistsRouter.get("/byId/:id", async (req, res) => {
         const result = await Playlist.findByPk(req.params.id, {
             include: [
                 {
-                    model: Playlists_Song,
+                    model: PlaylistsSong,
                     attributes: ["id"],
                     include: [{
                         model: Song,

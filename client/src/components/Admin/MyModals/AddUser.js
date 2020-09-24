@@ -19,11 +19,11 @@ function AddUser({ openModal, setOpenModal, formatDate }) {
       name: userName,
       email: userEmail,
       password: userPassword,
-      is_admin: userIsAdmin,
+      isAdmin: userIsAdmin,
       preferences: userPreferences,
-      remember_token: userRememberToken,
-      created_at: userCreated,
-      upload_at: formatDate(new Date())
+      rememberToken: userRememberToken,
+      createdAt: userCreated,
+      uploadAt: formatDate(new Date())
     };
     create('/user', newUser)
       .then((res) => console.log(res))
@@ -59,7 +59,7 @@ function AddUser({ openModal, setOpenModal, formatDate }) {
             <input type="text" onChange={(e) => setUserPreferences(e.target.value)} required /><br />
             <label >Remember Token?</label>
             <input type="checkbox" onChange={(e) => setUserRememberToken(e.target.checked)} /><br />
-            <label >Created_At:</label>
+            <label >Created At:</label>
             <input type="date" onChange={(e) => setUserCreated(e.target.value)} required /><br />
           </form>
         </Modal.Body>

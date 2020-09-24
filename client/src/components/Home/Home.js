@@ -50,28 +50,28 @@ function Home() {
             <h2 className='listTitle'>Top Songs</h2>
             <Carousel color="white" breakPoints={breakPoints} >
                 {songList.map((song) => (
-                    <ElementToCarusel query={{ path: "song", id: song.id }} key={song.cover_img + song.name} element={song} />
+                    <ElementToCarusel query={{ path: "song", id: song.id }} key={song.coverImg + song.name} element={song} />
                 ))}
             </Carousel>
             <br /><br />
             <h2 className='listTitle'>Top Albums</h2>
             <Carousel color="white" breakPoints={breakPoints} >
                 {albums.map((album) => (
-                    <ElementToCarusel query={{ path: "album", id: album.album_ID }} key={album.name + album.album_ID} element={album} />
+                    <ElementToCarusel query={{ path: "album", id: album.albumId }} key={album.name + album.albumId} element={album} />
                 ))}
             </Carousel>
             <br /><br />
             <h2 className='listTitle'>Top Artists</h2>
             <Carousel color="white" breakPoints={breakPoints} >
                 {artists.map((artist) => (
-                    <ElementToCarusel border={'50%'} widthPic={'100px'} query={{ path: "artist", id: artist.artist_ID }} key={artist.name + artist.artist_ID} element={artist} />
+                    <ElementToCarusel border={'50%'} widthPic={'100px'} query={{ path: "artist", id: artist.artistId }} key={artist.name + artist.artistId} element={artist} />
                 ))}
             </Carousel>
             <br /><br />
             <h2 className='listTitle'>Top Playlists</h2>
             <Carousel color="white" breakPoints={breakPoints} >
                 {playlists.map((playlist) => (
-                    <ElementToCarusel query={{ path: "playlist", id: playlist.playlist_ID }} key={playlist.name + playlist.playlist_ID} element={playlist} />
+                    <ElementToCarusel query={{ path: "playlist", id: playlist.playlistId }} key={playlist.name + playlist.playlistId} element={playlist} />
                 ))}
             </Carousel>
         </>

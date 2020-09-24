@@ -13,9 +13,9 @@ function AddArtist({ openModal, setOpenModal, formatDate }) {
     const sendNewArtist = () => {
         const newArtist = {
             name: artistName,
-            created_at: artistCreated,
-            upload_at: formatDate(new Date()),
-            cover_img: artistImageLink
+            createdAt: artistCreated,
+            uploadAt: formatDate(new Date()),
+            coverImg: artistImageLink
         };
         create('artists', newArtist)
             .then((res) => console.log(res))
@@ -41,7 +41,7 @@ function AddArtist({ openModal, setOpenModal, formatDate }) {
                     <form className="addNewForm" >
                         <label >Name:</label>
                         <input type="text" onChange={(e) => setArtistName(e.target.value)} required /><br />
-                        <label >Created_At:</label>
+                        <label >Created At:</label>
                         <input type="date" onChange={(e) => setArtistCreated(e.target.value)} required /><br />
                         <label >Image Link:</label>
                         <input type="text" onChange={(e) => setArtistImageLink(e.target.value)} required /><br />

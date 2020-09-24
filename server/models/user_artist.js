@@ -10,21 +10,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Artist,{
-        foreignKey:"artist_id"
+      this.belongsTo(models.Artist, {
+        foreignKey: "artistId"
       })
-      this.belongsTo(models.User,{
-        foreignKey:"email"
+      this.belongsTo(models.User, {
+        foreignKey: "email"
       })
 
     }
   };
   User_artist.init({
     email: DataTypes.STRING,
-    artist_id: DataTypes.INTEGER
+    artistId: {
+      field: "artist_id",
+      type: DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'User_artist',
+    paranoid: true
   });
   return User_artist;
 };

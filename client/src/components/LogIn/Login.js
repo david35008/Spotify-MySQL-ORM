@@ -38,7 +38,7 @@ function LogIn() {
                     <div className="card">
                         <div className="card-header">
                             <h3>Sign In</h3>
-                            <div className="d-flex justify-content-end social_icon">
+                            <div className="d-flex justify-content-end socialIcon">
                                 <span><i className="fab fa-facebook-square"></i></span>
                                 <span><i className="fab fa-google-plus-square"></i></span>
                                 <span><i className="fab fa-twitter-square"></i></span>
@@ -61,10 +61,10 @@ function LogIn() {
                                     <div>  {errors.password && 'Password is required.'}</div>
                                 </div>
                                 <div className="row align-items-center remember">
-                                    <input name="remember_token" type="checkbox" ref={logIn()} />Remember Me
+                                    <input name="rememberToken" type="checkbox" ref={logIn()} />Remember Me
                         </div>
                                 <div className="form-group">
-                                    <input type="submit" value="Login" className="btn float-right login_btn" />
+                                    <input type="submit" value="Login" className="btn float-right loginBtn" />
                                 </div>
                             </form>
                         </div>

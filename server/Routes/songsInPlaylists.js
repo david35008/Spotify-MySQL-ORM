@@ -1,11 +1,11 @@
 const express = require('express');
 const SongsInPlaylistsRouter = express.Router();
-const { Playlists_Song } = require('../models');
+const { PlaylistsSong } = require('../models');
 
 SongsInPlaylistsRouter.post("/", async (req, res) => {
     try {
         const { body } = req;
-        const newSongInPlaylist = await Playlists_Song.create(body);
+        const newSongInPlaylist = await PlaylistsSong.create(body);
         res.json(newSongInPlaylist);
     } catch (e) {
         res.json({ message: e.message });
@@ -13,10 +13,10 @@ SongsInPlaylistsRouter.post("/", async (req, res) => {
 });
 
 SongsInPlaylistsRouter.delete("/", async (req, res) => {
-    const { song_id, playlist_id } = req.query;
+    const { songId, playlistId } = req.query;
     try {
-        const result = await Playlists_Song.destroy({
-            where: { song_id, playlist_id }
+        const result = await PlaylistsSong.destroy({
+            where: { songId, playlistId }
         })
         res.json(result);
     } catch (e) {

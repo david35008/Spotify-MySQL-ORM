@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ListOfPlaylists.css';
 import { read } from '../Network/Ajax';
-import { useParams,useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../Services/NotFound';
 
@@ -18,7 +18,7 @@ function OnePlaylist() {
         read(`playlists/byId/${id}`)
             .then((res) => {
                 setPlaylist(res);
-                setSongsList(res.Playlists_Songs);
+                setSongsList(res.PlaylistsSongs);
                 setLoading(false);
             })
             .catch(err => {
@@ -26,17 +26,17 @@ function OnePlaylist() {
                     history.push('/')
                 }
             })
-    }, [id]);
+    }, [id, history]);
 
     return (
         playList ?
             <div className='OnePlayList'>
                 <div className='OnePlayListContainer'>
-                    <img src={playList.cover_img} alt={playList.name} height='300px' />
+                    <img src={playList.coverImg} alt={playList.name} height='300px' />
                     <div className='OnePlayListDescription'>
                         <div>Name: {playList.name}</div>
-                        <div>created_at: {new Date(playList.createdAt).toDateString()}</div>
-                        <div>upload_at{new Date(playList.uploaded_at).toDateString()}</div>
+                        <div>created at: {new Date(playList.createdAt).toDateString()}</div>
+                        <div>upload at{new Date(playList.uploadedAt).toDateString()}</div>
                     </div>
                 </div>
                 <ListOfSongs query={{ path: "playlist", id: playList.id }} className='PlayListSongsList' songList={SongsToPrint} />

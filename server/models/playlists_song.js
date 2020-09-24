@@ -11,19 +11,26 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Song, {
-        foreignKey: 'song_id'
+        foreignKey: 'songId'
       });
       this.belongsTo(models.Playlist, {
-        foreignKey: 'playlist_id'
+        foreignKey: 'playlistId'
       });
     }
   };
   Playlists_Song.init({
-    playlist_id: DataTypes.INTEGER,
-    song_id: DataTypes.INTEGER
+    playlistId: {
+      field: "playlist_id",
+      type: DataTypes.INTEGER
+    },
+    songId: {
+      field: "song_id",
+      type: DataTypes.INTEGER
+    }
   }, {
     sequelize,
-    modelName: 'Playlists_Song',
+    modelName: 'PlaylistsSong',
+    paranoid: true
   });
   return Playlists_Song;
 };

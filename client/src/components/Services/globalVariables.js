@@ -1,12 +1,12 @@
 import Cookies from 'js-cookie';
 
 export function GetYTId(songId) {
-    let video_id = songId.split("v=")[1];
-    const ampersandPosition = video_id.indexOf("&");
+    let videoId = songId.split("v=")[1];
+    const ampersandPosition = videoId.indexOf("&");
     if (ampersandPosition !== -1) {
-        video_id = video_id.substring(0, ampersandPosition);
+        videoId = videoId.substring(0, ampersandPosition);
     }
-    return video_id
+    return videoId
 }
 
 export const breakPoints = [

@@ -35,13 +35,13 @@ width: 400px;
 background-color: rgba(0,0,0,0.5) !important;
 }
 
-.social_icon span{
+.socialIcon span{
 font-size: 60px;
 margin-left: 10px;
 color: #FFC312;
 }
 
-.social_icon span:hover{
+.socialIcon span:hover{
 color: white;
 cursor: pointer;
 }
@@ -50,7 +50,7 @@ cursor: pointer;
 color: white;
 }
 
-.social_icon{
+.socialIcon{
 position: absolute;
 right: 20px;
 top: -45px;
@@ -81,13 +81,13 @@ margin-left: 15px;
 margin-right: 5px;
 }
 
-.login_btn{
+.loginBtn{
 color: black;
 background-color: #FFC312;
 width: 100px;
 }
 
-.login_btn:hover{
+.loginBtn:hover{
 color: black;
 background-color: white;
 }

@@ -92,9 +92,9 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
                 })
                 .catch(err => {
                     console.error(err);
-                    alert(`No Match Found on ${searchTypeProps.replace('_', ' ')}`)
+                    alert(`No Match Found on ${searchTypeProps}`)
                     if (prevList) {
-                        switch (prevType.split('_')[1]) {
+                        switch (prevType.split(' ')[1]) {
                             case 'Songs':
                                 setSongsList(prevList)
                                 break;

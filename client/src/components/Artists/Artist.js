@@ -8,10 +8,10 @@ function Artist({ artist }) {
     return (
         <div className='Artist'>
             <div className='ArtistContainer'>
-                <img src={artist.cover_img} alt={artist.name} className='Artist-img'/>
+                <img src={artist.coverImg} alt={artist.name} className='Artist-img'/>
                 <div className='ArtistDescription'>
                     <Link to={`/artist/${artist.id}`} className='ArtistName' > {artist.name}</Link>
-                    {artist.createdAt && <div className='ArtistCreated_at'>Created_at: {new Date(artist.createdAt).toDateString()}</div>}
+                    {artist.createdAt && <div className='ArtistCreatedAt'>Created At: {new Date(artist.createdAt).toDateString()}</div>}
                 </div>
             </div>
             <div className='ArtistSongsList' >

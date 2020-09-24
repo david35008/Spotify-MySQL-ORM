@@ -44,21 +44,21 @@ usersRouter.post("/valid", (req, res) => {
 })
 
 usersRouter.post("/logIn", async (req, res) => {
-    const { email, password, remember_token } = req.body;
+    const { email, password, rememberToken } = req.body;
     try {
         const result = await User.findOne({ where: { email: email } });
         if (await bcrypt.compare(password, result.password)) {
-            const user = result.user_ID
+            const user = result.userId
             const newToken ={
-                isAdmin: result.is_admin,
+                isAdmin: result.isAdmin,
                 user
             }
-            if (!remember_token) {
+            if (!rememberToken) {
                 newToken.exp = Math.floor(Date.now() / 1000) + 3600
             } 
             const token = jwt.sign(newToken, process.env.SECRET_KEY)
             res.cookie('name', result.name)
-            res.cookie('isAdmin', result.is_admin)
+            res.cookie('isAdmin', result.isAdmin)
             res.cookie('token', token)
             res.json(`welcome back ${result.name}`)
         } else {

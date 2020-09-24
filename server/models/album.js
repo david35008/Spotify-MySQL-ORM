@@ -11,26 +11,33 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasMany(models.Song, {
-        foreignKey: 'album_id',
-    
+        foreignKey: 'albumId',
+
       })
       this.hasMany(models.User_album, {
-        foreignKey: 'album_id',
-   
+        foreignKey: 'albumId',
+
       })
-      this.belongsTo(models.Artist,{
-        foreignKey:"artist_id"
+      this.belongsTo(models.Artist, {
+        foreignKey: "artistId"
       })
 
     }
   };
   Album.init({
-    artist_id: DataTypes.INTEGER,
+    artistId: {
+      field: 'artist_id',
+      type: DataTypes.STRING
+    },
     name: DataTypes.STRING,
-    cover_img: DataTypes.TEXT
+    coverImg: {
+      field: 'cover_img',
+      type: DataTypes.TEXT
+    }
   }, {
     sequelize,
     modelName: 'Album',
+    paranoid: true
   });
   return Album;
 };

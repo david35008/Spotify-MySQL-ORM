@@ -34,7 +34,7 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
 
   const artistOptions = artistList.map((artist) => {
     return {
-      value: artist.artist_ID, label: artist.name
+      value: artist.artistId, label: artist.name
     }
   })
 
@@ -50,15 +50,15 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
 
   let albumOptions = albumsList.map((album) => {
     return {
-      value: album.album_ID, label: album.name
+      value: album.albumId, label: album.name
     }
   })
 
   const getTrackNumber = (albumID) => {
     read(`albums/byId/${albumID}`)
       .then((res) => {
-        setSongTrackNumber(Math.max(...res.map((album) => album.track_number)) + 1)
-        console.log(Math.max(...res.map((album) => album.track_number)) + 1);
+        setSongTrackNumber(Math.max(...res.map((album) => album.trackNumber)) + 1)
+        console.log(Math.max(...res.map((album) => album.trackNumber)) + 1);
       })
       .catch((err) => {
         console.error(err);
@@ -68,14 +68,14 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
   const sendNewSong = () => {
     const newSong = {
       name: songName,
-      artist_ID: songArtist,
-      album_ID: songAlbum,
-      track_number: songTrackNumber,
+      artistId: songArtist,
+      albumId: songAlbum,
+      trackNumber: songTrackNumber,
       length: songLength,
       lyrics: songLycris,
-      created_at: songCreated,
-      upload_at: formatDate(new Date()),
-      youtube_link: songLink
+      createdAt: songCreated,
+      uploadAt: formatDate(new Date()),
+      youtubeLink: songLink
     };
     create('songs', newSong)
       .then((res) => console.log(res))
@@ -128,7 +128,7 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
             <input type="time" step="2" onChange={(e) => setSongLength(e.target.value)} required /><br />
             <label >Lyrics:</label>
             <input type="text" onChange={(e) => setSongLycris(e.target.value)} required /><br />
-            <label >Created_At:</label>
+            <label >Created At:</label>
             <input type="date" onChange={(e) => setSongCreated(e.target.value)} required /><br />
             <label >Youtube Link:</label>
             <input type="text" onChange={(e) => setSongLink(e.target.value)} required /><br />

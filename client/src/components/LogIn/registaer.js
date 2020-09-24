@@ -52,10 +52,10 @@ function LogIn() {
                                     {errors.password && 'Password is required.'}
                                 </div>
                                 <div className="row align-items-center remember">
-                                    <input type="checkbox" name="remember_token" ref={register()} />Remember Me
+                                    <input type="checkbox" name="rememberToken" ref={register()} />Remember Me
                     </div>
                                 <div className="form-group">
-                                    <input type="submit" value="Sign Up" className="btn float-right login_btn" />
+                                    <input type="submit" value="Sign Up" className="btn float-right loginBtn" />
                                 </div>
                             </form>
                         </div>

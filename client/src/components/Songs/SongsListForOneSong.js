@@ -11,7 +11,7 @@ function SongsListForOneSong({ query, songList, split = 1, albumDisplay = 'inlin
             {songList.map((song) => (
                 <li className='song' key={song.name+ song.id}>
                     <Link to={`/song/${song.id}?${query.path}=${query.id}`} className='songName' >
-                        <span>  <img className='imgList' height='70px' width='100px' src={`https://img.youtube.com/vi/${GetYTId(song.youtube_link)}/0.jpg`} alt={''} /></span>
+                        <span>  <img className='imgList' height='70px' width='100px' src={`https://img.youtube.com/vi/${GetYTId(song.youtubeLink)}/0.jpg`} alt={''} /></span>
 
                         <span className='nameAlbumArtist'>
                             <div> {song.name} </div>

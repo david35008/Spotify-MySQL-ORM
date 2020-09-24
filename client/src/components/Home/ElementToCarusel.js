@@ -7,7 +7,7 @@ function ElementToCarusel({ query, element, artist = false, border = '0px', widt
 
     let queryExist = query.path === "song" ? `?${artist ? 'artist' : query.path}=${query.id}` : ''
 
-    let imgSrc = query.path === "song" ? `https://img.youtube.com/vi/${GetYTId(element.youtube_link)}/0.jpg` : element.cover_img
+    let imgSrc = query.path === "song" ? `https://img.youtube.com/vi/${GetYTId(element.youtubeLink)}/0.jpg` : element.coverImg
 
     return (
         <li className='ElementToCarusel' key={element.name + query.id}>

@@ -17,7 +17,7 @@ function ListOfPlaylists() {
                     history.push('/')
                 }
             })
-    }, []);
+    }, [history]);
 
     const listToPrint = playListsList.map((playlist, index) => {
         return (
@@ -27,7 +27,7 @@ function ListOfPlaylists() {
 
     return (
         <>
-            <NavBar setPlaylists={setPlayListsList} searchTypeProps='Search_Playlist' />
+            <NavBar setPlaylists={setPlayListsList} searchTypeProps='SearchPlaylist' />
             <h1 className='playlistTitle' >PlayLists</h1>
             <ol>
                 {listToPrint}

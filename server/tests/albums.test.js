@@ -5,7 +5,7 @@ const { Album } = require('../models');
 
 const albumMock = {
     name: 'my album test',
-    artist_id: 1
+    artistId: 1
 }
 
 describe('check albums routs', () => {

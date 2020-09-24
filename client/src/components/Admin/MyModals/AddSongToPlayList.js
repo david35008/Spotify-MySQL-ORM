@@ -7,7 +7,7 @@ import Select from 'react-select';
 
 function AddSongToPlayList({ openModal, setOpenModal, formatDate }) {
 
-    const [playList_List, setPlayList_List] = useState([])
+    const [playListList, setPlayListList] = useState([])
     const [songsList, setSongsList] = useState([])
 
     const [PlayList, setPlayList] = useState();
@@ -16,14 +16,14 @@ function AddSongToPlayList({ openModal, setOpenModal, formatDate }) {
     useEffect(() => {
         (() => {
             read(`playlists`)
-                .then((res) => setPlayList_List(res))
+                .then((res) => setPlayListList(res))
                 .catch((err) => console.error(err))
         })();
     }, [])
 
-    let playListOptions = playList_List.map((playlist) => {
+    let playListOptions = playListList.map((playlist) => {
         return {
-            value: playlist.playlist_ID, label: playlist.name
+            value: playlist.playlistId, label: playlist.name
         }
     })
 
@@ -35,7 +35,7 @@ function AddSongToPlayList({ openModal, setOpenModal, formatDate }) {
 
     let songsOptions = songsList.map((song) => {
         return {
-            value: song.song_ID, label: song.name
+            value: song.songId, label: song.name
         }
     })
 
@@ -43,8 +43,8 @@ function AddSongToPlayList({ openModal, setOpenModal, formatDate }) {
 
     const sendSongToPlayList = () => {
         const newConneaction = {
-            song_ID: song,
-            playlist_ID: PlayList
+            songId: song,
+            playlistId: PlayList
         }
         create('playlists/songs', newConneaction)
             .then((res) => console.log(res))

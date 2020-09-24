@@ -9,11 +9,11 @@ function Album({ album, albumDisplay = 'inline', artistDisplay = 'inline' }) {
     return (
         <div className='Album'>
             <div className='AlbumContainer'>
-                <img src={album.cover_img} alt={album.name} className='albums_img' />
+                <img src={album.coverImg} alt={album.name} className='albumsImg' />
                 <div className='AlbumDescription'>
                     <Link to={`/album/${album.id}`} style={{ display: albumDisplay }} className='AlbumName' > {album.name}</Link>
-                    <Link to={`/artist/${album.artist_id}`} style={{ display: artistDisplay }} className='AlbumArtist' > {album.Artist.name}</Link>
-                    {album.createdAt && <div className='AlbumCreated_at'>{new Date(album.createdAt).toDateString()}</div>}
+                    <Link to={`/artist/${album.artistId}`} style={{ display: artistDisplay }} className='AlbumArtist' > {album.Artist.name}</Link>
+                    {album.createdAt && <div className='AlbumCreatedAt'>{new Date(album.createdAt).toDateString()}</div>}
                 </div>
             </div>
             <div className='AlbumSongsList' >

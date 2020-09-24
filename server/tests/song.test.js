@@ -5,8 +5,8 @@ const { Song } = require('../models');
 
 const songMock = {
     name: 'my first song',
-    album_id: 1,
-    artist_id: 1
+    albumId: 1,
+    artistId: 1
 }
 
 describe('check songs routs', () => {

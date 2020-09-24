@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './OneAlbum.css';
 import { read } from '../Network/Ajax';
-import { useParams,useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../Services/NotFound';
 
@@ -24,17 +24,17 @@ function OneAlbum() {
                     history.push('/')
                 }
             })
-    }, [id]);
+    }, [id, history]);
 
     return (
         album ? (<div className='OneAlbum'>
             <div className='OneAlbumContainer'>
-                <img src={album.cover_img} alt={album.name} className='OneAlbumImage' />
+                <img src={album.coverImg} alt={album.name} className='OneAlbumImage' />
                 <div className='OneAlbumDescription'>
                     <div>Name: {album.name}</div>
                     <div>Artist: {album.Artist.name}</div>
-                    {album.created_at && <div>created_at: {new Date(album.created_at).toDateString()}</div>}
-                    {album.upload_at && <div>upload_at{new Date(album.upload_at).toDateString()}</div>}
+                    {album.createdAt && <div>created At: {new Date(album.createdAt).toDateString()}</div>}
+                    {album.uploadAt && <div>upload At{new Date(album.uploadAt).toDateString()}</div>}
                 </div>
             </div>
             <div className='albumSongsList' >

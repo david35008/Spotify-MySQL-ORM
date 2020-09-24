@@ -17,18 +17,18 @@ function ListOfAlbums() {
                     history.push('/')
                 }
             })
-    }, []);
+    }, [history]);
 
     const listToPrint = albumsList.map((album, index) => {
         return (
-            < Album key={album.name + album.album_ID} index={index} album={album} />
+            < Album key={album.name + album.albumId} index={index} album={album} />
         )
     })
 
 
     return (
         <>
-            <NavBar setAlbums={setAlbumsList} searchTypeProps='Search_Album' />
+            <NavBar setAlbums={setAlbumsList} searchTypeProps='Search Album' />
             <h1 className='albumTitle' >Albums</h1><hr />
             <ol className='ArtistList' >
                 {listToPrint}

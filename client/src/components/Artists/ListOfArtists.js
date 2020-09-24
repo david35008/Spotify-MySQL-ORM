@@ -17,17 +17,17 @@ function ListOfArtists() {
                     history.push('/')
                 }
             })
-    }, []);
+    }, [history]);
 
     const listToPrint = artistsList.map((artist, index) => {
         return (
-            < Artist index={index} key={artist.name + artist.artist_ID} artist={artist} />
+            < Artist index={index} key={artist.name + artist.artistId} artist={artist} />
         )
     })
 
     return (
         <>
-            <NavBar setArtists={setArtistsList} searchTypeProps='Search_Artist' />
+            <NavBar setArtists={setArtistsList} searchTypeProps='Search Artist' />
             <h1 className='artistTitle' >Artists</h1>
             <ol>
                 {listToPrint}
