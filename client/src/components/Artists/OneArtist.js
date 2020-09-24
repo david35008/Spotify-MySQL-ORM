@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './OneArtist.css';
 import { Link } from 'react-router-dom';
 import { read } from '../Network/Ajax';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from '../Home/ElementToCarusel';
 import NotFound from '../Services/NotFound';
@@ -16,18 +16,19 @@ function OneArtist() {
     const [songList, setSongsList] = useState([]);
     const [albums, setAlbums] = useState([]);
     const [finish, setFinish] = useState(false)
-
+    const history = useHistory()
     useEffect(() => {
         read(`artists/byId/${id}`)
             .then((res) => {
-                    setArtist(res);
-                    setSongsList(res.Songs);
-                    setAlbums(res.Albums)
-                    setFinish(true)
-            }).catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
+                setArtist(res);
+                setSongsList(res.Songs);
+                setAlbums(res.Albums)
+                setFinish(true)
+            }).catch(err => {
+                if (err.status === 403) {
+                    history.push('/')
+                }
+            })
     }, [id]);
 
     return (

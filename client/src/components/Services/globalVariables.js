@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 export function GetYTId(songId) {
     let video_id = songId.split("v=")[1];
     const ampersandPosition = video_id.indexOf("&");
@@ -14,3 +16,9 @@ export const breakPoints = [
     { width: 1000, itemsToShow: 4 },
     { width: 1200, itemsToShow: 5 },
 ]
+
+export function removeTokents() {
+    Cookies.remove('name')
+    Cookies.remove('token')
+    Cookies.remove('isAdmin')
+}

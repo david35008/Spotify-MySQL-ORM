@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ListOfPlaylists.css';
 import { read } from '../Network/Ajax';
-import { useParams } from 'react-router-dom';
+import { useParams,useHistory } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../Services/NotFound';
 
@@ -11,6 +11,7 @@ function OnePlaylist() {
     const [loading, setLoading] = useState(true);
     const [playList, setPlaylist] = useState();
     const [songList, setSongsList] = useState([]);
+    const history = useHistory()
     const SongsToPrint = songList.map((song) => song.Song)
 
     useEffect(() => {
@@ -20,9 +21,10 @@ function OnePlaylist() {
                 setSongsList(res.Playlists_Songs);
                 setLoading(false);
             })
-            .catch((error) => {
-                console.error(error.message);
-                setLoading(false);
+            .catch(err => {
+                if (err.status === 403) {
+                    history.push('/')
+                }
             })
     }, [id]);
 

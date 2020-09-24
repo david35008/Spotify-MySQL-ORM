@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useHistory } from "react-router-dom";
 import './OneSong.css';
 import { read } from '../Network/Ajax';
 import NotFound from '../Services/NotFound';
@@ -23,54 +23,60 @@ function OneSong() {
     const [song, setSong] = useState();
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const history = useHistory()
 
     useEffect(() => {
         read(`songs/byId/${id}`)
             .then((res) => {
-                setSong(res)})
-            .catch(console.error);
+                setSong(res)
+            })
+            .catch(err => {
+                if (err.status === 403) {
+                    history.push('/')
+                }
+            })
         if (query.get("artist")) {
             read(`artists/byId/${query.get("artist")}`)
-            .then((res) => {
-                setList(res.Songs)
-                setLoading(false)
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
+                .then((res) => {
+                    setList(res.Songs)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setLoading(false);
+                });
         }
         else if (query.get("album")) {
             read(`albums/byId/${query.get("album")}`)
-            .then((res) => {
-                setList(res.Songs)
-                setLoading(false)
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
+                .then((res) => {
+                    setList(res.Songs)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setLoading(false);
+                });
         }
         else if (query.get("playlist")) {
             read(`playlists/byId/${query.get("playlist")}`)
-            .then((res) => {
-                setList(res.Playlists_Songs.map((song) => song.Song))
-                setLoading(false)
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
+                .then((res) => {
+                    setList(res.Playlists_Songs.map((song) => song.Song))
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setLoading(false);
+                });
         } else {
             read('songs/top')
-            .then((res) => {
-                setList(res)
-                setLoading(false)
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
+                .then((res) => {
+                    setList(res)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setLoading(false);
+                });
         }
         // eslint-disable-next-line
     }, [id]);
@@ -96,9 +102,9 @@ function OneSong() {
                     ></ReactPlayer >
 
                     <div className='oneSongTitle' >
-                    <Link to={`/artist/${song.artist_id}`} >{song.Artist.name} - </Link>
-                    <span>{song.name}</span>
-                    <div className='oneSongLength' >Length: {song.length} </div>
+                        <Link to={`/artist/${song.artist_id}`} >{song.Artist.name} - </Link>
+                        <span>{song.name}</span>
+                        <div className='oneSongLength' >Length: {song.length} </div>
                     </div>
                     <div className='buttonsArea' >
                         <span className='views'>{views} views</span>

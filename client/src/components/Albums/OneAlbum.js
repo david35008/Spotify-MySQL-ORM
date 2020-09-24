@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './OneAlbum.css';
 import { read } from '../Network/Ajax';
-import { useParams } from 'react-router-dom';
+import { useParams,useHistory } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../Services/NotFound';
 
@@ -11,7 +11,7 @@ function OneAlbum() {
     const [loading, setLoading] = useState(true);
     const [album, setAlbum] = useState();
     const [songList, setSongsList] = useState([]);
-
+    const history = useHistory()
     useEffect(() => {
         read(`albums/byId/${id}`)
             .then((res) => {
@@ -19,9 +19,10 @@ function OneAlbum() {
                 setSongsList(res.Songs);
                 setLoading(false);
             })
-            .catch((err) => {
-                console.error(err)
-                setLoading(false);
+            .catch(err => {
+                if (err.status === 403) {
+                    history.push('/')
+                }
             })
     }, [id]);
 

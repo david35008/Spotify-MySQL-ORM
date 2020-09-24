@@ -7,6 +7,7 @@ import SideBar from '../SideBar/SideBar.js';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { removeTokents } from '../Services/globalVariables';
 
 function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums, setArtists, setPlaylists, searchTypeProps = 'not work here' }) {
 
@@ -117,9 +118,7 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
     }
 
 const handleLogOut = () => {
-    Cookies.remove('name')
-    Cookies.remove('token')
-    Cookies.remove('isAdmin')
+    removeTokents()
     value.setIsLogged(false);
 }
 

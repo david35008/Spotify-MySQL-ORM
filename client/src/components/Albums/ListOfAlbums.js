@@ -2,21 +2,26 @@ import React, { useEffect, useState } from 'react';
 import './ListOfAlbums.css';
 import { read } from '../Network/Ajax';
 import NavBar from '../NavBar/NavBar';
+import { useHistory } from 'react-router-dom';
 import Album from './Album';
 
 function ListOfAlbums() {
 
     const [albumsList, setAlbumsList] = useState([])
-
+    const history = useHistory()
     useEffect(() => {
         read('albums')
             .then(res => setAlbumsList(res))
-            .catch(console.error)
+            .catch(err => {
+                if (err.status === 403) {
+                    history.push('/')
+                }
+            })
     }, []);
 
     const listToPrint = albumsList.map((album, index) => {
         return (
-            < Album  key={album.name + album.album_ID} index={index} album={album} />
+            < Album key={album.name + album.album_ID} index={index} album={album} />
         )
     })
 

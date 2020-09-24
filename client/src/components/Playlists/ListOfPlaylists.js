@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import './ListOfPlaylists.css';
 import { read } from '../Network/Ajax';
+import { useHistory } from 'react-router-dom';
 import NavBar from '../NavBar/NavBar';
 import PlayList from './PlayList';
 
 function ListOfPlaylists() {
 
     const [playListsList, setPlayListsList] = useState([])
-
+    const history = useHistory()
     useEffect(() => {
         read('playLists')
             .then(res => setPlayListsList(res))
+            .catch(err => {
+                if (err.status === 403) {
+                    history.push('/')
+                }
+            })
     }, []);
 
     const listToPrint = playListsList.map((playlist, index) => {

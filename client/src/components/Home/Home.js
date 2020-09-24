@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
 import './Home.css';
 import NavBar from '../NavBar/NavBar';
-import { read } from '../Network/Ajax';
+import { read, create } from '../Network/Ajax';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from './ElementToCarusel';
-import { breakPoints } from '../Services/globalVariables';
+import { breakPoints,removeTokents } from '../Services/globalVariables';
 import Cookies from 'js-cookie';
 import { Logged } from '../Services/Aouthorizetion';
 
@@ -19,16 +19,19 @@ function Home() {
     const value = useContext(Logged);
 
     useEffect(() => {
+        if (Cookies.get('token')) {
+            create('users/valid', Cookies.get())
+                .then(res => { 
+                    if(!res) {
+                        removeTokents();
+                        value.setIsLogged(false); 
+                    }
+                })
+                .catch(err => { value.setIsLogged(false); removeTokents(); console.error(err); })
+        }
         read('songs/top')
             .then(res => setSongsList(res))
-            .catch(error => {
-                console.error(error.status);
-                if (error.status) {
-                    Cookies.remove('name')
-                    Cookies.remove('token')
-                    value.setIsLogged(false);
-                }
-            })
+            .catch(console.error)
         read('albums/top')
             .then(res => setAlbums(res))
             .catch(console.error)
