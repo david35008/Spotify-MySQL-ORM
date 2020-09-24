@@ -1,6 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const usersRouter = express.Router();
-const DataBase = require('../connection');
+const { User } = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -24,18 +25,16 @@ usersRouter.post('/register', async (req, res) => {
         createdAt: formatDate(new Date()),
         updatedAt: formatDate(new Date())
     }
-    DataBase.query(`INSERT INTO users Set ?`, newUser, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(400).json("An error occurred.");
-        } else {
-            res.json("1 user successfully inserted into db");
-        }
-    })
+    try {
+        const newSong = await User.create(newUser);
+        res.json("1 user successfully inserted into db");
+    } catch (e) {
+        res.json({ message: e.message });
+    };
 })
 
 usersRouter.post("/valid", (req, res) => {
-    jwt.verify(req.body.token, 'my_secret_key', (error, data) => {
+    jwt.verify(req.body.token, process.env.SECRET_KEY, (error, data) => {
         if (error) {
             res.sendStatus(403);
         } else {
@@ -44,27 +43,30 @@ usersRouter.post("/valid", (req, res) => {
     })
 })
 
-usersRouter.post("/logIn", (req, res) => {
-    const { email, password } = req.body;
-    DataBase.query(`SELECT * 
-    FROM users 
-    WHERE email = '${email}'`, async (err, result, fields) => {
-        if (err) {
-            res.status(400).json("An error occurred.");
-        } else if (result[0]) {
-            if (await bcrypt.compare(password, result[0].password)) {
-                console.log(result[0].user_ID);
-                const user = result[0].user_ID
-                const token = jwt.sign({ user }, 'my_secret_key')
-                res.json({
-                    name: result[0].name,
-                    token
-                });
-            } else {
-                res.status(403).json({ message: 'incorect password' });
+usersRouter.post("/logIn", async (req, res) => {
+    const { email, password, remember_token } = req.body;
+    try {
+        const result = await User.findOne({ where: { email: email } });
+        if (await bcrypt.compare(password, result.password)) {
+            const user = result.user_ID
+            const newToken ={
+                isAdmin: result.is_admin,
+                user
             }
+            if (!remember_token) {
+                newToken.exp = Math.floor(Date.now() / 1000) + 3600
+            } 
+            const token = jwt.sign(newToken, process.env.SECRET_KEY)
+            res.cookie('name', result.name)
+            res.cookie('isAdmin', result.is_admin)
+            res.cookie('token', token)
+            res.json(`welcome back ${result.name}`)
+        } else {
+            res.status(403).json({ message: 'The email or password you’ve entered doesn’t correct.' });
         }
-    })
+    } catch (e) {
+        res.json({ message: e.message });
+    };
 })
 
 module.exports = usersRouter;

@@ -2,10 +2,10 @@ import React from 'react';
 import './SideBar.css';
 import { Container, Row, Col, Nav } from "react-bootstrap";
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 
 function SideBar({ menuClass, ToggleMenu }) {
-
 
     return (
         <Container className={menuClass} fluid>
@@ -17,7 +17,7 @@ function SideBar({ menuClass, ToggleMenu }) {
                         <Link className="refButton" to='/albums' onClick={ToggleMenu}>Albums</Link>
                         <Link className="refButton" to='/Artists' onClick={ToggleMenu}>Artists</Link>
                         <Link className="refButton" to='/Playlists' onClick={ToggleMenu}>Playlists</Link>
-                        <Link className="refButton" to='/Admin' onClick={ToggleMenu}>Admin</Link>
+                        {Cookies.get('isAdmin') && <Link className="refButton" to='/Admin' onClick={ToggleMenu}>Admin</Link>}
                     </Nav>
                 </Col>
             </Row>

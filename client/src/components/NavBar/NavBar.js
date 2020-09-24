@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SideBar from '../SideBar/SideBar.js';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
 
 function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums, setArtists, setPlaylists, searchTypeProps = 'not work here' }) {
 
@@ -15,8 +15,6 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
     const [inputValue, setInputValue] = useState('')
     const [prevList, setPrevList] = useState();
     const [prevType, setPrevType] = useState();
-
-    const [cookies, setCookie, removeCookie]  = useCookies()
 
     const inputRef = useRef();
 
@@ -119,8 +117,9 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
     }
 
 const handleLogOut = () => {
-    removeCookie('name')
-    removeCookie('token')
+    Cookies.remove('name')
+    Cookies.remove('token')
+    Cookies.remove('isAdmin')
     value.setIsLogged(false);
 }
 
@@ -131,7 +130,7 @@ const handleLogOut = () => {
                 <Button onClick={ToggleMenu} bg="dark" variant="dark" aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigtion" >
                     <span className="navbar-toggler-icon">  </span>
                 </Button>
-                <Navbar.Brand variant="success"><Link to='/' >My Spotify, hello {cookies.name}</Link></Navbar.Brand>
+                <Navbar.Brand variant="success"><Link to='/' >My Spotify, hello {Cookies.get('name')}</Link></Navbar.Brand>
                 <Button onClick={handleLogOut} >log out </Button>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">

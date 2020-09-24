@@ -16,7 +16,7 @@ function ListOfArtists() {
 
     const listToPrint = artistsList.map((artist, index) => {
         return (
-            < Artist index={index} key={artist.name + artist.artist_ID} artist_ID={artist.artist_ID} />
+            < Artist index={index} key={artist.name + artist.artist_ID} artist={artist} />
         )
     })
 

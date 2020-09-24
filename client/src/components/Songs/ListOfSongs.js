@@ -10,7 +10,7 @@ function ListOfSongs({ query, songList, albumDisplay = 'inline', artistDisplay =
     return (
         <Carousel color="white" breakPoints={breakPoints} >
             {songList.map((song, index) => (
-                <Song query={query} key={song.name + song.song_ID} song={song} index={index} albumDisplay={albumDisplay} artistDisplay={artistDisplay} />
+                <Song query={query} key={song.name + song.id} song={song} index={index} albumDisplay={albumDisplay} artistDisplay={artistDisplay} />
             ))}
         </Carousel>
     )

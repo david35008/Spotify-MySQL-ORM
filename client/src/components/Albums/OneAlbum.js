@@ -9,14 +9,14 @@ function OneAlbum() {
 
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
-    const [album, setAlbums] = useState();
+    const [album, setAlbum] = useState();
     const [songList, setSongsList] = useState([]);
 
     useEffect(() => {
         read(`albums/byId/${id}`)
             .then((res) => {
-                setAlbums(res[0]);
-                setSongsList(res);
+                setAlbum(res);
+                setSongsList(res.Songs);
                 setLoading(false);
             })
             .catch((err) => {
@@ -30,14 +30,14 @@ function OneAlbum() {
             <div className='OneAlbumContainer'>
                 <img src={album.cover_img} alt={album.name} className='OneAlbumImage' />
                 <div className='OneAlbumDescription'>
-                    <div>Name: {album.album_name}</div>
-                    <div>Artist: {album.artist_name}</div>
+                    <div>Name: {album.name}</div>
+                    <div>Artist: {album.Artist.name}</div>
                     {album.created_at && <div>created_at: {new Date(album.created_at).toDateString()}</div>}
                     {album.upload_at && <div>upload_at{new Date(album.upload_at).toDateString()}</div>}
                 </div>
             </div>
             <div className='albumSongsList' >
-                <ListOfSongs query={{ path: "album", id: album.album_ID }} songList={songList} albumDisplay={"none"} />
+                <ListOfSongs query={{ path: "album", id: album.id }} songList={songList} albumDisplay={"none"} />
             </div>
         </div>)
             :

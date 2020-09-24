@@ -5,7 +5,7 @@ const songs = require('./Routes/songs');
 const albums = require('./Routes/albums');
 const artists = require('./Routes/artists');
 const playlists = require('./Routes/playlists');
-const playlistsSongs =require('./Routes/PlaylistsSongRouter');
+const songsInPlaylists =require('./Routes/songsInPlaylists');
 const users = require('./Routes/users');
 const jwt = require('jsonwebtoken');
 const app = express();
@@ -26,26 +26,29 @@ app.use(morgan(function (tokens, req, res) {
   }
 }));
 
-// app.use('/users', users);
+app.use('/users', users);
 
-// app.use(ensureToken);
+app.use(ensureToken);
 
-// function ensureToken(req, res, next) {
-//   const bearerHeader = req.headers['authorization'];
-//   if (typeof bearerHeader !== 'undefined') {
-//     jwt.verify(bearerHeader, 'my_secret_key', (error, data) => {
-//       if (error) {
-//         res.status(403).send('incoreccet token');
-//       } else {
-//         res.token = bearerHeader;
-//         next();
-//       }
-//     })
-//   } else {
-//     res.sendStatus(403);
-//   }
-// }
-// app.use('/songs', songs);
+function ensureToken(req, res, next) {
+  const bearerHeader = req.headers['authorization'];
+  if (typeof bearerHeader !== 'undefined') {
+    var decoded = jwt.decode(bearerHeader);
+    console.log(decoded);
+    jwt.verify(bearerHeader, process.env.SECRET_KEY, (error, data) => {
+      if (error) {
+        res.status(403).send('incoreccet token');
+      } else {
+        res.token = bearerHeader;
+        next();
+      }
+    })
+  } else {
+    res.sendStatus(403);
+  }
+}
+
+app.use('/songs', songs);
 
 app.use('/albums', albums);
 
@@ -53,7 +56,7 @@ app.use('/artists', artists);
 
 app.use('/playlists', playlists);
 
-app.use('/playlistsSongs', playlistsSongs)
+app.use('/songsInPlaylists', songsInPlaylists)
 
 const unknownEndpoint = (request, response) => {
   response.status(404).json({ error: 'unknown endpoint' });
@@ -73,7 +76,5 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+module.exports = app;

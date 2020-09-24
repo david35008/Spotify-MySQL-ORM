@@ -16,7 +16,7 @@ function ListOfAlbums() {
 
     const listToPrint = albumsList.map((album, index) => {
         return (
-            < Album  key={album.name + album.album_ID} index={index} album_ID={album.album_ID} />
+            < Album  key={album.name + album.album_ID} index={index} album={album} />
         )
     })
 

@@ -5,17 +5,47 @@ const { Op } = require("sequelize");
 
 albumsRouter.get("/", async (req, res) => {
     try {
-        const allAlbums = await Album.findAll();
-        res.json(allAlbums);
+        const allAlbums = await Album.findAll({
+            include: [{
+                model: Artist,
+                attributes: ["name"]
+            }, {
+                model: Song,
+                include: [
+                    {
+                        model: Artist,
+                        attributes: ["name"],
+                    },
+                    {
+                        model: Album,
+                        attributes: ["name"],
+                    },
+                ],
+            }
+        ]
+        });
+res.json(allAlbums);
     } catch (e) {
-        res.json({ message: e.message });
-    };
+    res.json({ message: e.message });
+};
 });
 
 albumsRouter.get("/byId/:id", async (req, res) => {
     try {
         const result = await Album.findByPk(req.params.id, {
-            include: [Artist, Song]
+            include: [Artist, {
+                model: Song,
+                include: [
+                    {
+                        model: Artist,
+                        attributes: ["name"],
+                    },
+                    {
+                        model: Album,
+                        attributes: ["name"],
+                    },
+                ],
+            }]
         });
         res.json(result);
     } catch (e) {

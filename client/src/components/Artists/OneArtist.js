@@ -15,59 +15,48 @@ function OneArtist() {
     const [artist, setArtist] = useState();
     const [songList, setSongsList] = useState([]);
     const [albums, setAlbums] = useState([]);
+    const [finish, setFinish] = useState(false)
 
     useEffect(() => {
-        let isMounted = true;
         read(`artists/byId/${id}`)
             .then((res) => {
-                if (isMounted) {
-                    setArtist(res[0]);
-                    setSongsList(res);
-                }
+                    setArtist(res);
+                    setSongsList(res.Songs);
+                    setAlbums(res.Albums)
+                    setFinish(true)
             }).catch((err) => {
                 console.error(err);
                 setLoading(false);
             });
-        read(`albums/byArtist/${id}`)
-            .then((res) => {
-                if (isMounted) {
-                    setAlbums(res);
-                    setLoading(false);
-                }
-            }).catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
-            return () => { isMounted = false };
     }, [id]);
 
     return (
-        artist ?
+        finish ?
             <div className='OneArtist'>
                 <div className='ArtistContainer'>
-                    <img src={artist.image} alt={artist.artist_name} className='artistImage' />
+                    <img src={artist.cover_img} alt={artist.name} className='artistImage' />
                     <div className='OneArtitstDescriptionContainer'>
-                        <div>{artist.artist_name}</div>
+                        <div>{artist.name}</div>
                         <div className='OneArtitstDescription'>About: {artist.description}</div>
-                        {artist.created_at && <div className='artisrCreatedAt' >created_at: {new Date(artist.created_at).toDateString()}</div>}
+                        {artist.updatedAt && <div className='artisrCreatedAt' >created_at: {new Date(artist.updatedAt).toDateString()}</div>}
                     </div>
                 </div>
 
                 <div className='OneArtistSongList' >
                     <Carousel className='OneArtistAlbums' color="white" breakPoints={breakPoints} >
                         {albums.map((album) =>
-                            <ElementToCarusel query={{ path: "album", id: artist.artist_ID }} key={album.cover_img + album.name} element={album}/>
+                            <ElementToCarusel query={{ path: "album", id: artist.id }} key={album.cover_img + album.name} element={album} />
                         )}
                     </Carousel>
                     <ol className='song-list'>
                         {songList.map((song, index) => (
                             <li className='song' key={Math.random()}>
-                                <Link to={`/song/${song.song_ID}?artist=${artist.artist_ID}`} className='songName' >
+                                <Link to={`/song/${song.id}?artist=${artist.id}`} className='songName' >
                                     <span>  <img className='imgList' height='70px' width='100px' src={`https://img.youtube.com/vi/${GetYTId(song.youtube_link)}/0.jpg`} alt={''} /></span>
                                     <span className='nameAlbumArtist'>
                                         <div> {song.name} </div>
-                                        <span className='albumName' >{song.album_name}</span><br />
-                                        <span className='artistName' >{song.artist_name}</span>
+                                        <span className='albumName' >{albums[0].name}</span><br />
+                                        <span className='artistName' >{artist.name}</span>
                                     </span>
                                 </Link>
                             </li>

@@ -14,24 +14,22 @@ import Admin from './components/Admin/Admin';
 import LogIn from './components/LogIn/Login';
 import Registaer from './components/LogIn/registaer';
 import { Logged } from './components/Services/Aouthorizetion';
-import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
 import { create } from './components/Network/Ajax';
 
 function App() {
-  const [cookies] = useCookies()
-
   const [isLogged, setIsLogged] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (cookies.name && cookies.token) {
-      create('users/valid', cookies)
+    if (Cookies.get('name') && Cookies.get('token')) {
+      create('users/valid', Cookies.get())
         .then(res => { setIsLogged(res); setLoading(false) })
         .catch(err => { setLoading(false); console.error(err); })
     } else {
       setLoading(false)
     }
-  }, [cookies])
+  }, [])
 
   return (
     <div className="App">

@@ -5,7 +5,7 @@ import { read } from '../Network/Ajax';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from './ElementToCarusel';
 import { breakPoints } from '../Services/globalVariables';
-import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
 import { Logged } from '../Services/Aouthorizetion';
 
 
@@ -16,18 +16,16 @@ function Home() {
     const [artists, setArtists] = useState([]);
     const [playlists, setPlaylists] = useState([]);
 
-    const [cookies, setCookie, removeCookie] = useCookies()
-
     const value = useContext(Logged);
 
     useEffect(() => {
         read('songs/top')
             .then(res => setSongsList(res))
             .catch(error => {
-                console.log(error.status);
+                console.error(error.status);
                 if (error.status) {
-                    removeCookie('name')
-                    removeCookie('token')
+                    Cookies.remove('name')
+                    Cookies.remove('token')
                     value.setIsLogged(false);
                 }
             })
@@ -49,7 +47,7 @@ function Home() {
             <h2 className='listTitle'>Top Songs</h2>
             <Carousel color="white" breakPoints={breakPoints} >
                 {songList.map((song) => (
-                    <ElementToCarusel query={{ path: "song", id: song.song_ID }} key={song.cover_img + song.name} element={song} />
+                    <ElementToCarusel query={{ path: "song", id: song.id }} key={song.cover_img + song.name} element={song} />
                 ))}
             </Carousel>
             <br /><br />

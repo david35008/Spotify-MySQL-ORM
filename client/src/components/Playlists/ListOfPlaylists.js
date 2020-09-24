@@ -13,9 +13,9 @@ function ListOfPlaylists() {
             .then(res => setPlayListsList(res))
     }, []);
 
-    const listToPrint = playListsList.map((playList, index) => {
+    const listToPrint = playListsList.map((playlist, index) => {
         return (
-            < PlayList key={playList.name + playList.playList_ID} index={index} playList_ID={playList.playlist_ID}/>
+            < PlayList key={playlist.name + playlist.id} index={index} playlist={playlist}/>
         )
     })
 

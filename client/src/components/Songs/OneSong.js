@@ -26,19 +26,43 @@ function OneSong() {
 
     useEffect(() => {
         read(`songs/byId/${id}`)
-            .then((res) => setSong(res[0]))
+            .then((res) => {
+                setSong(res)})
             .catch(console.error);
-        let path = 'songs/top';
         if (query.get("artist")) {
-            path = `artists/byId/${query.get("artist")}`;
+            read(`artists/byId/${query.get("artist")}`)
+            .then((res) => {
+                setList(res.Songs)
+                setLoading(false)
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            });
         }
         else if (query.get("album")) {
-            path = `albums/byId/${query.get("album")}`;
+            read(`albums/byId/${query.get("album")}`)
+            .then((res) => {
+                setList(res.Songs)
+                setLoading(false)
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            });
         }
         else if (query.get("playlist")) {
-            path = `playlists/byId/${query.get("playlist")}`;
-        }
-        read(path)
+            read(`playlists/byId/${query.get("playlist")}`)
+            .then((res) => {
+                setList(res.Playlists_Songs.map((song) => song.Song))
+                setLoading(false)
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            });
+        } else {
+            read('songs/top')
             .then((res) => {
                 setList(res)
                 setLoading(false)
@@ -47,6 +71,7 @@ function OneSong() {
                 console.error(err);
                 setLoading(false);
             });
+        }
         // eslint-disable-next-line
     }, [id]);
 
@@ -71,7 +96,7 @@ function OneSong() {
                     ></ReactPlayer >
 
                     <div className='oneSongTitle' >
-                    <Link to={`/artist/${song.artist_ID}`} >{song.artist_name} - </Link>
+                    <Link to={`/artist/${song.artist_id}`} >{song.Artist.name} - </Link>
                     <span>{song.name}</span>
                     <div className='oneSongLength' >Length: {song.length} </div>
                     </div>
@@ -82,15 +107,15 @@ function OneSong() {
                         <img className='dislikeButton' src={disLike} alt={''} onClick={() => alert('i am dislike button')} />
                         <img className='addToPlayListButton' src={addToPlayList} alt={''} onClick={() => alert('i am addToPlayList button')} />
                     </div>
-                    <Link to={`/album/${song.album_ID}`} className='oneSongAlbum' >Album: {song.album_name}</Link><br />
+                    <Link to={`/album/${song.artist_id}`} className='oneSongAlbum' >Album: {song.Album.name}</Link><br />
                     <ReadMore content={song.lyrics} maxChar="50" />
-                    <div>Created: {new Date(song.created_at).toDateString()}</div>
-                    <div>Upload: {new Date(song.upload_at).toDateString()} </div>
+                    <div>Created: {new Date(song.createdAt).toDateString()}</div>
+                    <div>Upload: {new Date(song.updatedAt).toDateString()} </div>
                 </div>
                 <div className='songRightSide'>
                     <h3 className='Suggestions'>Suggestions of the same kind:</h3>
                     <SongsListForOneSong query={{ path: queryIdKey[0].substring(1), id: queryIdKey[1] }} songList={list.filter((element) =>
-                        element.song_ID !== song.song_ID
+                        element.id !== song.id
                     )} split={0} />
                 </div>
             </div> :

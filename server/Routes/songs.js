@@ -15,7 +15,16 @@ songsRouter.get("/", async (req, res) => {
 songsRouter.get("/byId/:id", async (req, res) => {
   try {
     const result = await Song.findByPk(req.params.id, {
-        include: [Album, Artist]
+        include:  [
+            {
+                model: Artist,
+                attributes: ["name"],
+            },
+            {
+                model: Album,
+                attributes: ["name"],
+            },
+        ]
     });
     res.json(result);
 } catch (e) {
@@ -40,7 +49,16 @@ songsRouter.get("/byName/:name", async (req, res) => {
 
 songsRouter.get("/top", async (req, res) => {
   try {
-    const allSongs = await Song.findAll({ limit: 20 });
+    const allSongs = await Song.findAll({ limit: 20,include:  [
+        {
+            model: Artist,
+            attributes: ["name"],
+        },
+        {
+            model: Album,
+            attributes: ["name"],
+        },
+    ] });
     res.json(allSongs);
 } catch (e) {
     res.json({ message: e.message });
