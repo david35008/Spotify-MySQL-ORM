@@ -97,7 +97,7 @@ albumsRouter.put("/:id", async (req, res) => {
         const editAlbum = await Album.update(body, {
             where: { id: req.params.id }
         })
-        res.send(editAlbum);
+        res.json(editAlbum);
     } catch (e) {
         res.json({ message: e.message });
     };

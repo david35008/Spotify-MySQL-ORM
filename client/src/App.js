@@ -13,6 +13,7 @@ import OneSong from './components/Songs/OneSong';
 import Admin from './components/Admin/Admin';
 import LogIn from './components/LogIn/Login';
 import Registaer from './components/LogIn/registaer';
+import MyLibrary from './components/MyLibrary/MyLibrary';
 import { Logged } from './components/Services/Aouthorizetion';
 import Cookies from 'js-cookie';
 import { create } from './components/Network/Ajax';
@@ -74,6 +75,9 @@ function App() {
                 </Route>
                 <Route exact path="/albums">
                   <ListOfAlbums />
+                </Route>
+                <Route exact path="/mylibrary">
+                  <MyLibrary />
                 </Route>
                 {isAdmin && (
                   <Route path="/admin">

@@ -98,7 +98,7 @@ artistsRouter.put("/:id", async (req, res) => {
         const editArtist = await Artist.update(body, {
             where: { id: req.params.id }
         })
-        res.send(editArtist);
+        res.json(editArtist);
     } catch (e) {
         res.json({ message: e.message });
     };

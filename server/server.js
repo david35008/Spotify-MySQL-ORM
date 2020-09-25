@@ -28,7 +28,7 @@ app.use(morgan(function (tokens, req, res) {
 
 app.use('/users', users);
 
-app.use(ensureToken);
+// app.use(ensureToken);
 
 function ensureToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
@@ -37,7 +37,8 @@ function ensureToken(req, res, next) {
     // console.log(decoded.exp -Math.floor(Date.now() / 1000) );
     jwt.verify(bearerHeader, process.env.SECRET_KEY, (error, data) => {
       if (error) {
-        res.status(403).send('incoreccet token');
+        console.log('here');
+        res.status(403).json({message:'incoreccet token'});
       } else {
         const newToken = {
           isAdmin: decoded.isAdmin,
@@ -54,7 +55,7 @@ function ensureToken(req, res, next) {
       }
     })
   } else {
-    res.sendStatus(403);
+    res.status(403).json({message: 'token is requierd'});
   }
 }
 

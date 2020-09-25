@@ -27,7 +27,19 @@ body {
   background: #b30000; 
 }
 
-.notFound {
+
+.goBack {
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 50px;
+}
+
+.goBack:hover {
+  text-decoration: underline;
+}
+
+.goHome {
   font-size: 100px;
 }
 

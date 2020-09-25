@@ -46,7 +46,8 @@ usersRouter.post('/register', async (req, res) => {
 usersRouter.post("/valid", (req, res) => {
     jwt.verify(req.body.token, process.env.SECRET_KEY, (error, data) => {
         if (error) {
-            res.sendStatus(403);
+            console.log('here');
+            res.status(403).json({message: error});
         } else {
             let decoded = jwt.decode(req.body.token);
             res.json({ valid: true, isAdmin: decoded.isAdmin })

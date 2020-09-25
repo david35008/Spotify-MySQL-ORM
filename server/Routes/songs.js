@@ -85,7 +85,7 @@ songsRouter.put("/:id", async (req, res) => {
     const editSong = await Song.update(body, {
         where: { id: req.params.id }
     })
-    res.send(editSong);
+    res.json(editSong);
 } catch (e) {
     res.json({ message: e.message });
 };

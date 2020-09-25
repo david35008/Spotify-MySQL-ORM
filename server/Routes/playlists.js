@@ -28,7 +28,7 @@ playlistsRouter.get("/", async (req, res) => {
         });
         res.json(allPlaylists);
     } catch (e) {
-        res.json({ message: e });
+        res.json({ message: e.message });
     };
 });
 
@@ -105,7 +105,7 @@ playlistsRouter.put("/:id", async (req, res) => {
         const editPlaylist = await Playlist.update(body, {
             where: { id: req.params.id }
         })
-        res.send(editPlaylist);
+        res.json(editPlaylist);
     } catch (e) {
         res.json({ message: e.message });
     };
