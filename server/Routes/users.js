@@ -17,17 +17,27 @@ function formatDate(date) {
 
 usersRouter.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = {
-        name,
-        email,
-        password: hashedPassword,
-        createdAt: formatDate(new Date()),
-        updatedAt: formatDate(new Date())
-    }
     try {
-        const newSong = await User.create(newUser);
-        res.json("1 user successfully inserted into db");
+        const result = await User.findOne({
+            where: { email: email }
+        })
+        if (!result) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const newUser = {
+                name,
+                email,
+                password: hashedPassword,
+                createdAt: formatDate(new Date()),
+                updatedAt: formatDate(new Date())
+            }
+            const newSong = await User.create(newUser);
+            res.json("1 user successfully inserted into db");
+
+            res.json({ message: e.message });
+
+        } else {
+            res.status(406).json({ message: 'Email alreay taken!' })
+        }
     } catch (e) {
         res.json({ message: e.message });
     };
@@ -39,7 +49,7 @@ usersRouter.post("/valid", (req, res) => {
             res.sendStatus(403);
         } else {
             let decoded = jwt.decode(req.body.token);
-            res.json({valid :true, isAdmin: decoded.isAdmin})
+            res.json({ valid: true, isAdmin: decoded.isAdmin })
         }
     })
 })
@@ -50,14 +60,14 @@ usersRouter.post("/logIn", async (req, res) => {
         const result = await User.findOne({ where: { email: email } });
         if (await bcrypt.compare(password, result.password)) {
             const user = result.id
-            const newToken ={
+            const newToken = {
                 isAdmin: result.isAdmin,
                 user
             }
             if (!rememberToken) {
                 newToken.rememberToken = rememberToken,
-                newToken.exp = Math.floor(Date.now() / 1000) + (60*30)
-            } 
+                    newToken.exp = Math.floor(Date.now() / 1000) + (60 * 30)
+            }
             const token = jwt.sign(newToken, process.env.SECRET_KEY)
             res.cookie('name', result.name)
             res.cookie('isAdmin', result.isAdmin)

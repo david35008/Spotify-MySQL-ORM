@@ -99,3 +99,8 @@ color: white;
 .links a{
 margin-left: 4px;
 }
+
+.email {
+    font-size: 18px;
+    font-weight: bold;
+}

@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useHistory } from 'react-router-dom';
 import { create } from '../Network/Ajax';
+import userName from '../../images/userName.png';
+import admin from '../../images/admin.png';
 
 function LogIn() {
 
     const { register, handleSubmit, errors } = useForm();
+    const [error, setError] = useState(<span></span>)
 
     const location = useHistory()
 
     const onSubmit = (data) => {
         create('users/register', data)
-            .then(res => { 
+            .then(res => {
                 console.log(res);
-                location.push('/') 
+                location.push('/')
             }
-                )
-            .catch(console.error)
+            )
+            .catch(e => {
+                setError(e.message)
+                console.error(e.message)
+            })
 
     };
 
@@ -32,29 +38,29 @@ function LogIn() {
                             <form onSubmit={handleSubmit(onSubmit)} >
                                 <div className="input-group form-group">
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text"><i className="fas fa-key"></i></span>
+                                        <span className="input-group-text"><img src={userName} height='24px' alt='user' className="fas fa-user" /></span>
                                     </div>
                                     <input name="name" type='text' placeholder='name..' ref={register({ required: true })} className="form-control" />
-                                    {errors.name && 'Password is required.'}
                                 </div>
                                 <div className="input-group form-group">
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text"><i className="fas fa-user"></i></span>
+                                        <span className="input-group-text"><i className="fas fa-key email" >@</i></span>
                                     </div>
                                     <input name="email" type='email' className="form-control" placeholder='email..' ref={register({ required: true, pattern: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ })} />
-                                    {errors.email && 'Email is required.'}
+
                                 </div>
                                 <div className="input-group form-group">
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text"><i className="fas fa-key"></i></span>
+                                        <span className="input-group-text"><img src={admin} height='24px' alt='user' className="fas fa-user negetiveColor" /></span>
                                     </div>
                                     <input name="password" type='password' className="form-control" placeholder='password' ref={register({ required: true, pattern: /\d+/ })} />
-                                    {errors.password && 'Password is required.'}
+
                                 </div>
                                 <div className="row align-items-center remember">
                                     <input type="checkbox" name="rememberToken" ref={register()} />Remember Me
                     </div>
                                 <div className="form-group">
+                                    {error} {errors.name && 'name is required.'} {errors.email && 'Email is required.'} {errors.password && 'Password is required.'}
                                     <input type="submit" value="Sign Up" className="btn float-right loginBtn" />
                                 </div>
                             </form>

@@ -1,24 +1,27 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { create } from '../Network/Ajax';
 import { Logged } from '../Services/Aouthorizetion';
 import './forms.css';
 import { Modal } from 'react-bootstrap';
-import Hilarious from '../../images/Hilarious.gif'
+import Hilarious from '../../images/Hilarious.gif';
+import userName from '../../images/userName.png';
+import admin from '../../images/admin.png';
 
 function LogIn() {
     const { register: logIn, handleSubmit, errors } = useForm();
-
+    const [error, setError] =useState(<span></span>)
     const value = useContext(Logged);
-
     const onSubmit = (data) => {
         create('users/logIn', data)
             .then(res => {
                 console.log(res);
                 value.setIsLogged(true);
             })
-            .catch(console.error)
+            .catch(e=>{
+                setError(e.message)
+                console.error(e.message)})
     };
     const [openModal, setOpenModal] = useState(false);
     const handleClose = () => setOpenModal(false);
@@ -26,11 +29,11 @@ function LogIn() {
     return (
         <div className='enteryForm' >
             <Modal show={openModal} onHide={handleClose} onEscapeKeyDown={handleClose} backdrop="static" keyboard={false} className='modalForget' >
-            <Modal.Header closeButton>
-            <Modal.Title>Ha Ha you Forgot Your Password</Modal.Title>
+                <Modal.Header closeButton>
+                    <Modal.Title>Ha Ha you Forgot Your Password</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <img src={Hilarious} alt={' '}  width='450px' />
+                    <img src={Hilarious} alt={' '} width='450px' />
                 </Modal.Body>
             </Modal>
             <div className="container">
@@ -48,22 +51,24 @@ function LogIn() {
                             <form onSubmit={handleSubmit(onSubmit)} >
                                 <div className="input-group form-group">
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text"><i className="fas fa-user"></i></span>
+                                        <span className="input-group-text"><img src={userName} height='24px' alt='user' className="fas fa-user"/></span>
                                     </div>
                                     <input name="email" type='email' className="form-control" placeholder='email..' ref={logIn({ required: true, pattern: /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ })} />
-                                    {errors.email && 'Email is required.'}
                                 </div>
                                 <div className="input-group form-group">
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text"><i className="fas fa-key"></i></span>
+                                        <span className="input-group-text"><img src={admin} height='24px' alt='user' className="fas fa-user negetiveColor"/></span>
                                     </div>
                                     <input name="password" type='password' className="form-control" placeholder='password' ref={logIn({ required: true, pattern: /\d+/ })} />
-                                    <div>  {errors.password && 'Password is required.'}</div>
+                                    
                                 </div>
                                 <div className="row align-items-center remember">
                                     <input name="rememberToken" type="checkbox" ref={logIn()} />Remember Me
                         </div>
                                 <div className="form-group">
+                                {errors.email && 'Email is required.'}<br/>
+                                {errors.password && 'Password is required.'}
+                                {error}
                                     <input type="submit" value="Login" className="btn float-right loginBtn" />
                                 </div>
                             </form>

@@ -26,6 +26,9 @@
 }
 
 .refButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     padding: .9rem 1rem;
     border-block-end: 1px solid #343A40;
     width: 100%;
@@ -39,7 +42,12 @@
 
 .nav {
     text-align: left;
-    font-size: 15px;
+    font-size: 18px;
     width: 205px;
+    margin-top: 2px;
     margin-left: -20px;
+}
+
+.negetiveColor {
+    filter: invert(100%)
 }
