@@ -38,7 +38,8 @@ usersRouter.post("/valid", (req, res) => {
         if (error) {
             res.sendStatus(403);
         } else {
-            res.send(true)
+            let decoded = jwt.decode(req.body.token);
+            res.json({valid :true, isAdmin: decoded.isAdmin})
         }
     })
 })
@@ -48,13 +49,14 @@ usersRouter.post("/logIn", async (req, res) => {
     try {
         const result = await User.findOne({ where: { email: email } });
         if (await bcrypt.compare(password, result.password)) {
-            const user = result.userId
+            const user = result.id
             const newToken ={
                 isAdmin: result.isAdmin,
                 user
             }
             if (!rememberToken) {
-                newToken.exp = Math.floor(Date.now() / 1000) + 3600
+                newToken.rememberToken = rememberToken,
+                newToken.exp = Math.floor(Date.now() / 1000) + (60*30)
             } 
             const token = jwt.sign(newToken, process.env.SECRET_KEY)
             res.cookie('name', result.name)

@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { create } from '../../Network/Ajax';
 
+
 function AddArtist({ openModal, setOpenModal, formatDate }) {
 
     const [artistName, setArtistName] = useState('');

@@ -65,6 +65,10 @@ songsRouter.get("/top", async (req, res) => {
 };
 });
 
+songsRouter.use((req, res, next)=> {
+    req.isAdmin ? next() : res.status(403)
+})
+
 songsRouter.post("/", async (req, res) => {
   try {
     const { body } = req;

@@ -85,6 +85,10 @@ playlistsRouter.get("/top", async (req, res) => {
     };
 });
 
+playlistsRouter.use((req, res, next)=> {
+    req.isAdmin ? next() : res.status(403)
+})
+
 playlistsRouter.post("/", async (req, res) => {
     try {
         const { body } = req;

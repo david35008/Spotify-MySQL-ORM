@@ -5,7 +5,7 @@ const songs = require('./Routes/songs');
 const albums = require('./Routes/albums');
 const artists = require('./Routes/artists');
 const playlists = require('./Routes/playlists');
-const songsInPlaylists =require('./Routes/songsInPlaylists');
+const songsInPlaylists = require('./Routes/songsInPlaylists');
 const users = require('./Routes/users');
 const jwt = require('jsonwebtoken');
 const app = express();
@@ -28,18 +28,28 @@ app.use(morgan(function (tokens, req, res) {
 
 app.use('/users', users);
 
-// app.use(ensureToken);
+app.use(ensureToken);
 
 function ensureToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
-    var decoded = jwt.decode(bearerHeader);
-    console.log(decoded);
+    let decoded = jwt.decode(bearerHeader);
+    // console.log(decoded.exp -Math.floor(Date.now() / 1000) );
     jwt.verify(bearerHeader, process.env.SECRET_KEY, (error, data) => {
       if (error) {
         res.status(403).send('incoreccet token');
       } else {
-        res.token = bearerHeader;
+        const newToken = {
+          isAdmin: decoded.isAdmin,
+          user: decoded.user
+        }
+        if (decoded.rememberToken === false) {
+          newToken.rememberToken = decoded.rememberToken,
+            newToken.exp = Math.floor(Date.now() / 1000) + (60*30)
+        }
+        const token = jwt.sign(newToken, process.env.SECRET_KEY)
+        req.isAdmin = decoded.isAdmin
+        res.cookie('token', token)
         next();
       }
     })

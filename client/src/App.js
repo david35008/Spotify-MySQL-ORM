@@ -20,11 +20,12 @@ import { create } from './components/Network/Ajax';
 function App() {
   const [isLogged, setIsLogged] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     if (Cookies.get('name') && Cookies.get('token')) {
       create('users/valid', Cookies.get())
-        .then(res => { setIsLogged(res); setLoading(false) })
+        .then(res => { setIsLogged(res.valid); console.log(res); setIsAdmin(res.isAdmin); setLoading(false); })
         .catch(err => { setLoading(false); console.error(err); })
     } else {
       setLoading(false)
@@ -74,9 +75,10 @@ function App() {
                 <Route exact path="/albums">
                   <ListOfAlbums />
                 </Route>
-                <Route path="/admin">
-                  <Admin />
-                </Route>
+                {isAdmin && (
+                  <Route path="/admin">
+                    <Admin />
+                  </Route>)}
                 <Route exact path="/">
                   <Home />
                 </Route>

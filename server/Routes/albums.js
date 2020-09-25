@@ -77,6 +77,10 @@ albumsRouter.get("/top", async (req, res) => {
     };
 });
 
+albumsRouter.use((req, res, next)=> {
+    req.isAdmin ? next() : res.status(403)
+})
+
 albumsRouter.post("/", async (req, res) => {
     try {
         const { body } = req;

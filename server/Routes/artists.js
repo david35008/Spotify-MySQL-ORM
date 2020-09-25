@@ -77,6 +77,11 @@ artistsRouter.get("/top", async (req, res) => {
     };
 });
 
+artistsRouter.use((req, res, next)=> {
+    console.log(req.isAdmin);
+    req.isAdmin ? next() : res.status(403).send('unaoutherized')
+})
+
 artistsRouter.post("/", async (req, res) => {
     try {
         const { body } = req;

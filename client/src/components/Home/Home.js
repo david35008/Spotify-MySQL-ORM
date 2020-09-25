@@ -4,7 +4,7 @@ import NavBar from '../NavBar/NavBar';
 import { read, create } from '../Network/Ajax';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from './ElementToCarusel';
-import { breakPoints,removeTokents } from '../Services/globalVariables';
+import { breakPoints, removeTokents } from '../Services/globalVariables';
 import Cookies from 'js-cookie';
 import { Logged } from '../Services/Aouthorizetion';
 
@@ -19,16 +19,14 @@ function Home() {
     const value = useContext(Logged);
 
     useEffect(() => {
-        if (Cookies.get('token')) {
-            create('users/valid', Cookies.get())
-                .then(res => { 
-                    if(!res) {
-                        removeTokents();
-                        value.setIsLogged(false); 
-                    }
-                })
-                .catch(err => { value.setIsLogged(false); removeTokents(); console.error(err); })
-        }
+        create('users/valid', Cookies.get())
+            .then(res => {
+                if (!res) {
+                    removeTokents();
+                    value.setIsLogged(false);
+                }
+            })
+            .catch(err => { value.setIsLogged(false); removeTokents(); console.error(err); })
         read('songs/top')
             .then(res => setSongsList(res))
             .catch(console.error)
