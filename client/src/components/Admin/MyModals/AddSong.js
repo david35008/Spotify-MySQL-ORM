@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './MyModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { read, create } from '../../Network/Ajax';
-import Select from 'react-select';
-// import TryGetData from '../../Songs/tryGetData';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
 
 function AddSong({ openModal, setOpenModal, formatDate }) {
 
@@ -20,45 +19,33 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
   const [songCreated, setSongCreated] = useState('');
   const [songLink, setSongLink] = useState('');
 
-  useEffect(() => {
-    (() => {
-      read('artists')
-        .then((res) => {
-          setArtistList(res);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    })();
-  }, []);
-
-  const artistOptions = artistList.map((artist) => {
-    return {
-      value: artist.artistId, label: artist.name
-    }
-  })
-
-  const getAlbumsList = (artistID) => {
-    read(`albums/byArtist/${artistID}`)
+  const getArtistsList = () => {
+    read('artists')
       .then((res) => {
-        setAlbumsList(res)
+        setArtistList(res);
       })
       .catch((err) => {
         console.error(err);
       });
   }
 
-  let albumOptions = albumsList.map((album) => {
-    return {
-      value: album.albumId, label: album.name
-    }
-  })
+  const getAlbumsList = (artistID) => {
+    read(`artists/byId/${artistID}`)
+      .then((res) => {
+        setAlbumsList(res.Albums)
+        setSongArtist(artistID)
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   const getTrackNumber = (albumID) => {
+    setSongAlbum(albumID)
     read(`albums/byId/${albumID}`)
       .then((res) => {
-        setSongTrackNumber(Math.max(...res.map((album) => album.trackNumber)) + 1)
-        console.log(Math.max(...res.map((album) => album.trackNumber)) + 1);
+        setSongTrackNumber(Math.max(...res.Songs.map((album) => album.trackNumber)) + 1)
+        console.log(Math.max(...res.Songs.map((album) => album.trackNumber)) + 1);
       })
       .catch((err) => {
         console.error(err);
@@ -86,12 +73,6 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
 
   const handleClose = () => setOpenModal(false);
 
-  // const [openYT, setopenYT] =useState(false);
-
-  // const handleClike =() => {
-  //   setopenYT(true)
-  // }
-
   return (
     <>
       <Modal
@@ -107,23 +88,21 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
         </Modal.Header>
         <Modal.Body>
 
-
-          {/* {openYT && <TryGetData link={songLink} />}
-          <label >Youtube Link:</label>
-          <input type="text" onChange={(e) => setSongLink(e.target.value)} required /><br />
-          <button onClick={handleClike} >Load</button> */}
-
           <form className="addNewForm" >
             <label >Name:</label>
             <input type="text" onChange={(e) => setSongName(e.target.value)} required /><br />
             <label >Artist:</label>
-            <Select options={artistOptions} onChange={(e) => { setSongArtist(e.value); getAlbumsList(e.value); }} />
-            {songArtist && (
-              <>
-                <label >Album:</label>
-                <Select options={albumOptions} onChange={(e) => { setSongAlbum(e.value); getTrackNumber(e.value) }} /></>)}
-            {/* <label >Track Number:</label>
-            <input type="number" onChange={(e) => setSongTrackNumber(e.target.value)} required /><br /> */}
+            <DropdownButton id="dropdown-basic-button" title="Artists" onToggle={getArtistsList} onSelect={setSongArtist} >
+              {artistList.map((option) =>
+                <Dropdown.Item key={option.name} eventKey={option.id} >{option.name}</Dropdown.Item>
+              )}
+            </DropdownButton>
+            {songArtist &&
+              <DropdownButton id="dropdown-basic-button" title="Albums" onToggle={() => getAlbumsList(songArtist)} onSelect={getTrackNumber} >
+                {albumsList.map((option) =>
+                  <Dropdown.Item key={option.name} eventKey={option.id} >{option.name}</Dropdown.Item>
+                )}
+              </DropdownButton>}
             <label >Length:</label>
             <input type="time" step="2" onChange={(e) => setSongLength(e.target.value)} required /><br />
             <label >Lyrics:</label>

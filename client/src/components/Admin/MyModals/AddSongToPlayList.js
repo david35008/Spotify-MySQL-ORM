@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './MyModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { read, create } from '../../Network/Ajax';
-import Select from 'react-select';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
 
-function AddSongToPlayList({ openModal, setOpenModal, formatDate }) {
+function AddSongToPlayList({ openModal, setOpenModal }) {
 
     const [playListList, setPlayListList] = useState([])
     const [songsList, setSongsList] = useState([])
@@ -13,31 +13,18 @@ function AddSongToPlayList({ openModal, setOpenModal, formatDate }) {
     const [PlayList, setPlayList] = useState();
     const [song, setSong] = useState();
 
-    useEffect(() => {
-        (() => {
-            read(`playlists`)
-                .then((res) => setPlayListList(res))
-                .catch((err) => console.error(err))
-        })();
-    }, [])
 
-    let playListOptions = playListList.map((playlist) => {
-        return {
-            value: playlist.playlistId, label: playlist.name
-        }
-    })
+    const getPlaylistsList = () => {
+        read(`playlists`)
+            .then(setPlayListList)
+            .catch(console.error)
+    }
 
     const getSongsList = () => {
         read(`songs`)
             .then((res) => setSongsList(res))
             .catch((err) => console.error(err))
     }
-
-    let songsOptions = songsList.map((song) => {
-        return {
-            value: song.songId, label: song.name
-        }
-    })
 
     const handleClose = () => setOpenModal(false);
 
@@ -65,10 +52,16 @@ function AddSongToPlayList({ openModal, setOpenModal, formatDate }) {
                     <Modal.Title>Add New PlayList</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <label >PlayLists:</label>
-                    <Select options={playListOptions} onChange={(e) => { setPlayList(e.value); getSongsList(); }} />
-                    <label >Songs:</label>
-                    <Select options={songsOptions} onChange={(e) => setSong(e.value)} />
+                    <DropdownButton id="dropdown-basic-button" title="Playlists" onToggle={getPlaylistsList} onSelect={setPlayList} >
+                        {playListList.map((option) =>
+                            <Dropdown.Item key={option.name} eventKey={option.id} >{option.name}</Dropdown.Item>
+                        )}
+                    </DropdownButton>
+                    <DropdownButton id="dropdown-basic-button" title="Songs" onToggle={getSongsList} onSelect={setSong} >
+                        {songsList.map((option) =>
+                            <Dropdown.Item key={option.name} eventKey={option.id} >{option.name}</Dropdown.Item>
+                        )}
+                    </DropdownButton>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

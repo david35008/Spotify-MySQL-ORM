@@ -156,3 +156,11 @@
     color: rgb(0, 179, 9);
     border: none;
 }
+
+#dropdownDropUp {
+    background-color: transparent;
+    border: none;
+    background-image: url('../../images/addToPlayList.png');
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+}

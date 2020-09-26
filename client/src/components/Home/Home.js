@@ -8,7 +8,6 @@ import { breakPoints, removeTokents } from '../Services/globalVariables';
 import Cookies from 'js-cookie';
 import { Logged } from '../Services/Aouthorizetion';
 
-
 function Home() {
 
     const [songList, setSongsList] = useState([])
