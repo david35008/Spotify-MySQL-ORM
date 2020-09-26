@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams, useHistory } from "react-router-dom";
 import './OneSong.css';
-import { read } from '../Network/Ajax';
+import { create, read } from '../Network/Ajax';
 import NotFound from '../Services/NotFound';
 import SongsListForOneSong from '../Songs/SongsListForOneSong';
 import { Link } from 'react-router-dom';
 import ReadMore from '../ReadMore/ReadMore';
 import Navbar from '../NavBar/NavBar';
-import shareButton from '../../images/shareButton.png';
 import like from '../../images/like.png';
-import disLike from '../../images/disLike.png';
-import addToPlayList from '../../images/addToPlayList.png';
+import likeActive from '../../images/likeActive.png'
+import dislike from '../../images/disLike.png';
+import dislikeActive from '../../images/dislikeActive.png'
 import ReactPlayer from 'react-player/youtube';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+import Share from '../Services/share';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -20,14 +22,21 @@ function useQuery() {
 function OneSong() {
     const query = useQuery();
     const { id } = useParams();
-    const [song, setSong] = useState();
+    const [song, setSong] = useState('');
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [playlistOptions, setPlaylistOptions] = useState([])
+    const [likeButtonSrc, setLikeButtonSrc] = useState(like)
+    const [disLikeButtonSrc, setDisLikeButtonSrc] = useState(dislike)
+    const [views, setViews] = useState([])
+    const [userLike, setUserLike] = useState(null)
     const history = useHistory()
 
     useEffect(() => {
+        let songUnmaunt;
         read(`songs/byId/${id}`)
             .then((res) => {
+                songUnmaunt = res;
                 setSong(res)
             })
             .catch(err => {
@@ -35,6 +44,18 @@ function OneSong() {
                     history.push('/')
                 }
             })
+        read(`interactions`)
+            .then(res => {
+                setViews(res.map((inter => {
+                    if (inter.songId === parseInt(id)) {
+                        return inter.playCount
+                    } else {
+                        return 0
+                    }
+                })))
+            })
+            .catch(console.error)
+
         if (query.get("artist")) {
             read(`artists/byId/${query.get("artist")}`)
                 .then((res) => {
@@ -78,12 +99,51 @@ function OneSong() {
                     setLoading(false);
                 });
         }
+        return () => {
+            const newInteraction = {
+                // songName: songUnmaunt.name,
+                playCount: 1,
+                songId: songUnmaunt.id,
+                userLike
+            }
+            console.log(newInteraction, songUnmaunt.name);
+            create('interactions', newInteraction)
+                .then(console.log)
+                .catch(console.error);
+        }
         // eslint-disable-next-line
     }, [id]);
 
-    let views = '10,000';
-
     const queryIdKey = useLocation().search.split("=");
+
+    const handleLikeButton = (e) => {
+        setLikeButtonSrc(likeActive)
+        setDisLikeButtonSrc(dislike)
+        setUserLike(true)
+    }
+
+    const handleDisLikeButton = (e) => {
+        setDisLikeButtonSrc(dislikeActive)
+        setLikeButtonSrc(like)
+        setUserLike(false)
+    }
+
+    const handleAddToPlaylistButton = () => {
+        read(`playlists`)
+            .then((res) => {
+                setPlaylistOptions(res);
+            })
+            .catch(console.error);
+    }
+
+    const addSongToPlaylistRequest = (event) => {
+        const requestBody = {
+            songId: song.id,
+            playlistId: event
+        }
+        // create('songsInPlaylists', )
+        console.log(requestBody);
+    }
 
     return (
         song ?
@@ -98,7 +158,7 @@ function OneSong() {
                         width='600px'
                         playing={false}
                         controls={true}
-                        url={song.youtubeLink}
+                        url={`${song.youtubeLink.replace('p', 'ps')}`}
                     ></ReactPlayer >
 
                     <div className='oneSongTitle' >
@@ -107,13 +167,19 @@ function OneSong() {
                         <div className='oneSongLength' >Length: {song.length} </div>
                     </div>
                     <div className='buttonsArea' >
-                        <span className='views'>{views} views</span>
-                        <img className='shareButton' src={shareButton} alt={''} onClick={() => alert('i am share button')} />
-                        <img className='likeButton' src={like} alt={''} onClick={() => alert('i am like button')} />
-                        <img className='dislikeButton' src={disLike} alt={''} onClick={() => alert('i am dislike button')} />
-                        <img className='addToPlayListButton' src={addToPlayList} alt={''} onClick={() => alert('i am addToPlayList button')} />
+                        <span className='views'>{views.reduce(function (a, b) {
+                            return a + b;
+                        }, 0)} views</span>
+                        <Share link={song.youtubeLink} songName={song.name} artistName={song.Artist.name} />
+                        <img className='likeButton' src={likeButtonSrc} alt={''} onClick={handleLikeButton} />
+                        <img className='dislikeButton' src={disLikeButtonSrc} alt={''} onClick={handleDisLikeButton} />
+                        <DropdownButton id={`dropdownDropUp`} drop={'up'} title={false} onToggle={handleAddToPlaylistButton} onSelect={addSongToPlaylistRequest} >
+                            {playlistOptions.map((option) =>
+                                <Dropdown.Item key={option.name} eventKey={option.id} >{option.name}</Dropdown.Item>
+                            )}
+                        </DropdownButton>
                     </div>
-                    <Link to={`/album/${song.artistId}`} className='oneSongAlbum' >Album: {song.Album.name}</Link><br />
+                    <Link to={`/album/${song.albumId}`} className='oneSongAlbum' >Album: {song.Album.name}</Link><br />
                     <ReadMore content={song.lyrics} maxChar="50" />
                     <div>Created: {new Date(song.createdAt).toDateString()}</div>
                     <div>Upload: {new Date(song.updatedAt).toDateString()} </div>

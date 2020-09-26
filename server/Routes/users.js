@@ -38,15 +38,14 @@ usersRouter.post('/register', async (req, res) => {
         } else {
             res.status(406).json({ message: 'Email alreay taken!' })
         }
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 })
 
 usersRouter.post("/valid", (req, res) => {
     jwt.verify(req.body.token, process.env.SECRET_KEY, (error, data) => {
         if (error) {
-            console.log('here');
             res.status(403).json({message: error});
         } else {
             let decoded = jwt.decode(req.body.token);
@@ -58,27 +57,28 @@ usersRouter.post("/valid", (req, res) => {
 usersRouter.post("/logIn", async (req, res) => {
     const { email, password, rememberToken } = req.body;
     try {
-        const result = await User.findOne({ where: { email: email } });
-        if (await bcrypt.compare(password, result.password)) {
-            const user = result.id
+        const user = await User.findOne({ where: { email: email } });
+        if (await bcrypt.compare(password, user.password)) {
             const newToken = {
-                isAdmin: result.isAdmin,
-                user
+                isAdmin: user.isAdmin,
+                user: user.email,
+                userId: user.id,
             }
             if (!rememberToken) {
                 newToken.rememberToken = rememberToken,
                     newToken.exp = Math.floor(Date.now() / 1000) + (60 * 30)
             }
             const token = jwt.sign(newToken, process.env.SECRET_KEY)
-            res.cookie('name', result.name)
-            res.cookie('isAdmin', result.isAdmin)
+            res.cookie('name', user.name)
+            res.cookie('isAdmin', user.isAdmin)
             res.cookie('token', token)
-            res.json(`welcome back ${result.name}`)
+            res.cookie('user', user.email)
+            res.json(`welcome back ${user.name}`)
         } else {
             res.status(403).json({ message: 'The email or password you’ve entered doesn’t correct.' });
         }
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 })
 
