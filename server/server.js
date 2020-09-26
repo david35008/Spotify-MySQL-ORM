@@ -7,6 +7,7 @@ const artists = require('./Routes/artists');
 const playlists = require('./Routes/playlists');
 const songsInPlaylists = require('./Routes/songsInPlaylists');
 const users = require('./Routes/users');
+const interactions = require('./Routes/interactions');
 const jwt = require('jsonwebtoken');
 const app = express();
 
@@ -28,34 +29,35 @@ app.use(morgan(function (tokens, req, res) {
 
 app.use('/users', users);
 
-// app.use(ensureToken);
+app.use(ensureToken);
 
 function ensureToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
-    let decoded = jwt.decode(bearerHeader);
-    // console.log(decoded.exp -Math.floor(Date.now() / 1000) );
     jwt.verify(bearerHeader, process.env.SECRET_KEY, (error, data) => {
       if (error) {
-        console.log('here');
-        res.status(403).json({message:'incoreccet token'});
+        res.status(403).json({ message: error });
       } else {
+        console.log(data);
         const newToken = {
-          isAdmin: decoded.isAdmin,
-          user: decoded.user
+          isAdmin: data.isAdmin,
+          user: data.user,
+          userId: data.userId
         }
-        if (decoded.rememberToken === false) {
-          newToken.rememberToken = decoded.rememberToken,
-            newToken.exp = Math.floor(Date.now() / 1000) + (60*30)
-        }
-        const token = jwt.sign(newToken, process.env.SECRET_KEY)
-        req.isAdmin = decoded.isAdmin
-        res.cookie('token', token)
+        if (data.rememberToken === false) {
+          newToken.rememberToken = data.rememberToken,
+            newToken.exp = Math.floor(Date.now() / 1000) + (60 * 30)
+        };
+        const token = jwt.sign(newToken, process.env.SECRET_KEY);
+        req.isAdmin = data.isAdmin;
+        req.userEmail = data.user;
+        req.userId = data.userId;
+        res.cookie('token', token);
         next();
       }
     })
   } else {
-    res.status(403).json({message: 'token is requierd'});
+    res.status(403).json({ message: 'token is requierd' });
   }
 }
 
@@ -68,6 +70,8 @@ app.use('/artists', artists);
 app.use('/playlists', playlists);
 
 app.use('/songsInPlaylists', songsInPlaylists)
+
+app.use('/interactions', interactions)
 
 const unknownEndpoint = (request, response) => {
   response.status(404).json({ error: 'unknown endpoint' });

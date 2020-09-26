@@ -27,8 +27,8 @@ playlistsRouter.get("/", async (req, res) => {
             ]
         });
         res.json(allPlaylists);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -56,8 +56,8 @@ playlistsRouter.get("/byId/:id", async (req, res) => {
             ]
         });
         res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -71,8 +71,8 @@ playlistsRouter.get("/byName/:name", async (req, res) => {
             }
         });
         res.json(results);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -80,8 +80,8 @@ playlistsRouter.get("/top", async (req, res) => {
     try {
         const allPlaylists = await Playlist.findAll({ limit: 20 });
         res.json(allPlaylists);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -94,8 +94,8 @@ playlistsRouter.post("/", async (req, res) => {
         const { body } = req;
         const newPlaylist = await Playlist.create(body);
         res.json(newPlaylist);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -106,8 +106,8 @@ playlistsRouter.put("/:id", async (req, res) => {
             where: { id: req.params.id }
         })
         res.json(editPlaylist);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -117,8 +117,8 @@ playlistsRouter.delete("/:id", async (req, res) => {
             where: { id: req.params.id }
         })
         res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 

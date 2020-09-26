@@ -48,8 +48,8 @@ albumsRouter.get("/byId/:id", async (req, res) => {
             }]
         });
         res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -63,8 +63,8 @@ albumsRouter.get("/byName/:name", async (req, res) => {
             }
         });
         res.json(results);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -72,8 +72,8 @@ albumsRouter.get("/top", async (req, res) => {
     try {
         const allAlbums = await Album.findAll({ limit: 20 });
         res.json(allAlbums);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -86,8 +86,8 @@ albumsRouter.post("/", async (req, res) => {
         const { body } = req;
         const newAlbum = await Album.create(body);
         res.json(newAlbum);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -98,8 +98,8 @@ albumsRouter.put("/:id", async (req, res) => {
             where: { id: req.params.id }
         })
         res.json(editAlbum);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -109,8 +109,8 @@ albumsRouter.delete("/:id", async (req, res) => {
             where: { id: req.params.id }
         })
         res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 

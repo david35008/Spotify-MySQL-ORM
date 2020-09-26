@@ -25,8 +25,8 @@ artistsRouter.get("/", async (req, res) => {
         ]
         });
         res.json(allArtists);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -48,8 +48,8 @@ artistsRouter.get('/byId/:id', async (req, res) => {
             }]
         });
         res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -63,8 +63,8 @@ artistsRouter.get("/byName/:name", async (req, res) => {
             }
         });
         res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -73,7 +73,7 @@ artistsRouter.get("/top", async (req, res) => {
         const allArtists = await Artist.findAll({ limit: 20 });
         res.json(allArtists);
     } catch (e) {
-        res.json({ message: e.message });
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -87,8 +87,8 @@ artistsRouter.post("/", async (req, res) => {
         const { body } = req;
         const newAtrist = await Artist.create(body);
         res.json(newAtrist);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -99,8 +99,8 @@ artistsRouter.put("/:id", async (req, res) => {
             where: { id: req.params.id }
         })
         res.json(editArtist);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
@@ -110,8 +110,8 @@ artistsRouter.delete("/:id", async (req, res) => {
             where: { id: req.params.id }
         })
         res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
+    }  catch (e) {
+        res.status(400).json({ message: e.message });
     };
 });
 
