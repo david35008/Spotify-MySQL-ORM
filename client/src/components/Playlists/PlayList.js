@@ -5,7 +5,7 @@ import ListOfSongs from '../Songs/ListOfSongs';
 import { Link } from 'react-router-dom';
 
 function PlayList({ playlist }) {
-    
+
     return (
         <div className='PlayList'>
             <div className='PlayListContainer'>

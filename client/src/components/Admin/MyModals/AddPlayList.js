@@ -3,25 +3,30 @@ import './MyModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { create } from '../../Network/Ajax';
+import { formatDate } from '../../Services/globalVariables'
 
-function AddPlayList({ openModal, setOpenModal, formatDate }) {
+function AddPlayList({ openModal, setOpenModal }) {
 
     const [playListName, setPlayListName] = useState('');
     const [playListCreated, setPlayListCreated] = useState('');
     const [playListImageLink, setplayListImageLink] = useState('');
-    const [userId, setUsetId] = useState('');
 
     const sendNewPlayList = () => {
         const sendNewPlayList = {
             name: playListName,
             createdAt: playListCreated,
             uploadAt: formatDate(new Date()),
-            coverImg: playListImageLink,
-            userId: userId
+            coverImg: playListImageLink
         };
         create('playlists', sendNewPlayList)
-            .then((res) => console.log(res))
+            .then((res) =>
+                create('interactions/playlist', {
+                    playlistId: res.id
+                })
+                    .then((res) => console.log(res))
+                    .catch((err) => console.error(err)))
             .catch((err) => console.error(err))
+            handleClose();
     };
 
     const handleClose = () => setOpenModal(false);
@@ -47,8 +52,6 @@ function AddPlayList({ openModal, setOpenModal, formatDate }) {
                         <input type="date" onChange={(e) => setPlayListCreated(e.target.value)} required /><br />
                         <label >Image Link:</label>
                         <input type="text" onChange={(e) => setplayListImageLink(e.target.value)} required /><br />
-                        <label >User ID:</label>
-                        <input type="text" onChange={(e) => setUsetId(e.target.value)} required /><br />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

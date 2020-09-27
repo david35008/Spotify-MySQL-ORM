@@ -1,6 +1,6 @@
 const express = require('express');
 const playlistsRouter = express.Router();
-const { Song, Playlist, Artist, Album,PlaylistsSong } = require('../models');
+const { Song, Playlist, Artist, Album, PlaylistsSong, User_playlist } = require('../models');
 const { Op } = require("sequelize");
 
 playlistsRouter.get("/", async (req, res) => {
@@ -27,7 +27,7 @@ playlistsRouter.get("/", async (req, res) => {
             ]
         });
         res.json(allPlaylists);
-    }  catch (e) {
+    } catch (e) {
         res.status(400).json({ message: e.message });
     };
 });
@@ -56,7 +56,7 @@ playlistsRouter.get("/byId/:id", async (req, res) => {
             ]
         });
         res.json(result);
-    }  catch (e) {
+    } catch (e) {
         res.status(400).json({ message: e.message });
     };
 });
@@ -71,7 +71,7 @@ playlistsRouter.get("/byName/:name", async (req, res) => {
             }
         });
         res.json(results);
-    }  catch (e) {
+    } catch (e) {
         res.status(400).json({ message: e.message });
     };
 });
@@ -80,24 +80,59 @@ playlistsRouter.get("/top", async (req, res) => {
     try {
         const allPlaylists = await Playlist.findAll({ limit: 20 });
         res.json(allPlaylists);
-    }  catch (e) {
+    } catch (e) {
         res.status(400).json({ message: e.message });
     };
 });
 
-playlistsRouter.use((req, res, next)=> {
-    req.isAdmin ? next() : res.status(403)
-})
+playlistsRouter.get("/byUser", async (req, res) => {
+    try {
+        const result = await User_playlist.findAll({
+            where: {
+                email: req.userEmail
+            },
+            include: {
+                model: Playlist,
+                include: [
+                    {
+                        model: PlaylistsSong,
+                        attributes: ["id"],
+                        include: [{
+                            model: Song,
+                            include: [
+                                {
+                                    model: Artist,
+                                    attributes: ["name"],
+                                },
+                                {
+                                    model: Album,
+                                    attributes: ["name"],
+                                },
+                            ],
+                        }],
+                    }
+                ]
+            }
+        });
+        res.json(result);
+    } catch (e) {
+        res.json({ message: e.message });
+    };
+});
 
 playlistsRouter.post("/", async (req, res) => {
     try {
         const { body } = req;
         const newPlaylist = await Playlist.create(body);
         res.json(newPlaylist);
-    }  catch (e) {
+    } catch (e) {
         res.status(400).json({ message: e.message });
     };
 });
+
+playlistsRouter.use((req, res, next) => {
+    req.isAdmin ? next() : res.status(403)
+})
 
 playlistsRouter.put("/:id", async (req, res) => {
     try {
@@ -106,7 +141,7 @@ playlistsRouter.put("/:id", async (req, res) => {
             where: { id: req.params.id }
         })
         res.json(editPlaylist);
-    }  catch (e) {
+    } catch (e) {
         res.status(400).json({ message: e.message });
     };
 });
@@ -117,7 +152,7 @@ playlistsRouter.delete("/:id", async (req, res) => {
             where: { id: req.params.id }
         })
         res.json(result);
-    }  catch (e) {
+    } catch (e) {
         res.status(400).json({ message: e.message });
     };
 });

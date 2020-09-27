@@ -30,6 +30,7 @@ const MyLibrary = () => {
         <>
             <NavBar />
             <h2>this is your personal page {Cookies.get('name')}</h2>
+            <hr color='white' />
             <h3>This is your favorit songs</h3>
             <Carousel color="white" breakPoints={breakPoints} >
                 {songList.map((song) => (

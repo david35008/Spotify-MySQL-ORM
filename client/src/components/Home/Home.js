@@ -35,8 +35,10 @@ function Home() {
         read('artists/top')
             .then(res => setArtists(res))
             .catch(console.error)
-        read('playlists/top')
-            .then(res => setPlaylists(res))
+        read('interactions/playlists/byUser')
+            .then(res => setPlaylists(res.map(playlist =>
+                playlist.Playlist
+            )))
             .catch(console.error)
         // eslint-disable-next-line
     }, []);

@@ -22,3 +22,14 @@ export function removeTokents() {
     Cookies.remove('token')
     Cookies.remove('isAdmin')
 }
+
+export function formatDate(date) {
+    function pad(num) { return ('00' + num).slice(-2) };
+
+    // Change the date to SQL date format
+    let dateStr = date.getUTCFullYear() + '-' +
+        pad(date.getUTCMonth() + 1) + '-' +
+        pad(date.getUTCDate() + 1)
+    return dateStr;
+};    
+

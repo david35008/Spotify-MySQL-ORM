@@ -32,8 +32,8 @@ function App() {
           create('users/valid', Cookies.get())
             .then(res => {
               console.log(res);
-              setIsLogged(res.valid);
               setIsAdmin(res.isAdmin);
+              setIsLogged(res.valid);
               setLoading(false);
             })
             .catch(err => { setLoading(false); console.error(err); })

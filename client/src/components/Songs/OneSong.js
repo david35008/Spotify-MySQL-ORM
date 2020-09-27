@@ -15,6 +15,7 @@ import ReactPlayer from 'react-player/youtube';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import Share from '../Services/share';
 import { Interactions } from '../Services/useContextComp';
+import AddPlayList from '../Admin/MyModals/AddPlayList';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -30,6 +31,8 @@ function OneSong() {
     const [likeButtonSrc, setLikeButtonSrc] = useState(like)
     const [disLikeButtonSrc, setDisLikeButtonSrc] = useState(dislike)
     const [views, setViews] = useState([])
+    const [openPlayListModal, setOpenPlayListModal] = useState(false);
+
     const history = useHistory()
 
     const value = useContext(Interactions);
@@ -160,20 +163,26 @@ function OneSong() {
     }
 
     const handleAddToPlaylistButton = () => {
-        read(`playlists`)
+        read(`playlists/byUser`)
             .then((res) => {
-                setPlaylistOptions(res);
+                setPlaylistOptions(res.map((element) =>
+                    element.Playlist
+                ).concat([{ name: 'Add +', id: null }]));
             })
             .catch(console.error);
     }
 
     const addSongToPlaylistRequest = (event) => {
-        const requestBody = {
-            songId: song.id,
-            playlistId: event
+        if (event) {
+            const requestBody = {
+                songId: song.id,
+                playlistId: event
+            }
+            create('songsInPlaylists', requestBody)
+            console.log(requestBody);
+        } else {
+            setOpenPlayListModal(true)
         }
-        // create('songsInPlaylists', )
-        console.log(requestBody);
     }
 
     return (
@@ -182,7 +191,8 @@ function OneSong() {
 
                 <Navbar setList={setList} />
                 <div className='descriptionArea' >
-
+                    {openPlayListModal && <>
+                        <AddPlayList openModal={openPlayListModal} setOpenModal={setOpenPlayListModal} /></>}
                     <ReactPlayer
                         className='iframe'
                         onEnded={() => alert('end')}
@@ -201,13 +211,13 @@ function OneSong() {
                         <span className='views'>{views.reduce(function (a, b) {
                             return a + b;
                         }, 0)} views</span>
-                        <Share link={song.youtubeLink} songName={song.name} artistName={song.Artist.name} />
+                        {/* <Share link={song.youtubeLink} songName={song.name} artistName={song.Artist.name} /> */}
                         <img className='likeButton' src={likeButtonSrc} alt={''} onClick={handleLikeButton} />
                         <img className='dislikeButton' src={disLikeButtonSrc} alt={''} onClick={handleDisLikeButton} />
                         <DropdownButton id={`dropdownDropUp`} drop={'up'} title={false} onToggle={handleAddToPlaylistButton} onSelect={addSongToPlaylistRequest} >
-                            {playlistOptions.map((option) =>
-                                <Dropdown.Item key={option.name} eventKey={option.id} >{option.name}</Dropdown.Item>
-                            )}
+                            {playlistOptions.map((option) => {
+                                return <Dropdown.Item key={option.name} eventKey={option.id} >{option.name}</Dropdown.Item>
+                            })}
                         </DropdownButton>
                     </div>
                     <Link to={`/album/${song.albumId}`} className='oneSongAlbum' >Album: {song.Album.name}</Link><br />

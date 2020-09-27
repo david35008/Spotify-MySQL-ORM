@@ -10,8 +10,10 @@ function ListOfPlaylists() {
     const [playListsList, setPlayListsList] = useState([])
     const history = useHistory()
     useEffect(() => {
-        read('playLists')
-            .then(res => setPlayListsList(res))
+        read('interactions/playlists/byUser')
+            .then(res => setPlayListsList(res.map(playlist=>
+                playlist.Playlist
+            )))
             .catch(err => {
                 if (err.status === 403) {
                     history.push('/')
