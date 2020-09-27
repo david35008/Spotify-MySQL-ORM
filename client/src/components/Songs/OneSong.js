@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, useParams, useHistory } from "react-router-dom";
 import './OneSong.css';
 import { create, read } from '../Network/Ajax';
@@ -14,6 +14,7 @@ import dislikeActive from '../../images/dislikeActive.png'
 import ReactPlayer from 'react-player/youtube';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import Share from '../Services/share';
+import { Interactions } from '../Services/useContextComp';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -29,14 +30,13 @@ function OneSong() {
     const [likeButtonSrc, setLikeButtonSrc] = useState(like)
     const [disLikeButtonSrc, setDisLikeButtonSrc] = useState(dislike)
     const [views, setViews] = useState([])
-    const [userLike, setUserLike] = useState(null)
     const history = useHistory()
 
+    const value = useContext(Interactions);
+
     useEffect(() => {
-        let songUnmaunt;
         read(`songs/byId/${id}`)
             .then((res) => {
-                songUnmaunt = res;
                 setSong(res)
             })
             .catch(err => {
@@ -55,7 +55,23 @@ function OneSong() {
                 })))
             })
             .catch(console.error)
-
+        const isLikedArr = value.interactions.map((inter => {
+            if (inter.songId === parseInt(id)) {
+                return inter.isLiked
+            } else { return null }
+        })).filter(function (el) {
+            return el != null;
+        })
+        if (isLikedArr[isLikedArr.length - 1] === true) {
+            setLikeButtonSrc(likeActive)
+            setDisLikeButtonSrc(dislike)
+        } else if (isLikedArr[isLikedArr.length - 1] === false) {
+            setDisLikeButtonSrc(dislikeActive)
+            setLikeButtonSrc(like)
+        } else {
+            setLikeButtonSrc(like)
+            setDisLikeButtonSrc(dislike)
+        }
         if (query.get("artist")) {
             read(`artists/byId/${query.get("artist")}`)
                 .then((res) => {
@@ -101,12 +117,11 @@ function OneSong() {
         }
         return () => {
             const newInteraction = {
-                // songName: songUnmaunt.name,
                 playCount: 1,
-                songId: songUnmaunt.id,
-                userLike
+                songId: id,
+                isLiked: null
             }
-            console.log(newInteraction, songUnmaunt.name);
+            console.log(newInteraction);
             create('interactions', newInteraction)
                 .then(console.log)
                 .catch(console.error);
@@ -117,15 +132,31 @@ function OneSong() {
     const queryIdKey = useLocation().search.split("=");
 
     const handleLikeButton = (e) => {
-        setLikeButtonSrc(likeActive)
-        setDisLikeButtonSrc(dislike)
-        setUserLike(true)
+        const newInteraction = {
+            songId: id,
+            isLiked: true,
+        }
+        console.log(newInteraction);
+        create('interactions', newInteraction)
+            .then(res => {
+                setLikeButtonSrc(likeActive)
+                setDisLikeButtonSrc(dislike)
+            })
+            .catch(console.error);
     }
 
     const handleDisLikeButton = (e) => {
-        setDisLikeButtonSrc(dislikeActive)
-        setLikeButtonSrc(like)
-        setUserLike(false)
+        const newInteraction = {
+            songId: id,
+            isLiked: false,
+        }
+        create('interactions', newInteraction)
+            .then(res => {
+                console.log(res)
+                setDisLikeButtonSrc(dislikeActive)
+                setLikeButtonSrc(like)
+            })
+            .catch(console.error);
     }
 
     const handleAddToPlaylistButton = () => {

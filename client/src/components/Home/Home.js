@@ -6,7 +6,7 @@ import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from './ElementToCarusel';
 import { breakPoints, removeTokents } from '../Services/globalVariables';
 import Cookies from 'js-cookie';
-import { Logged } from '../Services/Aouthorizetion';
+import { Logged } from '../Services/useContextComp';
 
 function Home() {
 

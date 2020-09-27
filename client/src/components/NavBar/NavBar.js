@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Logged } from '../Services/Aouthorizetion';
+import { Logged } from '../Services/useContextComp';
 import './NavBar.css';
 import { read } from '../Network/Ajax';
 import 'bootstrap/dist/css/bootstrap.min.css';

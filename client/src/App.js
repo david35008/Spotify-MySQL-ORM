@@ -14,20 +14,31 @@ import Admin from './components/Admin/Admin';
 import LogIn from './components/LogIn/Login';
 import Registaer from './components/LogIn/registaer';
 import MyLibrary from './components/MyLibrary/MyLibrary';
-import { Logged } from './components/Services/Aouthorizetion';
+import { Logged, Interactions } from './components/Services/useContextComp';
 import Cookies from 'js-cookie';
-import { create } from './components/Network/Ajax';
+import { create, read } from './components/Network/Ajax';
 
 function App() {
   const [isLogged, setIsLogged] = useState(false)
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [interactions, setInteractions] = useState([])
 
   useEffect(() => {
     if (Cookies.get('name') && Cookies.get('token')) {
-      create('users/valid', Cookies.get())
-        .then(res => { setIsLogged(res.valid); console.log(res); setIsAdmin(res.isAdmin); setLoading(false); })
-        .catch(err => { setLoading(false); console.error(err); })
+      read(`interactions/byUser`)
+        .then(res => {
+          setInteractions(res)
+          create('users/valid', Cookies.get())
+            .then(res => {
+              console.log(res);
+              setIsLogged(res.valid);
+              setIsAdmin(res.isAdmin);
+              setLoading(false);
+            })
+            .catch(err => { setLoading(false); console.error(err); })
+        })
+        .catch(console.error)
     } else {
       setLoading(false)
     }
@@ -50,46 +61,48 @@ function App() {
             </Logged.Provider>
             :
             <Logged.Provider value={{ isLogged, setIsLogged }}>
-              <Switch>
-                <Route path="/song/:id">
-                  <OneSong />
-                </Route>
-                <Route path="/album/:id">
-                  <NavBar />
-                  <OneAlbum />
-                </Route>
-                <Route path="/playlist/:id">
-                  <NavBar />
-                  <OnePlaylist />
-                </Route>
-                <Route path="/artist/:id">
-                  <NavBar />
-                  <OneArtist />
-                </Route>
-                <Route exact path="/playlists">
-                  <NavBar />
-                  <ListOfPlaylists />
-                </Route>
-                <Route exact path="/artists">
-                  <ListOfArtists />
-                </Route>
-                <Route exact path="/albums">
-                  <ListOfAlbums />
-                </Route>
-                <Route exact path="/mylibrary">
-                  <MyLibrary />
-                </Route>
-                {isAdmin && (
-                  <Route path="/admin">
-                    <Admin />
-                  </Route>)}
-                <Route exact path="/">
-                  <Home />
-                </Route>
-                <Route path="*">
-                  <NotFound />
-                </Route>
-              </Switch>
+              <Interactions.Provider value={{ interactions }} >
+                <Switch>
+                  <Route path="/song/:id">
+                    <OneSong />
+                  </Route>
+                  <Route path="/album/:id">
+                    <NavBar />
+                    <OneAlbum />
+                  </Route>
+                  <Route path="/playlist/:id">
+                    <NavBar />
+                    <OnePlaylist />
+                  </Route>
+                  <Route path="/artist/:id">
+                    <NavBar />
+                    <OneArtist />
+                  </Route>
+                  <Route exact path="/playlists">
+                    <NavBar />
+                    <ListOfPlaylists />
+                  </Route>
+                  <Route exact path="/artists">
+                    <ListOfArtists />
+                  </Route>
+                  <Route exact path="/albums">
+                    <ListOfAlbums />
+                  </Route>
+                  <Route exact path="/mylibrary">
+                    <MyLibrary />
+                  </Route>
+                  {isAdmin && (
+                    <Route path="/admin">
+                      <Admin />
+                    </Route>)}
+                  <Route exact path="/">
+                    <Home />
+                  </Route>
+                  <Route path="*">
+                    <NotFound />
+                  </Route>
+                </Switch>
+              </Interactions.Provider>
             </Logged.Provider>
           :
           <div></div>

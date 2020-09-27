@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { create } from '../Network/Ajax';
-import { Logged } from '../Services/Aouthorizetion';
+import { Logged } from '../Services/useContextComp';
 import './forms.css';
 import { Modal } from 'react-bootstrap';
 import Hilarious from '../../images/Hilarious.gif';
