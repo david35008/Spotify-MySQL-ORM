@@ -26,9 +26,9 @@ const MyLibrary = () => {
         }))])
             .then(setSongsList)
             .catch(console.error)
-        read('interactions/albums/byUser')
+        read('interactions/albums/userInteractions')
             .then(res => {
-                create('interactions/UserAlbums', [...new Set(res.map((inter => {
+                create('interactions/albums/byUser', [...new Set(res.map((inter => {
                     if (inter.isLiked === true) {
                         return inter.albumId
                     } else { return null }
@@ -43,9 +43,9 @@ const MyLibrary = () => {
             })
             .catch(console.error)
             .catch(console.error)
-        read('interactions/Artists/byUser')
+        read('interactions/artists/userInteractions')
             .then(res => {
-                create('interactions/UserArtists', [...new Set(res.map((inter => {
+                create('interactions/artists/byUser', [...new Set(res.map((inter => {
                     if (inter.isLiked === true) {
                         return inter.artistId
                     } else { return null }
@@ -58,7 +58,7 @@ const MyLibrary = () => {
             })
             .catch(console.error)
             .catch(console.error)
-        read('interactions/UserPlaylists')
+        read('interactions/playlist/byUser')
             .then(res => setPlaylists(res.map(playlist =>
                 playlist.Playlist
             )))

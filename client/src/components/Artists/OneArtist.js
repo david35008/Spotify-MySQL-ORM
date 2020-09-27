@@ -37,7 +37,7 @@ function OneArtist() {
                     history.push('/')
                 } setLoading(false)
             })
-        read('interactions/artists/byUser')
+        read('interactions/artists/userInteractions')
             .then(res => {
                 switch (res.filter((artist) => {
                     return artist.artistId === parseInt(id)

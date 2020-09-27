@@ -35,7 +35,7 @@ function Home() {
         read('artists/top')
             .then(res => setArtists(res))
             .catch(console.error)
-        read('interactions/allPlaylists/byUser')
+        read('interactions/playlist/all')
             .then(res => setPlaylists(res.map(playlist =>
                 playlist.Playlist
             )))

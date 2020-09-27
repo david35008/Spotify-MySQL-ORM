@@ -18,7 +18,7 @@ function ListOfArtists() {
                     history.push('/')
                 }
             })
-        read('interactions/artists/byUser')
+        read('interactions/artists/userInteractions')
             .then(res => {
                 setAartistsInteractions(res)
             })

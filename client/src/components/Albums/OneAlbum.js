@@ -32,7 +32,7 @@ function OneAlbum() {
                     history.push('/')
                 }
             })
-        read('interactions/albums/byUser')
+        read('interactions/albums/userInteractions')
             .then(res => {
                 switch (res.filter((album) => album.albumId === parseInt(id))[0].isLiked) {
                     case true:

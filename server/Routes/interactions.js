@@ -36,7 +36,7 @@ Interactions.post("/songs", async (req, res) => {
     };
 });
 
-Interactions.get("/albums/byUser", async (req, res) => {
+Interactions.get("/albums/userInteractions", async (req, res) => {
     try {
         const allInteractions = await User_album.findAll({
             where: {
@@ -79,7 +79,7 @@ Interactions.post("/albums", async (req, res) => {
     };
 });
 
-Interactions.post("/UserAlbums", async (req, res) => {
+Interactions.post("/albums/byUser", async (req, res) => {
     console.log(req.body);
     try {
         const allInteractions = await User_album.findAll({
@@ -138,7 +138,7 @@ Interactions.post("/artists", async (req, res) => {
     };
 });
 
-Interactions.get("/artists/byUser", async (req, res) => {
+Interactions.get("/artists/userInteractions", async (req, res) => {
     try {
         const allInteractions = await User_artist.findAll({
             where: {
@@ -154,7 +154,7 @@ Interactions.get("/artists/byUser", async (req, res) => {
     };
 });
 
-Interactions.post("/UserArtists", async (req, res) => {
+Interactions.post("/artists/byUser", async (req, res) => {
     try {
         const allInteractions = await User_artist.findAll({
             where:
@@ -188,7 +188,7 @@ Interactions.post("/UserArtists", async (req, res) => {
     };
 });
 
-Interactions.get("/allPlaylists/byUser", async (req, res) => {
+Interactions.get("/playlist/all", async (req, res) => {
     try {
         const allInteractions = await User_playlist.findAll({
             where:
@@ -227,7 +227,7 @@ Interactions.get("/allPlaylists/byUser", async (req, res) => {
     };
 });
 
-Interactions.get("/UserPlaylists", async (req, res) => {
+Interactions.get("/playlist/byUser", async (req, res) => {
     try {
         const allInteractions = await User_playlist.findAll({
             where:

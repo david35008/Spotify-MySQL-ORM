@@ -18,7 +18,7 @@ function ListOfAlbums() {
                     history.push('/')
                 }
             })
-        read('interactions/albums/byUser')
+        read('interactions/albums/userInteractions')
             .then(res => {
                 setAlbumsInteractions(res)
             })
