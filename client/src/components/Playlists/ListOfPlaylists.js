@@ -10,7 +10,7 @@ function ListOfPlaylists() {
     const [playListsList, setPlayListsList] = useState([])
     const history = useHistory()
     useEffect(() => {
-        read('interactions/playlists/byUser')
+        read('interactions/allPlaylists/byUser')
             .then(res => setPlayListsList(res.map(playlist=>
                 playlist.Playlist
             )))

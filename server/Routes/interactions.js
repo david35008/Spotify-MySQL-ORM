@@ -36,9 +36,8 @@ Interactions.post("/", async (req, res) => {
     };
 });
 
-Interactions.get("/playlists/byUser", async (req, res) => {
+Interactions.get("/allPlaylists/byUser", async (req, res) => {
     try {
-        const allUsers = await User_playlist.findAll()
         const allInteractions = await User_playlist.findAll({
             where:
             {
@@ -47,6 +46,40 @@ Interactions.get("/playlists/byUser", async (req, res) => {
                     { email: 'david@gmail.com' }
                 ]
             },
+            include: [{
+                model: Playlist,
+                include: [
+                    {
+                        model: PlaylistsSong,
+                        attributes: ["id"],
+                        include: [{
+                            model: Song,
+                            include: [
+                                {
+                                    model: Artist,
+                                    attributes: ["name"],
+                                },
+                                {
+                                    model: Album,
+                                    attributes: ["name"],
+                                },
+                            ],
+                        }],
+                    }
+                ]
+            }]
+        })
+        res.json(allInteractions)
+    } catch (e) {
+        res.status(400).json({ message: e.message });
+    };
+});
+
+Interactions.get("/UserPlaylists", async (req, res) => {
+    try {
+        const allInteractions = await User_playlist.findAll({
+            where:
+                { email: req.userEmail },
             include: [{
                 model: Playlist,
                 include: [
