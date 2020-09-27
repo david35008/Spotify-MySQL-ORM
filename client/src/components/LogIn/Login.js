@@ -16,7 +16,6 @@ function LogIn() {
     const onSubmit = (data) => {
         create('users/logIn', data)
             .then(res => {
-                console.log(res);
                 value.setIsLogged(true);
             })
             .catch(e=>{

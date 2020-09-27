@@ -7,6 +7,7 @@ import Artist from './Artist';
 
 function ListOfArtists() {
 
+    const [artistsInteractions, setAartistsInteractions] = useState([])
     const [artistsList, setArtistsList] = useState([])
     const history = useHistory()
     useEffect(() => {
@@ -17,11 +18,27 @@ function ListOfArtists() {
                     history.push('/')
                 }
             })
+        read('interactions/artists/byUser')
+            .then(res => {
+                setAartistsInteractions(res)
+            })
+            .catch(console.error)
     }, [history]);
 
     const listToPrint = artistsList.map((artist, index) => {
         return (
-            < Artist index={index} key={artist.name + artist.artistId} artist={artist} />
+            < Artist
+                index={index}
+                key={artist.name + artist.id}
+                artist={artist}
+                isLiked={artistsInteractions.map((element) => {
+                    if (element.artistId === artist.id) {
+                        return element.isLiked
+                    } else return null;
+                }).filter(function (el) {
+                    return el !== null;
+                })[0]}
+            />
         )
     })
 

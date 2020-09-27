@@ -26,21 +26,21 @@ function App() {
 
   useEffect(() => {
     if (Cookies.get('name') && Cookies.get('token')) {
-      read(`interactions/byUser`)
+      read(`interactions/songs/byUser`)
         .then(res => {
           setInteractions(res)
           create('users/valid', Cookies.get())
             .then(res => {
-              console.log(res);
               setIsAdmin(res.isAdmin);
               setIsLogged(res.valid);
               setLoading(false);
             })
-            .catch(err => { setLoading(false); console.error(err); })
+            .catch(err => { setLoading(false); setIsLogged(false); console.error(err); })
         })
-        .catch(console.error)
+        .catch((err)=>{console.error(err); setLoading(false); setIsLogged(false);})
     } else {
       setLoading(false)
+      setIsLogged(false)
     }
   }, [])
 

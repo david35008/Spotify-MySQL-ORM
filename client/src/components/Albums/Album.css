@@ -30,3 +30,9 @@
 .AlbumName {
     font-size: 40px !important;
 }
+
+.globalLikeButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

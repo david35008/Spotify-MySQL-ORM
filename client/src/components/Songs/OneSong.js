@@ -47,7 +47,7 @@ function OneSong() {
                     history.push('/')
                 }
             })
-        read(`interactions`)
+        read(`interactions/songs`)
             .then(res => {
                 setViews(res.map((inter => {
                     if (inter.songId === parseInt(id)) {
@@ -124,9 +124,7 @@ function OneSong() {
                 songId: id,
                 isLiked: null
             }
-            console.log(newInteraction);
-            create('interactions', newInteraction)
-                .then(console.log)
+            create('interactions/songs', newInteraction)
                 .catch(console.error);
         }
         // eslint-disable-next-line
@@ -139,8 +137,7 @@ function OneSong() {
             songId: id,
             isLiked: true,
         }
-        console.log(newInteraction);
-        create('interactions', newInteraction)
+        create('interactions/songs', newInteraction)
             .then(res => {
                 setLikeButtonSrc(likeActive)
                 setDisLikeButtonSrc(dislike)
@@ -153,9 +150,8 @@ function OneSong() {
             songId: id,
             isLiked: false,
         }
-        create('interactions', newInteraction)
+        create('interactions/songs', newInteraction)
             .then(res => {
-                console.log(res)
                 setDisLikeButtonSrc(dislikeActive)
                 setLikeButtonSrc(like)
             })
@@ -179,7 +175,6 @@ function OneSong() {
                 playlistId: event
             }
             create('songsInPlaylists', requestBody)
-            console.log(requestBody);
         } else {
             setOpenPlayListModal(true)
         }
@@ -211,7 +206,7 @@ function OneSong() {
                         <span className='views'>{views.reduce(function (a, b) {
                             return a + b;
                         }, 0)} views</span>
-                        {/* <Share link={song.youtubeLink} songName={song.name} artistName={song.Artist.name} /> */}
+                        <Share link={song.youtubeLink} songName={song.name} artistName={song.Artist.name} />
                         <img className='likeButton' src={likeButtonSrc} alt={''} onClick={handleLikeButton} />
                         <img className='dislikeButton' src={disLikeButtonSrc} alt={''} onClick={handleDisLikeButton} />
                         <DropdownButton id={`dropdownDropUp`} drop={'up'} title={false} onToggle={handleAddToPlaylistButton} onSelect={addSongToPlaylistRequest} >

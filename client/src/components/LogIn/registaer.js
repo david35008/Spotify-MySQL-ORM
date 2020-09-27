@@ -15,7 +15,6 @@ function LogIn() {
     const onSubmit = (data) => {
         create('users/register', data)
             .then(res => {
-                console.log(res);
                 location.push('/')
             }
             )

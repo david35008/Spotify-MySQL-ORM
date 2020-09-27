@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './OneArtist.css';
 import { Link } from 'react-router-dom';
-import { read } from '../Network/Ajax';
+import { read, create } from '../Network/Ajax';
 import { useParams, useHistory } from 'react-router-dom';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from '../Home/ElementToCarusel';
 import NotFound from '../Services/NotFound';
 import { GetYTId, breakPoints } from '../Services/globalVariables';
+import like from '../../images/like.png';
+import likeActive from '../../images/likeActive.png'
+import dislike from '../../images/disLike.png';
+import dislikeActive from '../../images/dislikeActive.png'
 
 function OneArtist() {
 
@@ -16,6 +20,9 @@ function OneArtist() {
     const [songList, setSongsList] = useState([]);
     const [albums, setAlbums] = useState([]);
     const [finish, setFinish] = useState(false)
+    const [likeButtonSrc, setLikeButtonSrc] = useState(like)
+    const [disLikeButtonSrc, setDisLikeButtonSrc] = useState(dislike)
+
     const history = useHistory()
     useEffect(() => {
         read(`artists/byId/${id}`)
@@ -30,7 +37,53 @@ function OneArtist() {
                     history.push('/')
                 } setLoading(false)
             })
+        read('interactions/artists/byUser')
+            .then(res => {
+                switch (res.filter((artist) => {
+                    return artist.artistId === parseInt(id)
+                })[0].isLiked) {
+                    case true:
+                        setLikeButtonSrc(likeActive)
+                        break;
+                    case undefined:
+                        break;
+                    case false:
+                        setDisLikeButtonSrc(dislikeActive)
+                        break;
+                    default:
+                        break;
+                }
+            })
+            .catch(console.error)
     }, [id, history]);
+
+
+
+    const handleLikeButton = (e) => {
+        const newInteraction = {
+            artistId: artist.id,
+            isLiked: true,
+        }
+        create('interactions/artists', newInteraction)
+            .then(res => {
+                setLikeButtonSrc(likeActive)
+                setDisLikeButtonSrc(dislike)
+            })
+            .catch(console.error);
+    }
+
+    const handleDisLikeButton = (e) => {
+        const newInteraction = {
+            artistId: artist.id,
+            isLiked: false,
+        }
+        create('interactions/artists', newInteraction)
+            .then(res => {
+                setDisLikeButtonSrc(dislikeActive)
+                setLikeButtonSrc(like)
+            })
+            .catch(console.error);
+    }
 
     return (
         finish ?
@@ -41,6 +94,10 @@ function OneArtist() {
                         <div>{artist.name}</div>
                         <div className='OneArtitstDescription'>About: {artist.description}</div>
                         {artist.updatedAt && <div className='artisrcreatedAt' >createdAt: {new Date(artist.updatedAt).toDateString()}</div>}
+                        <div className='globalLikeButtons' >
+                            <img className='likeButton' src={likeButtonSrc} alt={''} onClick={handleLikeButton} />
+                            <img className='dislikeButton' src={disLikeButtonSrc} alt={''} onClick={handleDisLikeButton} />
+                        </div>
                     </div>
                 </div>
 

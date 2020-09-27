@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     playlistId: {
       field: "playlist_id",
       type: DataTypes.INTEGER
+    },
+    isLiked: {
+      field: 'is_Liked',
+      type: DataTypes.BOOLEAN
     }
   }, {
     sequelize,

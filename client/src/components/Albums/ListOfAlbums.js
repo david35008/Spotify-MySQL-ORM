@@ -7,6 +7,7 @@ import Album from './Album';
 
 function ListOfAlbums() {
 
+    const [albumsInteractions, setAlbumsInteractions] = useState([])
     const [albumsList, setAlbumsList] = useState([])
     const history = useHistory()
     useEffect(() => {
@@ -17,14 +18,29 @@ function ListOfAlbums() {
                     history.push('/')
                 }
             })
+        read('interactions/albums/byUser')
+            .then(res => {
+                setAlbumsInteractions(res)
+            })
+            .catch(console.error)
     }, [history]);
 
     const listToPrint = albumsList.map((album, index) => {
         return (
-            < Album key={album.name + album.albumId} index={index} album={album} />
+            < Album
+                key={album.name + album.id}
+                index={index}
+                album={album}
+                isLiked={albumsInteractions.map((element) => {
+                    if (element.albumId === album.id) {
+                        return element.isLiked
+                    } else return null;
+                }).filter(function (el) {
+                    return el !== null;
+                })[0]}
+            />
         )
     })
-
 
     return (
         <>
