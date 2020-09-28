@@ -16,7 +16,7 @@ const MyLibrary = () => {
     useEffect(() => {
         read(`/api/v1/interactions/songs/byUser`)
             .then(res => {
-                create('/api/v1/songs/byUser', [...new Set(res.map((inter => {
+                create('/api/v1/interactions/songs/songsByUser', [...new Set(res.map((inter => {
                     if (inter.isLiked === true) {
                         return inter.songId
                     } else { return null }

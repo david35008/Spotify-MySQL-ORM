@@ -85,41 +85,6 @@ playlistsRouter.get("/top", async (req, res) => {
     };
 });
 
-playlistsRouter.get("/byUser", async (req, res) => {
-    try {
-        const result = await User_playlist.findAll({
-            where: {
-                email: req.userEmail
-            },
-            include: {
-                model: Playlist,
-                include: [
-                    {
-                        model: PlaylistsSong,
-                        attributes: ["id"],
-                        include: [{
-                            model: Song,
-                            include: [
-                                {
-                                    model: Artist,
-                                    attributes: ["name"],
-                                },
-                                {
-                                    model: Album,
-                                    attributes: ["name"],
-                                },
-                            ],
-                        }],
-                    }
-                ]
-            }
-        });
-        res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
-    };
-});
-
 playlistsRouter.post("/", async (req, res) => {
     try {
         const { body } = req;

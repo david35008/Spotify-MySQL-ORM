@@ -67,29 +67,6 @@ songsRouter.get("/top", async (req, res) => {
     };
 });
 
-songsRouter.post("/byUser", async (req, res) => {
-    try {
-        const result = await Song.findAll({
-            where: {
-                id: { [Op.in]: req.body }
-            },
-            include: [
-                {
-                    model: Artist,
-                    attributes: ["name"],
-                },
-                {
-                    model: Album,
-                    attributes: ["name"],
-                },
-            ]
-        });
-        res.json(result);
-    } catch (e) {
-        res.json({ message: e.message });
-    };
-});
-
 // check if request is admin
 songsRouter.use((req, res, next) => {
     req.isAdmin ? next() : res.status(403)

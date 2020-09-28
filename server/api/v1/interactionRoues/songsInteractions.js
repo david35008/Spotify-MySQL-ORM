@@ -35,4 +35,28 @@ SongsInteractions.post("/", async (req, res) => {
     };
 });
 
+SongsInteractions.post("/songsByUser", async (req, res) => {
+    try {
+        const result = await Song.findAll({
+            where: {
+                id: { [Op.in]: req.body }
+            },
+            include: [
+                {
+                    model: Artist,
+                    attributes: ["name"],
+                },
+                {
+                    model: Album,
+                    attributes: ["name"],
+                },
+            ]
+        });
+        res.json(result);
+    } catch (e) {
+        res.json({ message: e.message });
+    };
+});
+
+
 module.exports = SongsInteractions;

@@ -156,7 +156,7 @@ function OneSong() {
     }
 
     const handleAddToPlaylistButton = () => {
-        read(`/api/v1/playlists/byUser`)
+        read('/api/v1/interactions/playlists/byUser')
             .then((res) => {
                 setPlaylistOptions(res.map((element) =>
                     element.Playlist

@@ -34,6 +34,7 @@ describe('check artists routs', () => {
     header = response.header;
   })
   afterAll(async () => {
+    await Artist.destroy({ truncate: true, force: true });
     await server.close();
   });
   afterEach(async () => {

@@ -6,7 +6,7 @@
 require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
-const { Album } = require('../models');
+const { Album, Artist } = require('../models');
 const { Op } = require("sequelize");
 
 const userMock = {
@@ -48,6 +48,7 @@ describe('check albums routs', () => {
 
     })
     afterAll(async () => {
+        await Artist.destroy({ truncate: true, force: true });
         await server.close();
     });
     afterEach(async () => {
