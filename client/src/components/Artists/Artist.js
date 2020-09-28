@@ -18,7 +18,7 @@ function Artist({ artist, isLiked }) {
             artistId: artist.id,
             isLiked: true,
         }
-        create('interactions/artists', newInteraction)
+        create('/api/v1/interactions/artists', newInteraction)
             .then(res => {
                 setLikeButtonSrc(likeActive)
                 setDisLikeButtonSrc(dislike)
@@ -31,7 +31,7 @@ function Artist({ artist, isLiked }) {
             artistId: artist.id,
             isLiked: false,
         }
-        create('interactions/artists', newInteraction)
+        create('/api/v1/interactions/artists', newInteraction)
             .then(res => {
                 setDisLikeButtonSrc(dislikeActive)
                 setLikeButtonSrc(like)

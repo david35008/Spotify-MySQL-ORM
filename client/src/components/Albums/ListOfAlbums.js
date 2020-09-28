@@ -11,14 +11,14 @@ function ListOfAlbums() {
     const [albumsList, setAlbumsList] = useState([])
     const history = useHistory()
     useEffect(() => {
-        read('albums')
+        read('/api/v1/albums')
             .then(res => setAlbumsList(res))
             .catch(err => {
                 if (err.status === 403) {
                     history.push('/')
                 }
             })
-        read('interactions/albums/userInteractions')
+        read('/api/v1/interactions/albums/userInteractions')
             .then(res => {
                 setAlbumsInteractions(res)
             })

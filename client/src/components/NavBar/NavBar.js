@@ -43,7 +43,7 @@ function NavBar({ songList, albums, artists, playlists, setSongsList, setAlbums,
     const search = () => {
         const searchValue = inputValue.toLowerCase().trim()
         if (searchValue !== "") {
-            read(`${searchType}/byName/${searchValue}`)
+            read(`/api/v1/${searchType}/byName/${searchValue}`)
                 .then(res => {
                     if (prevList) {
                         if (prevType !== searchType) {

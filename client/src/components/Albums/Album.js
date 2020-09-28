@@ -19,7 +19,7 @@ function Album({ album, isLiked, albumDisplay = 'inline', artistDisplay = 'inlin
             albumId: album.id,
             isLiked: true,
         }
-        create('interactions/albums', newInteraction)
+        create('/api/v1/interactions/albums', newInteraction)
             .then(res => {
                 setLikeButtonSrc(likeActive)
                 setDisLikeButtonSrc(dislike)
@@ -32,7 +32,7 @@ function Album({ album, isLiked, albumDisplay = 'inline', artistDisplay = 'inlin
             albumId: album.id,
             isLiked: false,
         }
-        create('interactions/albums', newInteraction)
+        create('/api/v1/interactions/albums', newInteraction)
             .then(res => {
                 setDisLikeButtonSrc(dislikeActive)
                 setLikeButtonSrc(like)

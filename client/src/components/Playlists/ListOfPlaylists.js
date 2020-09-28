@@ -10,15 +10,11 @@ function ListOfPlaylists() {
     const [playListsList, setPlayListsList] = useState([])
     const history = useHistory()
     useEffect(() => {
-        read('interactions/playlist/all')
+        read('/api/v1/interactions/playlists/all')
             .then(res => setPlayListsList(res.map(playlist=>
                 playlist.Playlist
             )))
-            .catch(err => {
-                if (err.status === 403) {
-                    history.push('/')
-                }
-            })
+            .catch(console.error)
     }, [history]);
 
     const listToPrint = playListsList.map((playlist, index) => {

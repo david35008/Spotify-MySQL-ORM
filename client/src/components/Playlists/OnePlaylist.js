@@ -15,17 +15,13 @@ function OnePlaylist() {
     const SongsToPrint = songList.map((song) => song.Song)
 
     useEffect(() => {
-        read(`playlists/byId/${id}`)
+        read(`/api/v1/playlists/byId/${id}`)
             .then((res) => {
                 setPlaylist(res);
                 setSongsList(res.PlaylistsSongs);
                 setLoading(false);
             })
-            .catch(err => {
-                if (err.status === 403) {
-                    history.push('/')
-                }
-            })
+            .catch(console.error)
     }, [id, history]);
 
     return (

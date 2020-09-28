@@ -21,6 +21,7 @@ export function removeTokents() {
     Cookies.remove('name')
     Cookies.remove('token')
     Cookies.remove('isAdmin')
+    Cookies.remove('user')
 }
 
 export function formatDate(date) {

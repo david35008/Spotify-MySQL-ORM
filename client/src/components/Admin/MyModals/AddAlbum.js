@@ -19,9 +19,9 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
             uploadAt: formatDate(new Date()),
             coverImg: albumImageLink
         };
-        create('albums', newAlbum)
-            .then((res) => console.log(res))
-            .catch((err) => console.error(err))
+        create('/api/v1/albums', newAlbum)
+            .then(handleClose)
+            .catch(console.error)
     };
 
     const handleClose = () => setOpenModal(false);

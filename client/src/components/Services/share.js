@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import shareButton from '../../images/shareButton.png';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import {
@@ -9,7 +9,7 @@ import {
 } from "react-share"
 
 export default function Share({ link, songName, artistName }) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);

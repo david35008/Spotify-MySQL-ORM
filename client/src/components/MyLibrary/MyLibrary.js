@@ -17,7 +17,7 @@ const MyLibrary = () => {
     const [playlists, setPlaylists] = useState([]);
 
     useEffect(() => {
-        create('songs/byUser', [...new Set(value.interactions.map((inter => {
+        create('/api/v1/songs/byUser', [...new Set(value.interactions.map((inter => {
             if (inter.isLiked === true) {
                 return inter.songId
             } else { return null }
@@ -26,9 +26,9 @@ const MyLibrary = () => {
         }))])
             .then(setSongsList)
             .catch(console.error)
-        read('interactions/albums/userInteractions')
+        read('/api/v1/interactions/albums/userInteractions')
             .then(res => {
-                create('interactions/albums/byUser', [...new Set(res.map((inter => {
+                create('/api/v1/interactions/albums/byUser', [...new Set(res.map((inter => {
                     if (inter.isLiked === true) {
                         return inter.albumId
                     } else { return null }
@@ -43,9 +43,9 @@ const MyLibrary = () => {
             })
             .catch(console.error)
             .catch(console.error)
-        read('interactions/artists/userInteractions')
+        read('/api/v1/interactions/artists/userInteractions')
             .then(res => {
-                create('interactions/artists/byUser', [...new Set(res.map((inter => {
+                create('/api/v1/interactions/artists/byUser', [...new Set(res.map((inter => {
                     if (inter.isLiked === true) {
                         return inter.artistId
                     } else { return null }
@@ -58,7 +58,7 @@ const MyLibrary = () => {
             })
             .catch(console.error)
             .catch(console.error)
-        read('interactions/playlist/byUser')
+        read('/api/v1/interactions/playlists/byUser')
             .then(res => setPlaylists(res.map(playlist =>
                 playlist.Playlist
             )))

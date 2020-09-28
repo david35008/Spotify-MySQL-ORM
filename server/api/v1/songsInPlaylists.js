@@ -1,6 +1,6 @@
 const express = require('express');
 const SongsInPlaylistsRouter = express.Router();
-const { PlaylistsSong } = require('../models');
+const { PlaylistsSong } = require('../../models');
 
 SongsInPlaylistsRouter.post("/", async (req, res) => {
     try {

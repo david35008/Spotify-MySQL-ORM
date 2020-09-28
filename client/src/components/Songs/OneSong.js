@@ -38,16 +38,12 @@ function OneSong() {
     const value = useContext(Interactions);
 
     useEffect(() => {
-        read(`songs/byId/${id}`)
+        read(`/api/v1/songs/byId/${id}`)
             .then((res) => {
                 setSong(res)
             })
-            .catch(err => {
-                if (err.status === 403) {
-                    history.push('/')
-                }
-            })
-        read(`interactions/songs`)
+            .catch(console.error)
+        read(`/api/v1/interactions/songs`)
             .then(res => {
                 setViews(res.map((inter => {
                     if (inter.songId === parseInt(id)) {
@@ -76,7 +72,7 @@ function OneSong() {
             setDisLikeButtonSrc(dislike)
         }
         if (query.get("artist")) {
-            read(`artists/byId/${query.get("artist")}`)
+            read(`/api/v1/artists/byId/${query.get("artist")}`)
                 .then((res) => {
                     setList(res.Songs)
                     setLoading(false)
@@ -87,7 +83,7 @@ function OneSong() {
                 });
         }
         else if (query.get("album")) {
-            read(`albums/byId/${query.get("album")}`)
+            read(`/api/v1/albums/byId/${query.get("album")}`)
                 .then((res) => {
                     setList(res.Songs)
                     setLoading(false)
@@ -98,7 +94,7 @@ function OneSong() {
                 });
         }
         else if (query.get("playlist")) {
-            read(`playlists/byId/${query.get("playlist")}`)
+            read(`/api/v1/playlists/byId/${query.get("playlist")}`)
                 .then((res) => {
                     setList(res.PlaylistsSongs.map((song) => song.Song))
                     setLoading(false)
@@ -108,7 +104,7 @@ function OneSong() {
                     setLoading(false);
                 });
         } else {
-            read('songs/top')
+            read('/api/v1/songs/top')
                 .then((res) => {
                     setList(res)
                     setLoading(false)
@@ -124,7 +120,7 @@ function OneSong() {
                 songId: id,
                 isLiked: null
             }
-            create('interactions/songs', newInteraction)
+            create('/api/v1/interactions/songs', newInteraction)
                 .catch(console.error);
         }
         // eslint-disable-next-line
@@ -137,7 +133,7 @@ function OneSong() {
             songId: id,
             isLiked: true,
         }
-        create('interactions/songs', newInteraction)
+        create('/api/v1/interactions/songs', newInteraction)
             .then(res => {
                 setLikeButtonSrc(likeActive)
                 setDisLikeButtonSrc(dislike)
@@ -150,7 +146,7 @@ function OneSong() {
             songId: id,
             isLiked: false,
         }
-        create('interactions/songs', newInteraction)
+        create('/api/v1/interactions/songs', newInteraction)
             .then(res => {
                 setDisLikeButtonSrc(dislikeActive)
                 setLikeButtonSrc(like)
@@ -159,7 +155,7 @@ function OneSong() {
     }
 
     const handleAddToPlaylistButton = () => {
-        read(`playlists/byUser`)
+        read(`/api/v1/playlists/byUser`)
             .then((res) => {
                 setPlaylistOptions(res.map((element) =>
                     element.Playlist
@@ -174,7 +170,7 @@ function OneSong() {
                 songId: song.id,
                 playlistId: event
             }
-            create('songsInPlaylists', requestBody)
+            create('/api/v1/songsInPlaylists', requestBody)
         } else {
             setOpenPlayListModal(true)
         }

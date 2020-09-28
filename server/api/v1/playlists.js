@@ -1,6 +1,6 @@
 const express = require('express');
 const playlistsRouter = express.Router();
-const { Song, Playlist, Artist, Album, PlaylistsSong, User_playlist } = require('../models');
+const { Song, Playlist, Artist, Album, PlaylistsSong, User_playlist } = require('../../models');
 const { Op } = require("sequelize");
 
 playlistsRouter.get("/", async (req, res) => {

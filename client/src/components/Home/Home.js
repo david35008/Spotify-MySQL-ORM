@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Home.css';
 import NavBar from '../NavBar/NavBar';
-import { read, create } from '../Network/Ajax';
+import { read } from '../Network/Ajax';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from './ElementToCarusel';
-import { breakPoints, removeTokents } from '../Services/globalVariables';
-import Cookies from 'js-cookie';
-import { Logged } from '../Services/useContextComp';
+import { breakPoints } from '../Services/globalVariables';
 
 function Home() {
 
@@ -15,27 +13,17 @@ function Home() {
     const [artists, setArtists] = useState([]);
     const [playlists, setPlaylists] = useState([]);
 
-    const value = useContext(Logged);
-
     useEffect(() => {
-        create('users/valid', Cookies.get())
-            .then(res => {
-                if (!res) {
-                    removeTokents();
-                    value.setIsLogged(false);
-                }
-            })
-            .catch(err => { value.setIsLogged(false); removeTokents(); console.error(err); })
-        read('songs/top')
+        read('/api/v1/songs/top')
             .then(res => setSongsList(res))
             .catch(console.error)
-        read('albums/top')
+        read('/api/v1/albums/top')
             .then(res => setAlbums(res))
             .catch(console.error)
-        read('artists/top')
+        read('/api/v1/artists/top')
             .then(res => setArtists(res))
             .catch(console.error)
-        read('interactions/playlist/all')
+        read('/api/v1/interactions/playlists/all')
             .then(res => setPlaylists(res.map(playlist =>
                 playlist.Playlist
             )))

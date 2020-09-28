@@ -14,7 +14,7 @@ function LogIn() {
     const [error, setError] =useState(<span></span>)
     const value = useContext(Logged);
     const onSubmit = (data) => {
-        create('users/logIn', data)
+        create('/users/logIn', data)
             .then(res => {
                 value.setIsLogged(true);
             })

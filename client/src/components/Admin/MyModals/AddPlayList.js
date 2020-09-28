@@ -18,15 +18,15 @@ function AddPlayList({ openModal, setOpenModal }) {
             uploadAt: formatDate(new Date()),
             coverImg: playListImageLink
         };
-        create('playlists', sendNewPlayList)
+
+        create('/api/v1/playlists', sendNewPlayList)
             .then((res) =>
-                create('interactions/playlist', {
+                create('/api/v1/interactions/playlist', {
                     playlistId: res.id
                 })
-                    .then((res) => console.log(res))
-                    .catch((err) => console.error(err)))
-            .catch((err) => console.error(err))
-            handleClose();
+                    .then(handleClose)
+                    .catch(console.error))
+            .catch(console.error)
     };
 
     const handleClose = () => setOpenModal(false);

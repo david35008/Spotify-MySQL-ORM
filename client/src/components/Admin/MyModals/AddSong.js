@@ -20,36 +20,28 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
   const [songLink, setSongLink] = useState('');
 
   const getArtistsList = () => {
-    read('artists')
-      .then((res) => {
-        setArtistList(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    read('/api/v1/artists')
+      .then(setArtistList)
+      .catch(console.error);
   }
 
   const getAlbumsList = (artistID) => {
-    read(`artists/byId/${artistID}`)
+    read(`/api/v1/artists/byId/${artistID}`)
       .then((res) => {
         setAlbumsList(res.Albums)
         setSongArtist(artistID)
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(console.error);
   }
 
   const getTrackNumber = (albumID) => {
     setSongAlbum(albumID)
-    read(`albums/byId/${albumID}`)
+    read(`/api/v1/albums/byId/${albumID}`)
       .then((res) => {
         setSongTrackNumber(Math.max(...res.Songs.map((album) => album.trackNumber)) + 1)
         console.log(Math.max(...res.Songs.map((album) => album.trackNumber)) + 1);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch(console.error);
   }
 
   const sendNewSong = () => {
@@ -64,11 +56,9 @@ function AddSong({ openModal, setOpenModal, formatDate }) {
       uploadAt: formatDate(new Date()),
       youtubeLink: songLink
     };
-    create('songs', newSong)
-      .then((res) => console.log(res))
-      .catch((err) => {
-        console.error(err);
-      });
+    create('/api/v1/songs', newSong)
+      .then(handleClose)
+      .catch(console.error);
   };
 
   const handleClose = () => setOpenModal(false);

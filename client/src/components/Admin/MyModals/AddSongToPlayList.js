@@ -15,15 +15,15 @@ function AddSongToPlayList({ openModal, setOpenModal }) {
 
 
     const getPlaylistsList = () => {
-        read(`playlists`)
+        read(`/api/v1/playlists`)
             .then(setPlayListList)
             .catch(console.error)
     }
 
     const getSongsList = () => {
-        read(`songs`)
-            .then((res) => setSongsList(res))
-            .catch((err) => console.error(err))
+        read(`/api/v1/songs`)
+            .then(setSongsList)
+            .catch(console.error)
     }
 
     const handleClose = () => setOpenModal(false);
@@ -33,9 +33,9 @@ function AddSongToPlayList({ openModal, setOpenModal }) {
             songId: song,
             playlistId: PlayList
         }
-        create('playlists/songs', newConneaction)
-            .then((res) => console.log(res))
-            .catch((err) => console.error(err))
+        create('/api/v1/playlists/songs', newConneaction)
+            .then(handleClose)
+            .catch(console.error)
     }
 
     return (

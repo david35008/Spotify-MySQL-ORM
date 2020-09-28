@@ -1,27 +1,14 @@
-function Network(endPoint, { body, ...customConfig } = {}) {
+import Cookies from 'js-cookie';
+import { removeTokents } from '../Services/globalVariables';
 
-    function getCookie(cname) {
-        let name = cname + "=";
-        let decodedCookie = decodeURIComponent(document.cookie);
-        var allcookies = decodedCookie.split(';');
-        for (let i = 0; i < allcookies.length; i++) {
-            let cookie = allcookies[i];
-            while (cookie.charAt(0) === ' ') {
-                cookie = cookie.substring(1);
-            }
-            if (cookie.indexOf(name) === 0) {
-                return cookie.substring(name.length, cookie.length);
-            }
-        }
-        return "";
-    }
+function Network(endPoint, { body, ...customConfig } = {}) {
 
     const headers = {
         "Content-Type": "application/json;charset=utf-8'",
-        "Authorization": `${getCookie('token')}`
+        "Authorization": `${Cookies.get('token')}`
     };
 
-    const url = `/${endPoint}`;
+    const url = `${endPoint}`
 
     const config = {
         method: body ? "POST" : "GET",
@@ -35,11 +22,14 @@ function Network(endPoint, { body, ...customConfig } = {}) {
 
     // console.log(`Sending ${config.method} to ${url} with data:`, body);
 
-    return fetch(url, config).then(async (response,reject) => {
+    return fetch(url, config).then(async (response, reject) => {
         const data = await response.json();
         if (response.ok) {
             // console.log(`Got response ${response.status}`, data);
             return data
+        } else if (response.status === 403) {
+            removeTokents()
+            return window.location.assign('/')
         } else {
             // console.error(`${response.status} : '${data.message}'`);
             // return Promise.reject(`${response.status} : '${data.json()}'`);

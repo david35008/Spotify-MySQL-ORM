@@ -48,8 +48,7 @@ usersRouter.post("/valid", (req, res) => {
         if (error) {
             res.status(403).json({message: error});
         } else {
-            let decoded = jwt.decode(req.body.token);
-            res.json({ valid: true, isAdmin: decoded.isAdmin })
+            res.json({ valid: true, isAdmin: data.isAdmin })
         }
     })
 })

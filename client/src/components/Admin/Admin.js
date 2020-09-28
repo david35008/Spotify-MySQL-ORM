@@ -32,7 +32,7 @@ function Admin() {
   };
 
   useEffect(() => {
-    create('users/valid', Cookies.get())
+    create('/users/valid', Cookies.get())
       .then(res => {
         if(res.isAdmin === false) {
           removeTokents();

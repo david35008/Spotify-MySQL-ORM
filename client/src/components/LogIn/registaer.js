@@ -13,7 +13,7 @@ function LogIn() {
     const location = useHistory()
 
     const onSubmit = (data) => {
-        create('users/register', data)
+        create('/users/register', data)
             .then(res => {
                 location.push('/')
             }

@@ -25,7 +25,7 @@ function OneArtist() {
 
     const history = useHistory()
     useEffect(() => {
-        read(`artists/byId/${id}`)
+        read(`/api/v1/artists/byId/${id}`)
             .then((res) => {
                 setArtist(res);
                 setSongsList(res.Songs);
@@ -37,7 +37,7 @@ function OneArtist() {
                     history.push('/')
                 } setLoading(false)
             })
-        read('interactions/artists/userInteractions')
+        read('/api/v1/interactions/artists/userInteractions')
             .then(res => {
                 switch (res.filter((artist) => {
                     return artist.artistId === parseInt(id)
@@ -64,7 +64,7 @@ function OneArtist() {
             artistId: artist.id,
             isLiked: true,
         }
-        create('interactions/artists', newInteraction)
+        create('/api/v1/interactions/artists', newInteraction)
             .then(res => {
                 setLikeButtonSrc(likeActive)
                 setDisLikeButtonSrc(dislike)
@@ -77,7 +77,7 @@ function OneArtist() {
             artistId: artist.id,
             isLiked: false,
         }
-        create('interactions/artists', newInteraction)
+        create('/api/v1/interactions/artists', newInteraction)
             .then(res => {
                 setDisLikeButtonSrc(dislikeActive)
                 setLikeButtonSrc(like)

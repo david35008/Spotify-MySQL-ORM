@@ -11,14 +11,14 @@ function ListOfArtists() {
     const [artistsList, setArtistsList] = useState([])
     const history = useHistory()
     useEffect(() => {
-        read('artists')
+        read('/api/v1/artists')
             .then(res => setArtistsList(res))
             .catch(err => {
                 if (err.status === 403) {
                     history.push('/')
                 }
             })
-        read('interactions/artists/userInteractions')
+        read('/api/v1/interactions/artists/userInteractions')
             .then(res => {
                 setAartistsInteractions(res)
             })

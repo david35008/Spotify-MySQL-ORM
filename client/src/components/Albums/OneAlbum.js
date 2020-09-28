@@ -21,7 +21,7 @@ function OneAlbum() {
 
     const history = useHistory()
     useEffect(() => {
-        read(`albums/byId/${id}`)
+        read(`/api/v1/albums/byId/${id}`)
             .then((res) => {
                 setAlbum(res);
                 setSongsList(res.Songs);
@@ -32,7 +32,7 @@ function OneAlbum() {
                     history.push('/')
                 }
             })
-        read('interactions/albums/userInteractions')
+        read('/api/v1/interactions/albums/userInteractions')
             .then(res => {
                 switch (res.filter((album) => album.albumId === parseInt(id))[0].isLiked) {
                     case true:
@@ -56,7 +56,7 @@ function OneAlbum() {
             albumId: album.id,
             isLiked: true,
         }
-        create('interactions/albums', newInteraction)
+        create('/api/v1/interactions/albums', newInteraction)
             .then(res => {
                 setLikeButtonSrc(likeActive)
                 setDisLikeButtonSrc(dislike)
@@ -69,7 +69,7 @@ function OneAlbum() {
             albumId: album.id,
             isLiked: false,
         }
-        create('interactions/albums', newInteraction)
+        create('/api/v1/interactions/albums', newInteraction)
             .then(res => {
                 setDisLikeButtonSrc(dislikeActive)
                 setLikeButtonSrc(like)

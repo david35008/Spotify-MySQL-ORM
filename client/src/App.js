@@ -26,10 +26,10 @@ function App() {
 
   useEffect(() => {
     if (Cookies.get('name') && Cookies.get('token')) {
-      read(`interactions/songs/byUser`)
+      read(`/api/v1/interactions/songs/byUser`)
         .then(res => {
           setInteractions(res)
-          create('users/valid', Cookies.get())
+          create('/users/valid', Cookies.get())
             .then(res => {
               setIsAdmin(res.isAdmin);
               setIsLogged(res.valid);
