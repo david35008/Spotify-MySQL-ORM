@@ -1,36 +1,177 @@
 
+/**
+ * @jest-environment node
+ */
+
+require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
 const { Album } = require('../models');
+const { Op } = require("sequelize");
 
-const albumMock = {
-    name: 'my album test',
-    artistId: 1
+const userMock = {
+    email: process.env.LOGIN,
+    password: process.env.PASSWORD,
+    rememberToken: false
 }
 
-describe('check albums routs', () => {
-    // beforeAll(async () => {
+const artistMock = {
+    name: 'new artist name',
+}
 
-    // })
-    beforeEach(async () => {
-        await Album.destroy({ truncate: true, force: true });
-    });
+const albumMock = {
+    name: 'new album name',
+}
+
+const albumChaengeMock = {
+    name: 'change album name'
+}
+
+let header;
+
+describe('check albums routs', () => {
+    beforeAll(async () => {
+        const response = await request(server)
+            .post("/users/logIn")
+            .send(userMock)
+            .expect(200);
+
+        header = response.header;
+
+        const { body: newArtist } = await request(server)
+            .post('/api/v1/artists')
+            .set('Authorization', header['authorization'])
+            .send(artistMock)
+            .expect(200);
+
+        albumMock.artistId = newArtist.id
+
+    })
     afterAll(async () => {
         await server.close();
-        done();
+    });
+    afterEach(async () => {
+        await Album.destroy({ truncate: true, force: true });
     });
 
-    it('Can create song', async () => {
-        const { body } = await request(server).post('/api/v1/albums').send(albumMock);
-        expect(body.name).toBe(albumMock.name)
+    it('Can get all albums', async () => {
+        const { body: newAlbum } = await request(server)
+            .post('/api/v1/albums')
+            .set('Authorization', header['authorization'])
+            .send(albumMock)
+            .expect(200);
+
+        const { body: getAllAlbums } = await request(server)
+            .get(`/api/v1/albums`)
+            .set('Authorization', header['authorization'])
+            .expect(200);
+
+        expect(getAllAlbums.length > 0).toBe(true)
+        const albumsFromDB = await Album.findAll();
+        expect(albumsFromDB.length > 0).toBe(true)
+
+        expect(albumsFromDB.length).toBe(getAllAlbums.length)
     })
 
-    it('Can get single song', async () => {
-        const { body: newalbum } = await request(server).post('/api/v1/albums').send(albumMock);
-        console.log(newalbum);
-        const { body: getSinglealbumResponseBody } = await request(server).get(`/api/v1/albums/byId/${newalbum.id}`);
+    it('Can get single album by id', async () => {
+        const { body: newAlbum } = await request(server)
+            .post('/api/v1/albums')
+            .set('Authorization', header['authorization'])
+            .send(albumMock)
+            .expect(200);
 
-        expect(getSinglealbumResponseBody.name).toBe(albumMock.name)
-        expect(getSinglealbumResponseBody.id).toBe(newalbum.id)
+        const { body: getSingleAlbum } = await request(server)
+            .get(`/api/v1/albums/byId/${newAlbum.id}`)
+            .set('Authorization', header['authorization'])
+            .expect(200);
+
+        const albumFromDB = await Album.findByPk(newAlbum.id);
+        expect(albumFromDB.name).toBe(albumMock.name)
+        expect(getSingleAlbum.name).toBe(albumMock.name);
+        expect(getSingleAlbum.id).toBe(newAlbum.id);
+    })
+
+    it('Can get single album by name', async () => {
+        const { body: newAlbum } = await request(server)
+            .post('/api/v1/albums')
+            .set('Authorization', header['authorization'])
+            .send(albumMock)
+            .expect(200);
+
+        const { body: getSingleAlbum } = await request(server)
+            .get(`/api/v1/albums/byName/${newAlbum.name}`)
+            .set('Authorization', header['authorization'])
+            .expect(200);
+
+        const albumFromDB = await Album.findAll({ where: { name: { [Op.like]: `%${albumMock.name}%` } } });
+        expect(albumFromDB[0].name).toBe(newAlbum.name)
+        expect(getSingleAlbum[0].name).toBe(albumMock.name);
+        expect(getSingleAlbum[0].id).toBe(newAlbum.id);
+    })
+
+    it('Can get top albums', async () => {
+        for (let i = 0; i < 21; i++) {
+            albumMock.name = `new album name ${i}`
+            await request(server)
+                .post('/api/v1/albums')
+                .set('Authorization', header['authorization'])
+                .send(albumMock)
+                .expect(200);
+        }
+
+        const { body: getTopAlbums } = await request(server)
+            .get(`/api/v1/albums/top`)
+            .set('Authorization', header['authorization'])
+            .expect(200);
+
+        expect(getTopAlbums.length <= 20).toBe(true)
+        const topAlbumsFromDB = await Album.findAll({ limit: 20 });
+        expect(topAlbumsFromDB.length <= 20).toBe(true);
+
+        expect(topAlbumsFromDB.length).toBe(getTopAlbums.length)
+    })
+
+    it("Can create album", async () => {
+        const { body: newAlbum } = await request(server)
+            .post('/api/v1/albums')
+            .set('Authorization', header['authorization'])
+            .send(albumMock)
+            .expect(200);
+        albumMock.id = newAlbum.id;
+        const albumFromDB = await Album.findByPk(albumMock.id);
+        expect(albumFromDB.name).toBe(albumMock.name)
+    });
+
+    it('Can change album', async () => {
+        const { body: newAlbum } = await request(server)
+            .post('/api/v1/albums')
+            .set('Authorization', header['authorization'])
+            .send(albumMock)
+            .expect(200);
+
+        await request(server)
+            .put(`/api/v1/albums/${newAlbum.id}`)
+            .set('Authorization', header['authorization'])
+            .send(albumChaengeMock)
+            .expect(200);
+
+        const albumFromDB = await Album.findByPk(newAlbum.id);
+        expect(albumFromDB.name).toBe(albumChaengeMock.name)
+    })
+
+    it('Can delete album', async () => {
+        const { body: newAlbum } = await request(server)
+            .post('/api/v1/albums')
+            .set('Authorization', header['authorization'])
+            .send(albumMock)
+            .expect(200);
+
+        await request(server)
+            .delete(`/api/v1/albums/${newAlbum.id}`)
+            .set('Authorization', header['authorization'])
+            .expect(200);
+
+        const albumFromDB = await Album.findByPk(newAlbum.id);
+        expect(albumFromDB).toBe(null)
     })
 })
