@@ -123,9 +123,9 @@ describe('check artists routs', () => {
       .set('Authorization', header['authorization'])
       .send(artistMock)
       .expect(200);
-    artistMock.id = newArtist.id;
-    const artistFromDB = await Artist.findByPk(artistMock.id);
-    expect(artistFromDB.name).toBe(artistMock.name)
+      
+    const artistFromDB = await Artist.findByPk(newArtist.id);
+    expect(artistFromDB.name).toBe(newArtist.name)
   });
 
   it('Can change artist', async () => {
