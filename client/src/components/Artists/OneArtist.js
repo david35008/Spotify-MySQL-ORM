@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './OneArtist.css';
 import { Link } from 'react-router-dom';
 import { read, create } from '../Network/Ajax';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from '../Home/ElementToCarusel';
 import NotFound from '../Services/NotFound';
@@ -23,7 +23,6 @@ function OneArtist() {
     const [likeButtonSrc, setLikeButtonSrc] = useState(like)
     const [disLikeButtonSrc, setDisLikeButtonSrc] = useState(dislike)
 
-    const history = useHistory()
     useEffect(() => {
         read(`/api/v1/artists/byId/${id}`)
             .then((res) => {
@@ -32,11 +31,7 @@ function OneArtist() {
                 setAlbums(res.Albums)
                 setLoading(false)
                 setFinish(true)
-            }).catch(err => {
-                if (err.status === 403) {
-                    history.push('/')
-                } setLoading(false)
-            })
+            }).catch(console.error)
         read('/api/v1/interactions/artists/userInteractions')
             .then(res => {
                 switch (res.filter((artist) => {
@@ -55,7 +50,7 @@ function OneArtist() {
                 }
             })
             .catch(console.error)
-    }, [id, history]);
+    }, [id]);
 
 
 

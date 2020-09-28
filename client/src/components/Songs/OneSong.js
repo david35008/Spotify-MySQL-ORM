@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useLocation, useParams, useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useParams } from "react-router-dom";
 import './OneSong.css';
 import { create, read } from '../Network/Ajax';
 import NotFound from '../Services/NotFound';
@@ -14,7 +14,6 @@ import dislikeActive from '../../images/dislikeActive.png'
 import ReactPlayer from 'react-player/youtube';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import Share from '../Services/share';
-import { Interactions } from '../Services/useContextComp';
 import AddPlayList from '../Admin/MyModals/AddPlayList';
 
 function useQuery() {
@@ -33,10 +32,6 @@ function OneSong() {
     const [views, setViews] = useState([])
     const [openPlayListModal, setOpenPlayListModal] = useState(false);
 
-    const history = useHistory()
-
-    const value = useContext(Interactions);
-
     useEffect(() => {
         read(`/api/v1/songs/byId/${id}`)
             .then((res) => {
@@ -54,23 +49,29 @@ function OneSong() {
                 })))
             })
             .catch(console.error)
-        const isLikedArr = value.interactions.map((inter => {
-            if (inter.songId === parseInt(id)) {
-                return inter.isLiked
-            } else { return null }
-        })).filter(function (el) {
-            return el != null;
-        })
-        if (isLikedArr[isLikedArr.length - 1] === true) {
-            setLikeButtonSrc(likeActive)
-            setDisLikeButtonSrc(dislike)
-        } else if (isLikedArr[isLikedArr.length - 1] === false) {
-            setDisLikeButtonSrc(dislikeActive)
-            setLikeButtonSrc(like)
-        } else {
-            setLikeButtonSrc(like)
-            setDisLikeButtonSrc(dislike)
-        }
+        read(`/api/v1/interactions/songs/byUser`)
+            .then(res => {
+                const isLikedArr = res.map((inter => {
+                    if (inter.songId === parseInt(id)) {
+                        if(inter){
+                            return inter.isLiked
+                        }else { return null }
+                    } else { return null }
+                })).filter(function (el) {
+                    return el != null;
+                })
+                if (isLikedArr[isLikedArr.length - 1] === true) {
+                    setLikeButtonSrc(likeActive)
+                    setDisLikeButtonSrc(dislike)
+                } else if (isLikedArr[isLikedArr.length - 1] === false) {
+                    setDisLikeButtonSrc(dislikeActive)
+                    setLikeButtonSrc(like)
+                } else {
+                    setLikeButtonSrc(like)
+                    setDisLikeButtonSrc(dislike)
+                }
+            })
+            .catch(console.error)
         if (query.get("artist")) {
             read(`/api/v1/artists/byId/${query.get("artist")}`)
                 .then((res) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './OneAlbum.css';
 import { read, create } from '../Network/Ajax';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ListOfSongs from '../Songs/ListOfSongs';
 import NotFound from '../Services/NotFound';
 import like from '../../images/like.png';
@@ -18,8 +18,6 @@ function OneAlbum() {
     const [likeButtonSrc, setLikeButtonSrc] = useState(like)
     const [disLikeButtonSrc, setDisLikeButtonSrc] = useState(dislike)
 
-
-    const history = useHistory()
     useEffect(() => {
         read(`/api/v1/albums/byId/${id}`)
             .then((res) => {
@@ -27,11 +25,7 @@ function OneAlbum() {
                 setSongsList(res.Songs);
                 setLoading(false);
             })
-            .catch(err => {
-                if (err.status === 403) {
-                    history.push('/')
-                }
-            })
+            .catch(console.error)
         read('/api/v1/interactions/albums/userInteractions')
             .then(res => {
                 switch (res.filter((album) => album.albumId === parseInt(id))[0].isLiked) {
@@ -48,7 +42,7 @@ function OneAlbum() {
                 }
             })
             .catch(console.error)
-    }, [id, history]);
+    }, [id]);
 
 
     const handleLikeButton = (e) => {

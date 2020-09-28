@@ -1,30 +1,31 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { create, read } from '../Network/Ajax';
 import Cookies from 'js-cookie';
 import NavBar from '../NavBar/NavBar';
-import { Interactions } from '../Services/useContextComp';
 import Carousel from 'react-elastic-carousel';
 import ElementToCarusel from '../Home/ElementToCarusel';
 import { breakPoints } from '../Services/globalVariables';
 import { Link } from 'react-router-dom';
 
 const MyLibrary = () => {
-    const value = useContext(Interactions);
-
     const [songList, setSongsList] = useState([])
     const [albums, setAlbums] = useState([]);
     const [artists, setArtists] = useState([]);
     const [playlists, setPlaylists] = useState([]);
 
     useEffect(() => {
-        create('/api/v1/songs/byUser', [...new Set(value.interactions.map((inter => {
-            if (inter.isLiked === true) {
-                return inter.songId
-            } else { return null }
-        })).filter(function (el) {
-            return el != null;
-        }))])
-            .then(setSongsList)
+        read(`/api/v1/interactions/songs/byUser`)
+            .then(res => {
+                create('/api/v1/songs/byUser', [...new Set(res.map((inter => {
+                    if (inter.isLiked === true) {
+                        return inter.songId
+                    } else { return null }
+                })).filter(function (el) {
+                    return el != null;
+                }))])
+                    .then(setSongsList)
+                    .catch(console.error)
+            })
             .catch(console.error)
         read('/api/v1/interactions/albums/userInteractions')
             .then(res => {
@@ -63,7 +64,7 @@ const MyLibrary = () => {
                 playlist.Playlist
             )))
             .catch(console.error)
-    }, [value])
+    }, [])
 
     return (
         <>
