@@ -18,13 +18,13 @@ describe('check songsInPlaylists routs', () => {
   });
 
   it('Can create new song in playlist', async () => {
-    const { body } = await request(server).post('/songsInPlaylists').send(songsInPlaylistsMock);
+    const { body } = await request(server).post('/api/v1/songsInPlaylists').send(songsInPlaylistsMock);
     expect(body.playlistId).toBe(songsInPlaylistsMock.playlistId)
     expect(body.songId).toBe(songsInPlaylistsMock.songId)
   })
 
   it('Can remove song from playlist', async () => {
-    const { body } = await request(server).delete(`/songsInPlaylists?songId=${songsInPlaylistsMock.songId}&playlistId=${songsInPlaylistsMock.playlistId}`)
+    const { body } = await request(server).delete(`/api/v1/songsInPlaylists?songId=${songsInPlaylistsMock.songId}&playlistId=${songsInPlaylistsMock.playlistId}`)
     console.log(body);
     expect(body).toBe(0)
   })

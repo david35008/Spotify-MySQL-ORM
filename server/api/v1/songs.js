@@ -90,6 +90,7 @@ songsRouter.post("/byUser", async (req, res) => {
     };
 });
 
+// check if request is admin
 songsRouter.use((req, res, next) => {
     req.isAdmin ? next() : res.status(403)
 })

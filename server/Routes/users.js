@@ -72,6 +72,7 @@ usersRouter.post("/logIn", async (req, res) => {
             res.cookie('isAdmin', user.isAdmin)
             res.cookie('token', token)
             res.cookie('user', user.email)
+            res.header('Authorization', token)
             res.json(`welcome back ${user.name}`)
         } else {
             res.status(403).json({ message: 'The email or password you’ve entered doesn’t correct.' });

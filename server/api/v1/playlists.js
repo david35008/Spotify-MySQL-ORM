@@ -130,6 +130,7 @@ playlistsRouter.post("/", async (req, res) => {
     };
 });
 
+// check if request is admin
 playlistsRouter.use((req, res, next) => {
     req.isAdmin ? next() : res.status(403)
 })

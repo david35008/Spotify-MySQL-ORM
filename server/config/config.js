@@ -14,13 +14,15 @@ module.exports = {
     "password": process.env.PASSWORD,
     "database": process.env.TEST_DB,
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "define": {"underscored": true}
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "database_production",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "define": {"underscored": true}
   }
 }

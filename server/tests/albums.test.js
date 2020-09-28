@@ -9,23 +9,26 @@ const albumMock = {
 }
 
 describe('check albums routs', () => {
+    // beforeAll(async () => {
+
+    // })
+    beforeEach(async () => {
+        await Album.destroy({ truncate: true, force: true });
+    });
     afterAll(async () => {
         await server.close();
         done();
     });
-    beforeEach(async () => {
-        await Album.destroy({ truncate: true, force: true });
-    });
 
     it('Can create song', async () => {
-        const { body } = await request(server).post('/albums').send(albumMock);
+        const { body } = await request(server).post('/api/v1/albums').send(albumMock);
         expect(body.name).toBe(albumMock.name)
     })
 
     it('Can get single song', async () => {
-        const { body: newalbum } = await request(server).post('/albums').send(albumMock);
+        const { body: newalbum } = await request(server).post('/api/v1/albums').send(albumMock);
         console.log(newalbum);
-        const { body: getSinglealbumResponseBody } = await request(server).get(`/albums/byId/${newalbum.id}`);
+        const { body: getSinglealbumResponseBody } = await request(server).get(`/api/v1/albums/byId/${newalbum.id}`);
 
         expect(getSinglealbumResponseBody.name).toBe(albumMock.name)
         expect(getSinglealbumResponseBody.id).toBe(newalbum.id)
