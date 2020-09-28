@@ -1,8 +1,8 @@
 # ![Scale-Up Velocity](./readme-files/logo-main.png)   SQL Music Streaming service
 
 This is my spotify app!
-The app serves a song interface similar to spotify.
-The app include login Authentication, node+express, mysql DB.
+The app serves a song interface try to similar spotify.
+The app include Authentication+token session, node+express, mysql DB, sequelize ORM, and tests.
 
 my gif:
 # ![gif](./readme-files/my-app.gif)
