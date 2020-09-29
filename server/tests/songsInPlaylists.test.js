@@ -1,31 +1,120 @@
 
+/**
+ * @jest-environment node
+ */
+
+require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
-const { PlaylistsSong } = require('../models');
+const { Playlist, PlaylistsSong, Song, Album, Artist } = require('../models');
+const { Op } = require("sequelize");
 
-const songsInPlaylistsMock = {
-    playlistId: 1,
-    songId: 1
+const playlistMock = {
+  name: 'new playlist name',
 }
 
-describe('check songsInPlaylists routs', () => {
-    afterAll(async () => {
-        await server.close();
-        done();
-    });
-  beforeEach(async () => {
+const artistMock = {
+  name: 'new artist name',
+}
+
+const albumMock = {
+  name: 'new album name',
+}
+
+const songMock = {
+  name: 'new song name',
+}
+
+const songInPlaylistMock = {}
+
+const userMock = {
+  email: process.env.LOGIN,
+  password: process.env.PASSWORD,
+  rememberToken: false
+}
+
+let header;
+
+describe('check songInPlaylist routs', () => {
+  beforeAll(async () => {
+    const response = await request(server)
+      .post("/users/logIn")
+      .send(userMock)
+      .expect(200);
+    header = response.header;
+
+    const { body: newPlaylist } = await request(server)
+      .post('/api/v1/playlists')
+      .set('Authorization', header['authorization'])
+      .send(playlistMock)
+      .expect(200);
+
+    songInPlaylistMock.playlistId = newPlaylist.id;
+
+    const { body: newArtist } = await request(server)
+      .post('/api/v1/artists')
+      .set('Authorization', header['authorization'])
+      .send(artistMock)
+      .expect(200);
+
+    songMock.artistId = newArtist.id;
+    albumMock.artistId = newArtist.id;
+
+    const { body: newAlbum } = await request(server)
+      .post('/api/v1/albums')
+      .set('Authorization', header['authorization'])
+      .send(albumMock)
+      .expect(200);
+
+    songMock.albumId = newAlbum.id;
+
+    const { body: newSong } = await request(server)
+      .post('/api/v1/songs')
+      .set('Authorization', header['authorization'])
+      .send(songMock)
+      .expect(200);
+
+    songInPlaylistMock.songId = newSong.id;
+
+  })
+  afterAll(async () => {
+    await Song.destroy({ truncate: true, force: true });
+    await Album.destroy({ truncate: true, force: true });
+    await Artist.destroy({ truncate: true, force: true });
+    await Playlist.destroy({ truncate: true, force: true });
+    await server.close();
+  });
+  afterEach(async () => {
     await PlaylistsSong.destroy({ truncate: true, force: true });
   });
 
-  it('Can create new song in playlist', async () => {
-    const { body } = await request(server).post('/api/v1/songsInPlaylists').send(songsInPlaylistsMock);
-    expect(body.playlistId).toBe(songsInPlaylistsMock.playlistId)
-    expect(body.songId).toBe(songsInPlaylistsMock.songId)
-  })
+  it("Can add song to playlist", async () => {
+    const { body: newSongInPlaylist } = await request(server)
+      .post('/api/v1/songsInPlaylists')
+      .set('Authorization', header['authorization'])
+      .send(songInPlaylistMock)
+      .expect(200);
 
-  it('Can remove song from playlist', async () => {
-    const { body } = await request(server).delete(`/api/v1/songsInPlaylists?songId=${songsInPlaylistsMock.songId}&playlistId=${songsInPlaylistsMock.playlistId}`)
-    console.log(body);
-    expect(body).toBe(0)
+    expect(newSongInPlaylist.songId).toBe(songInPlaylistMock.songId)
+    expect(newSongInPlaylist.playlistId).toBe(songInPlaylistMock.playlistId)
+    const songInPlaylistFromDB = await PlaylistsSong.findOne({ where: { [Op.and]: [{ playlistId: newSongInPlaylist.playlistId }, { songId: newSongInPlaylist.songId }] } });
+    expect(songInPlaylistFromDB.songId).toBe(newSongInPlaylist.songId)
+    expect(songInPlaylistFromDB.playlistId).toBe(newSongInPlaylist.playlistId)
+  });
+
+  it('Can delete song from playlist', async () => {
+    const { body: newSongInPlaylist } = await request(server)
+      .post('/api/v1/songsInPlaylists')
+      .set('Authorization', header['authorization'])
+      .send(songInPlaylistMock)
+      .expect(200);
+
+    await request(server)
+      .delete(`/api/v1/songsInPlaylists?playlistId=${newSongInPlaylist.playlistId}&songId=${newSongInPlaylist.songId}`)
+      .set('Authorization', header['authorization'])
+      .expect(200);
+
+    const songInPlaylistFromDB = await PlaylistsSong.findOne({ where: { [Op.and]: [{ playlistId: newSongInPlaylist.playlistId }, { songId: newSongInPlaylist.songId }] } });
+    expect(songInPlaylistFromDB).toBe(null)
   })
 })
