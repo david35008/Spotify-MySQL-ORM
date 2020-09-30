@@ -79,7 +79,7 @@ artistsRouter.get("/top", async (req, res) => {
 
 // check if request is admin
 artistsRouter.use((req, res, next) => {
-    req.isAdmin ? next() : res.status(403).send('unaoutherized')
+    req.decoded.isAdmin ? next() : res.status(403).send('unaoutherized')
 })
 
 artistsRouter.post("/", async (req, res) => {

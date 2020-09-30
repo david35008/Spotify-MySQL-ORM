@@ -79,7 +79,7 @@ albumsRouter.get("/top", async (req, res) => {
 
 // check if request is admin
 albumsRouter.use((req, res, next)=> {
-    req.isAdmin ? next() : res.status(403)
+    req.decoded.isAdmin ? next() : res.status(403)
 })
 
 albumsRouter.post("/", async (req, res) => {

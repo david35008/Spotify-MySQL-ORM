@@ -16,7 +16,7 @@ SongsInteractions.get("/byUser", async (req, res) => {
     try {
         const allInteractions = await Interaction.findAll({
             where: {
-                userId: req.userId
+                userId: req.decoded.userId
             }
         })
         res.json(allInteractions)

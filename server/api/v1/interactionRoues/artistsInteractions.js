@@ -7,7 +7,7 @@ ArtistsInteractions.get("/userInteractions", async (req, res) => {
     try {
         const allInteractions = await User_artist.findAll({
             where: {
-                email: req.userEmail
+                email: req.decoded.user
             },
             order: [
                 ['id', 'ASC']
@@ -52,7 +52,7 @@ ArtistsInteractions.post("/byUser", async (req, res) => {
             where:
             {
                 [Op.or]: [
-                    { email: req.userEmail }
+                    { email: req.decoded.user }
                 ],
                 id: { [Op.in]: req.body }
             },

@@ -7,7 +7,7 @@ AlbumsInteractions.get("/userInteractions", async (req, res) => {
     try {
         const allInteractions = await User_album.findAll({
             where: {
-                email: req.userEmail
+                email: req.decoded.user
             },
             order: [
                 ['id', 'ASC']
@@ -50,7 +50,7 @@ AlbumsInteractions.post("/byUser", async (req, res) => {
     try {
         const allInteractions = await User_album.findAll({
             where: {
-                email: req.userEmail,
+                email: req.decoded.user,
                 albumId: { [Op.in]: req.body }
             },
             include: [{

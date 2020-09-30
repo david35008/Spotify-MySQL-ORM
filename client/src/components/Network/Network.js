@@ -31,8 +31,7 @@ function Network(endPoint, { body, ...customConfig } = {}) {
             removeTokents()
             return window.location.assign('/')
         } else {
-            // console.error(`${response.status} : '${data.message}'`);
-            // return Promise.reject(`${response.status} : '${data.json()}'`);
+            console.error(`${response.status} : '${data.message}'`);
             throw data
         }
     });

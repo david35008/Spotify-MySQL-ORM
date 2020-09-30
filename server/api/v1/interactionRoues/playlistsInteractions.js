@@ -9,7 +9,7 @@ PlaylistsInteractions.get("/all", async (req, res) => {
             where:
             {
                 [Op.or]: [
-                    { email: req.userEmail },
+                    { email: req.decoded.user },
                     { email: 'david@gmail.com' }
                 ]
             },
@@ -46,7 +46,7 @@ PlaylistsInteractions.get("/byUser", async (req, res) => {
     try {
         const allInteractions = await User_playlist.findAll({
             where:
-                { email: req.userEmail },
+                { email: req.decoded.user },
             include: [{
                 model: Playlist,
                 include: [
