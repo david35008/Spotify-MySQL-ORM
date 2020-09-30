@@ -6,7 +6,8 @@
 require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
-const { Playlist } = require('../models');
+const bcrypt = require('bcrypt');
+const { Playlist, User } = require('../models');
 const { Op } = require("sequelize");
 
 const playlistMock = {
@@ -18,7 +19,9 @@ const playlistChaengeMock = {
 }
 
 const userMock = {
-  email: process.env.LOGIN,
+  name: 'test2',
+  isAdmin: true,
+  email: 'test2@test.com',
   password: process.env.PASSWORD,
   rememberToken: false
 }
@@ -27,10 +30,15 @@ let header;
 
 describe('check playlists routs', () => {
   beforeAll(async () => {
+    userMock.password = await bcrypt.hash(process.env.PASSWORD, 10);
+    await User.create(userMock);
+
+    userMock.password = process.env.PASSWORD;
     const response = await request(server)
       .post("/users/logIn")
       .send(userMock)
       .expect(200);
+
     header = response.header;
   })
   afterAll(async () => {
@@ -53,7 +61,9 @@ describe('check playlists routs', () => {
       .expect(200);
 
     expect(getAllPlaylists.length > 0).toBe(true)
+    await timeout(200);
     const playlistsFromDB = await Playlist.findAll();
+    await timeout(200);
     expect(playlistsFromDB.length > 0).toBe(true)
 
     expect(playlistsFromDB.length).toBe(getAllPlaylists.length)
@@ -71,7 +81,9 @@ describe('check playlists routs', () => {
       .set('Authorization', header['authorization'])
       .expect(200);
 
+    await timeout(200);
     const playlistFromDB = await Playlist.findByPk(newPlaylist.id);
+    await timeout(200);
     expect(playlistFromDB.name).toBe(playlistMock.name)
     expect(getSinglePlaylist.name).toBe(playlistMock.name);
     expect(getSinglePlaylist.id).toBe(newPlaylist.id);
@@ -89,7 +101,9 @@ describe('check playlists routs', () => {
       .set('Authorization', header['authorization'])
       .expect(200);
 
+    await timeout(200);
     const playlistFromDB = await Playlist.findAll({ where: { name: { [Op.like]: `%${playlistMock.name}%` } } });
+    await timeout(200);
     expect(playlistFromDB[0].name).toBe(newPlaylist.name)
     expect(getSinglePlaylist[0].name).toBe(playlistMock.name);
     expect(getSinglePlaylist[0].id).toBe(newPlaylist.id);
@@ -111,7 +125,9 @@ describe('check playlists routs', () => {
       .expect(200);
 
     expect(getTopPlaylists.length <= 20).toBe(true)
+    await timeout(200);
     const topPlaylistsFromDB = await Playlist.findAll({ limit: 20 });
+    await timeout(200);
     expect(topPlaylistsFromDB.length <= 20).toBe(true);
 
     expect(topPlaylistsFromDB.length).toBe(getTopPlaylists.length)
@@ -124,7 +140,9 @@ describe('check playlists routs', () => {
       .send(playlistMock)
       .expect(200);
 
+    await timeout(200);
     const playlistFromDB = await Playlist.findByPk(newPlaylist.id);
+    await timeout(200);
     expect(playlistFromDB.name).toBe(newPlaylist.name)
   });
 
@@ -141,7 +159,9 @@ describe('check playlists routs', () => {
       .send(playlistChaengeMock)
       .expect(200);
 
+    await timeout(200);
     const playlistFromDB = await Playlist.findByPk(newPlaylist.id);
+    await timeout(200);
     expect(playlistFromDB.name).toBe(playlistChaengeMock.name)
   })
 
@@ -157,7 +177,13 @@ describe('check playlists routs', () => {
       .set('Authorization', header['authorization'])
       .expect(200);
 
+    await timeout(200);
     const playlistFromDB = await Playlist.findByPk(newPlaylist.id);
+    await timeout(200);
     expect(playlistFromDB).toBe(null)
   })
 })
+
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

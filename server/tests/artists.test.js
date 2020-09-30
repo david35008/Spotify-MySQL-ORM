@@ -6,7 +6,8 @@
 require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
-const { Artist } = require('../models');
+const bcrypt = require('bcrypt');
+const { Artist, User } = require('../models');
 const { Op } = require("sequelize");
 
 const artistMock = {
@@ -18,19 +19,27 @@ const artistChaengeMock = {
 }
 
 const userMock = {
-  email: process.env.LOGIN,
+  name: 'test1',
+  isAdmin: true,
+  email: 'test1@test.com',
   password: process.env.PASSWORD,
   rememberToken: false
 }
+
 
 let header;
 
 describe('check artists routs', () => {
   beforeAll(async () => {
+    userMock.password = await bcrypt.hash(process.env.PASSWORD, 10);
+    await User.create(userMock);
+
+    userMock.password = process.env.PASSWORD;
     const response = await request(server)
       .post("/users/logIn")
       .send(userMock)
       .expect(200);
+
     header = response.header;
   })
   afterAll(async () => {
@@ -54,7 +63,9 @@ describe('check artists routs', () => {
       .expect(200);
 
     expect(getAllArtists.length > 0).toBe(true)
+    await timeout(200);
     const artistsFromDB = await Artist.findAll();
+    await timeout(200);
     expect(artistsFromDB.length > 0).toBe(true)
 
     expect(artistsFromDB.length).toBe(getAllArtists.length)
@@ -72,7 +83,9 @@ describe('check artists routs', () => {
       .set('Authorization', header['authorization'])
       .expect(200);
 
+    await timeout(200);
     const artistFromDB = await Artist.findByPk(newArtist.id);
+    await timeout(200);
     expect(artistFromDB.name).toBe(artistMock.name)
     expect(getSingleArtist.name).toBe(artistMock.name);
     expect(getSingleArtist.id).toBe(newArtist.id);
@@ -90,7 +103,9 @@ describe('check artists routs', () => {
       .set('Authorization', header['authorization'])
       .expect(200);
 
+    await timeout(200);
     const artistFromDB = await Artist.findAll({ where: { name: { [Op.like]: `%${artistMock.name}%` } } });
+    await timeout(200);
     expect(artistFromDB[0].name).toBe(newArtist.name)
     expect(getSingleArtist[0].name).toBe(artistMock.name);
     expect(getSingleArtist[0].id).toBe(newArtist.id);
@@ -112,7 +127,9 @@ describe('check artists routs', () => {
       .expect(200);
 
     expect(getTopArtists.length <= 20).toBe(true)
+    await timeout(200);
     const topArtistsFromDB = await Artist.findAll({ limit: 20 });
+    await timeout(200);
     expect(topArtistsFromDB.length <= 20).toBe(true);
 
     expect(topArtistsFromDB.length).toBe(getTopArtists.length)
@@ -124,8 +141,10 @@ describe('check artists routs', () => {
       .set('Authorization', header['authorization'])
       .send(artistMock)
       .expect(200);
-      
+
+    await timeout(200);
     const artistFromDB = await Artist.findByPk(newArtist.id);
+    await timeout(200);
     expect(artistFromDB.name).toBe(newArtist.name)
   });
 
@@ -142,7 +161,9 @@ describe('check artists routs', () => {
       .send(artistChaengeMock)
       .expect(200);
 
+    await timeout(200);
     const artistFromDB = await Artist.findByPk(newArtist.id);
+    await timeout(200);
     expect(artistFromDB.name).toBe(artistChaengeMock.name)
   })
 
@@ -158,7 +179,13 @@ describe('check artists routs', () => {
       .set('Authorization', header['authorization'])
       .expect(200);
 
+    await timeout(200);
     const artistFromDB = await Artist.findByPk(newArtist.id);
+    await timeout(200);
     expect(artistFromDB).toBe(null)
   })
 })
+
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

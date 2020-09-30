@@ -6,11 +6,14 @@
 require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
-const { Album, Artist } = require('../models');
+const bcrypt = require('bcrypt');
+const { Album, Artist, User } = require('../models');
 const { Op } = require("sequelize");
 
 const userMock = {
-    email: process.env.LOGIN,
+    name: 'test',
+    isAdmin: true,
+    email: 'test@test.com',
     password: process.env.PASSWORD,
     rememberToken: false
 }
@@ -31,6 +34,10 @@ let header;
 
 describe('check albums routs', () => {
     beforeAll(async () => {
+        userMock.password = await bcrypt.hash(process.env.PASSWORD, 10);
+        await User.create(userMock);
+
+        userMock.password = process.env.PASSWORD;
         const response = await request(server)
             .post("/users/logIn")
             .send(userMock)
@@ -48,6 +55,7 @@ describe('check albums routs', () => {
 
     })
     afterAll(async () => {
+        await User.destroy({ truncate: true, force: true });
         await Artist.destroy({ truncate: true, force: true });
         await server.close();
     });
@@ -56,7 +64,7 @@ describe('check albums routs', () => {
     });
 
     it('Can get all albums', async () => {
-        const { body: newAlbum } = await request(server)
+        await request(server)
             .post('/api/v1/albums')
             .set('Authorization', header['authorization'])
             .send(albumMock)
@@ -68,7 +76,9 @@ describe('check albums routs', () => {
             .expect(200);
 
         expect(getAllAlbums.length > 0).toBe(true)
+        await timeout(200);
         const albumsFromDB = await Album.findAll();
+        await timeout(200);
         expect(albumsFromDB.length > 0).toBe(true)
 
         expect(albumsFromDB.length).toBe(getAllAlbums.length)
@@ -86,7 +96,9 @@ describe('check albums routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
+        await timeout(200);
         const albumFromDB = await Album.findByPk(newAlbum.id);
+        await timeout(200);
         expect(albumFromDB.name).toBe(albumMock.name)
         expect(getSingleAlbum.name).toBe(albumMock.name);
         expect(getSingleAlbum.id).toBe(newAlbum.id);
@@ -104,7 +116,10 @@ describe('check albums routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
+
+        await timeout(200);
         const albumFromDB = await Album.findAll({ where: { name: { [Op.like]: `%${albumMock.name}%` } } });
+        await timeout(200);
         expect(albumFromDB[0].name).toBe(newAlbum.name)
         expect(getSingleAlbum[0].name).toBe(albumMock.name);
         expect(getSingleAlbum[0].id).toBe(newAlbum.id);
@@ -126,7 +141,9 @@ describe('check albums routs', () => {
             .expect(200);
 
         expect(getTopAlbums.length <= 20).toBe(true)
+        await timeout(200);
         const topAlbumsFromDB = await Album.findAll({ limit: 20 });
+        await timeout(200);
         expect(topAlbumsFromDB.length <= 20).toBe(true);
 
         expect(topAlbumsFromDB.length).toBe(getTopAlbums.length)
@@ -139,7 +156,10 @@ describe('check albums routs', () => {
             .send(albumMock)
             .expect(200);
         albumMock.id = newAlbum.id;
+
+        await timeout(200);
         const albumFromDB = await Album.findByPk(albumMock.id);
+        await timeout(200);
         expect(albumFromDB.name).toBe(albumMock.name)
     });
 
@@ -156,7 +176,10 @@ describe('check albums routs', () => {
             .send(albumChaengeMock)
             .expect(200);
 
+
+        await timeout(200);
         const albumFromDB = await Album.findByPk(newAlbum.id);
+        await timeout(200);
         expect(albumFromDB.name).toBe(albumChaengeMock.name)
     })
 
@@ -172,7 +195,13 @@ describe('check albums routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
+        await timeout(200);
         const albumFromDB = await Album.findByPk(newAlbum.id);
+        await timeout(200);
         expect(albumFromDB).toBe(null)
     })
 })
+
+function timeout(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}

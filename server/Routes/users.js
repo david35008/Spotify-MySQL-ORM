@@ -30,12 +30,14 @@ usersRouter.post('/register', async (req, res) => {
                 createdAt: formatDate(new Date()),
                 updatedAt: formatDate(new Date())
             }
-            const newSong = await User.create(newUser);
-            res.json("1 user successfully inserted into db");
-
-            res.json({ message: e.message });
-
-        } else {
+            const userResponse = await User.create(newUser);
+            res.json({
+                message: "1 user successfully inserted into db",
+                name: userResponse.name,
+                email: userResponse.email
+            });
+                
+            } else {
             res.status(406).json({ message: 'Email alreay taken!' })
         }
     }  catch (e) {

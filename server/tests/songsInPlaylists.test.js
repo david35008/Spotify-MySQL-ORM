@@ -6,7 +6,8 @@
 require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
-const { Playlist, PlaylistsSong, Song, Album, Artist } = require('../models');
+const bcrypt = require('bcrypt');
+const { Playlist, PlaylistsSong, Song, Album, Artist, User } = require('../models');
 const { Op } = require("sequelize");
 
 const playlistMock = {
@@ -28,19 +29,27 @@ const songMock = {
 const songInPlaylistMock = {}
 
 const userMock = {
-  email: process.env.LOGIN,
+  name: 'test4',
+  isAdmin: true,
+  email: 'test4@test.com',
   password: process.env.PASSWORD,
   rememberToken: false
 }
+
 
 let header;
 
 describe('check songInPlaylist routs', () => {
   beforeAll(async () => {
+    userMock.password = await bcrypt.hash(process.env.PASSWORD, 10);
+    await User.create(userMock);
+
+    userMock.password = process.env.PASSWORD;
     const response = await request(server)
       .post("/users/logIn")
       .send(userMock)
       .expect(200);
+
     header = response.header;
 
     const { body: newPlaylist } = await request(server)
@@ -78,6 +87,7 @@ describe('check songInPlaylist routs', () => {
 
   })
   afterAll(async () => {
+    await User.destroy({ truncate: true, force: true });
     await Song.destroy({ truncate: true, force: true });
     await Album.destroy({ truncate: true, force: true });
     await Artist.destroy({ truncate: true, force: true });
@@ -97,7 +107,9 @@ describe('check songInPlaylist routs', () => {
 
     expect(newSongInPlaylist.songId).toBe(songInPlaylistMock.songId)
     expect(newSongInPlaylist.playlistId).toBe(songInPlaylistMock.playlistId)
+    await timeout(200);
     const songInPlaylistFromDB = await PlaylistsSong.findOne({ where: { [Op.and]: [{ playlistId: newSongInPlaylist.playlistId }, { songId: newSongInPlaylist.songId }] } });
+    await timeout(200);
     expect(songInPlaylistFromDB.songId).toBe(newSongInPlaylist.songId)
     expect(songInPlaylistFromDB.playlistId).toBe(newSongInPlaylist.playlistId)
   });
@@ -114,7 +126,12 @@ describe('check songInPlaylist routs', () => {
       .set('Authorization', header['authorization'])
       .expect(200);
 
+    await timeout(200);
     const songInPlaylistFromDB = await PlaylistsSong.findOne({ where: { [Op.and]: [{ playlistId: newSongInPlaylist.playlistId }, { songId: newSongInPlaylist.songId }] } });
     expect(songInPlaylistFromDB).toBe(null)
   })
 })
+
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
