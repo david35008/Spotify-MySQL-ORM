@@ -36,7 +36,6 @@ const userMock = {
   rememberToken: false
 }
 
-
 let header;
 
 describe('check songInPlaylist routs', () => {
@@ -105,13 +104,11 @@ describe('check songInPlaylist routs', () => {
       .send(songInPlaylistMock)
       .expect(200);
 
-    expect(newSongInPlaylist.songId).toBe(songInPlaylistMock.songId)
-    expect(newSongInPlaylist.playlistId).toBe(songInPlaylistMock.playlistId)
-    await timeout(200);
+    expect(newSongInPlaylist.songId).toBe(songInPlaylistMock.songId);
+    expect(newSongInPlaylist.playlistId).toBe(songInPlaylistMock.playlistId);
     const songInPlaylistFromDB = await PlaylistsSong.findOne({ where: { [Op.and]: [{ playlistId: newSongInPlaylist.playlistId }, { songId: newSongInPlaylist.songId }] } });
-    await timeout(200);
-    expect(songInPlaylistFromDB.songId).toBe(newSongInPlaylist.songId)
-    expect(songInPlaylistFromDB.playlistId).toBe(newSongInPlaylist.playlistId)
+    expect(songInPlaylistFromDB.songId).toBe(newSongInPlaylist.songId);
+    expect(songInPlaylistFromDB.playlistId).toBe(newSongInPlaylist.playlistId);
   });
 
   it('Can delete song from playlist', async () => {
@@ -126,12 +123,7 @@ describe('check songInPlaylist routs', () => {
       .set('Authorization', header['authorization'])
       .expect(200);
 
-    await timeout(200);
     const songInPlaylistFromDB = await PlaylistsSong.findOne({ where: { [Op.and]: [{ playlistId: newSongInPlaylist.playlistId }, { songId: newSongInPlaylist.songId }] } });
-    expect(songInPlaylistFromDB).toBe(null)
+    expect(songInPlaylistFromDB).toBe(null);
   })
 })
-
-function timeout(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}

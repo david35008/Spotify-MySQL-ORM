@@ -18,7 +18,6 @@ const userMock = {
     rememberToken: false
 }
 
-
 const artistMock = {
     name: 'new artist name',
 }
@@ -83,18 +82,15 @@ describe('check songs routs', () => {
             .send(songMock)
             .expect(200);
 
-
         const { body: getAllSongs } = await request(server)
             .get(`/api/v1/songs`)
             .set('Authorization', header['authorization'])
             .expect(200);
 
-        expect(getAllSongs.length > 0).toBe(true)
-        await timeout(200);
+        expect(getAllSongs.length > 0).toBe(true);
         const songsFromDB = await Song.findAll();
-        await timeout(200);
-        expect(songsFromDB.length > 0).toBe(true)
-        expect(songsFromDB.length).toBe(getAllSongs.length)
+        expect(songsFromDB.length > 0).toBe(true);
+        expect(songsFromDB.length).toBe(getAllSongs.length);
     })
 
     it('Can get single song by id', async () => {
@@ -109,10 +105,8 @@ describe('check songs routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
-        await timeout(200);
         const songFromDB = await Song.findByPk(newSong.id);
-        await timeout(200);
-        expect(songFromDB.name).toBe(songMock.name)
+        expect(songFromDB.name).toBe(songMock.name);
         expect(getSingleSong.name).toBe(songMock.name);
         expect(getSingleSong.id).toBe(newSong.id);
     })
@@ -129,10 +123,8 @@ describe('check songs routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
-        await timeout(200);
         const songFromDB = await Song.findAll({ where: { name: { [Op.like]: `%${songMock.name}%` } } });
-        await timeout(200);
-        expect(songFromDB[0].name).toBe(newSong.name)
+        expect(songFromDB[0].name).toBe(newSong.name);
         expect(getSingleSong[0].name).toBe(songMock.name);
         expect(getSingleSong[0].id).toBe(newSong.id);
     })
@@ -152,12 +144,9 @@ describe('check songs routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
-        expect(getTopSongs.length <= 20).toBe(true)
-        await timeout(200);
+        expect(getTopSongs.length <= 20).toBe(true);
         const topSongsFromDB = await Song.findAll({ limit: 20 });
-        await timeout(200);
         expect(topSongsFromDB.length <= 20).toBe(true);
-
         expect(topSongsFromDB.length).toBe(getTopSongs.length)
     })
 
@@ -168,10 +157,9 @@ describe('check songs routs', () => {
             .send(songMock)
             .expect(200);
         songMock.id = newSong.id;
-        await timeout(200);
+
         const songFromDB = await Song.findByPk(songMock.id);
-        await timeout(200);
-        expect(songFromDB.name).toBe(songMock.name)
+        expect(songFromDB.name).toBe(songMock.name);
     });
 
     it('Can change song', async () => {
@@ -187,10 +175,8 @@ describe('check songs routs', () => {
             .send(songChaengeMock)
             .expect(200);
 
-        await timeout(200);
         const songFromDB = await Song.findByPk(newSong.id);
-        await timeout(200);
-        expect(songFromDB.name).toBe(songChaengeMock.name)
+        expect(songFromDB.name).toBe(songChaengeMock.name);
     })
 
     it('Can delete song', async () => {
@@ -205,13 +191,7 @@ describe('check songs routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
-        await timeout(200);
         const songFromDB = await Song.findByPk(newSong.id);
-        await timeout(200);
-        expect(songFromDB).toBe(null)
+        expect(songFromDB).toBe(null);
     })
 })
-
-function timeout(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}

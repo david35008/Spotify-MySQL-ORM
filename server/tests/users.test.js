@@ -30,13 +30,11 @@ describe('check songInUser routs', () => {
             .send(userMock)
             .expect(200);
 
-        expect(newUser.name).toBe(userMock.name)
-        expect(newUser.email).toBe(userMock.email)
-        await timeout(200);
+        expect(newUser.name).toBe(userMock.name);
+        expect(newUser.email).toBe(userMock.email);
         const UserFromDB = await User.findOne({ where: { [Op.and]: [{ name: newUser.name }, { email: newUser.email }] } });
-        await timeout(200);
-        expect(UserFromDB.name).toBe(newUser.name)
-        expect(UserFromDB.email).toBe(newUser.email)
+        expect(UserFromDB.name).toBe(newUser.name);
+        expect(UserFromDB.email).toBe(newUser.email);
     });
 
     it("Can login as user and pass validation", async () => {
@@ -50,10 +48,6 @@ describe('check songInUser routs', () => {
             .send(userMock)
             .expect(200);
 
-        expect(response.body).toBe(`welcome back ${newUser.name}`)
+        expect(response.body).toBe(`welcome back ${newUser.name}`);
     })
 })
-
-function timeout(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}

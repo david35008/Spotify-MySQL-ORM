@@ -52,7 +52,6 @@ describe('check albums routs', () => {
             .expect(200);
 
         albumMock.artistId = newArtist.id
-
     })
     afterAll(async () => {
         await User.destroy({ truncate: true, force: true });
@@ -76,11 +75,8 @@ describe('check albums routs', () => {
             .expect(200);
 
         expect(getAllAlbums.length > 0).toBe(true)
-        await timeout(200);
         const albumsFromDB = await Album.findAll();
-        await timeout(200);
         expect(albumsFromDB.length > 0).toBe(true)
-
         expect(albumsFromDB.length).toBe(getAllAlbums.length)
     })
 
@@ -96,9 +92,7 @@ describe('check albums routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
-        await timeout(200);
         const albumFromDB = await Album.findByPk(newAlbum.id);
-        await timeout(200);
         expect(albumFromDB.name).toBe(albumMock.name)
         expect(getSingleAlbum.name).toBe(albumMock.name);
         expect(getSingleAlbum.id).toBe(newAlbum.id);
@@ -116,10 +110,7 @@ describe('check albums routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
-
-        await timeout(200);
         const albumFromDB = await Album.findAll({ where: { name: { [Op.like]: `%${albumMock.name}%` } } });
-        await timeout(200);
         expect(albumFromDB[0].name).toBe(newAlbum.name)
         expect(getSingleAlbum[0].name).toBe(albumMock.name);
         expect(getSingleAlbum[0].id).toBe(newAlbum.id);
@@ -141,11 +132,8 @@ describe('check albums routs', () => {
             .expect(200);
 
         expect(getTopAlbums.length <= 20).toBe(true)
-        await timeout(200);
         const topAlbumsFromDB = await Album.findAll({ limit: 20 });
-        await timeout(200);
         expect(topAlbumsFromDB.length <= 20).toBe(true);
-
         expect(topAlbumsFromDB.length).toBe(getTopAlbums.length)
     })
 
@@ -157,9 +145,7 @@ describe('check albums routs', () => {
             .expect(200);
         albumMock.id = newAlbum.id;
 
-        await timeout(200);
         const albumFromDB = await Album.findByPk(albumMock.id);
-        await timeout(200);
         expect(albumFromDB.name).toBe(albumMock.name)
     });
 
@@ -176,10 +162,7 @@ describe('check albums routs', () => {
             .send(albumChaengeMock)
             .expect(200);
 
-
-        await timeout(200);
         const albumFromDB = await Album.findByPk(newAlbum.id);
-        await timeout(200);
         expect(albumFromDB.name).toBe(albumChaengeMock.name)
     })
 
@@ -195,13 +178,7 @@ describe('check albums routs', () => {
             .set('Authorization', header['authorization'])
             .expect(200);
 
-        await timeout(200);
         const albumFromDB = await Album.findByPk(newAlbum.id);
-        await timeout(200);
         expect(albumFromDB).toBe(null)
     })
 })
-
-function timeout(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
