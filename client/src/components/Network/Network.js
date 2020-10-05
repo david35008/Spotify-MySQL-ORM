@@ -5,7 +5,8 @@ function Network(endPoint, { body, ...customConfig } = {}) {
 
     const headers = {
         "Content-Type": "application/json;charset=utf-8'",
-        "Authorization": `${Cookies.get('token')}`
+        "Authorization": `${Cookies.get('refreshToken')}`,
+        "AccessToken": `${Cookies.get('accessToken')}`
     };
 
     const url = `${endPoint}`
@@ -28,8 +29,8 @@ function Network(endPoint, { body, ...customConfig } = {}) {
             // console.log(`Got response ${response.status}`, data);
             return data
         } else if (response.status === 403) {
-            removeTokents()
-            return window.location.assign('/')
+            // removeTokents()
+            // return window.location.assign('/')
         } else {
             console.error(`${response.status} : '${data.message}'`);
             throw data

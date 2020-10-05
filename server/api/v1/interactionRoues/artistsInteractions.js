@@ -21,18 +21,18 @@ ArtistsInteractions.get("/userInteractions", async (req, res) => {
 
 ArtistsInteractions.post("/", async (req, res) => {
     try {
-        const { body, userEmail } = req;
-        body.email = userEmail;
+        const { body, decoded } = req;
+        body.email = decoded.user;
         const existInteraction = await User_artist.findOne({
             where: {
-                email: userEmail,
+                email: decoded.user,
                 artistId: body.artistId
             }
         })
         if (existInteraction) {
             const editInteraction = await User_artist.update(body, {
                 where: {
-                    email: userEmail,
+                    email: decoded.user,
                     artistId: body.artistId
                 }
             });

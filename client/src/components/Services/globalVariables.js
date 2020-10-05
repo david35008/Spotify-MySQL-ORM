@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { create } from '../Network/Ajax';
 
 export function GetYTId(songId) {
     let videoId = songId.split("v=")[1];
@@ -18,8 +19,12 @@ export const breakPoints = [
 ]
 
 export function removeTokents() {
+    create('/users/logOut', Cookies.get('refreshToken'))
+    .then(res => {debugger})
+    .catch(res=> {debugger})
     Cookies.remove('name')
-    Cookies.remove('token')
+    Cookies.remove('refreshToken')
+    Cookies.remove('accessToken')
     Cookies.remove('isAdmin')
     Cookies.remove('user')
 }
@@ -32,5 +37,5 @@ export function formatDate(date) {
         pad(date.getUTCMonth() + 1) + '-' +
         pad(date.getUTCDate() + 1)
     return dateStr;
-};    
+};
 
