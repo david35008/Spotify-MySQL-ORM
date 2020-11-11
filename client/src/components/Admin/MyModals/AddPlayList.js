@@ -12,16 +12,16 @@ function AddPlayList({ openModal, setOpenModal }) {
     const [playListImageLink, setplayListImageLink] = useState('');
 
     const sendNewPlayList = () => {
-        const sendNewPlayList = {
+        const newPlayListObject = {
             name: playListName,
             createdAt: playListCreated,
             uploadAt: formatDate(new Date()),
             coverImg: playListImageLink
         };
 
-        create('/api/v1/playlists', sendNewPlayList)
+        create('/api/v1/playlists', newPlayListObject)
             .then((res) =>
-                create('/api/v1/interactions/playlist', {
+                create('/api/v1/interactions/playlists', {
                     playlistId: res.id
                 })
                     .then(handleClose)

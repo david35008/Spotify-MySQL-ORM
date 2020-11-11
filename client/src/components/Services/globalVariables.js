@@ -1,12 +1,17 @@
 import Cookies from 'js-cookie';
 
 export function GetYTId(songId) {
-    let videoId = songId.split("v=")[1];
-    const ampersandPosition = videoId.indexOf("&");
-    if (ampersandPosition !== -1) {
-        videoId = videoId.substring(0, ampersandPosition);
-    }
-    return videoId
+    if (songId) {
+        let videoId = songId.split("v=")[1];
+        if (videoId) {
+
+            const ampersandPosition = videoId.indexOf("&");
+            if (ampersandPosition !== -1) {
+                videoId = videoId.substring(0, ampersandPosition);
+            }
+            return videoId
+        } else { return '' }
+    } else { return '' }
 }
 
 export const breakPoints = [
@@ -32,5 +37,5 @@ export function formatDate(date) {
         pad(date.getUTCMonth() + 1) + '-' +
         pad(date.getUTCDate() + 1)
     return dateStr;
-};    
+};
 

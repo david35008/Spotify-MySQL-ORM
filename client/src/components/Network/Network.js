@@ -27,10 +27,12 @@ function Network(endPoint, { body, ...customConfig } = {}) {
         if (response.ok) {
             // console.log(`Got response ${response.status}`, data);
             return data
-        } else if (response.status === 403) {
-            removeTokents()
-            return window.location.assign('/')
-        } else {
+        }
+        // else if (response.status === 403) {
+        //     removeTokents()
+        //     return window.location.assign('/')
+        // }
+        else {
             console.error(`${response.status} : '${data.message}'`);
             throw data
         }

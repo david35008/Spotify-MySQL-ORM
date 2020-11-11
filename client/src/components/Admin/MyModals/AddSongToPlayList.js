@@ -33,7 +33,7 @@ function AddSongToPlayList({ openModal, setOpenModal }) {
             songId: song,
             playlistId: PlayList
         }
-        create('/api/v1/playlists/songs', newConneaction)
+        create('/api/v1/songsInPlaylists', newConneaction)
             .then(handleClose)
             .catch(console.error)
     }

@@ -15,6 +15,7 @@ function formatDate(date) {
     return dateStr;
 };
 
+// Register
 usersRouter.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -40,11 +41,13 @@ usersRouter.post('/register', async (req, res) => {
             } else {
             res.status(406).json({ message: 'Email alreay taken!' })
         }
-    }  catch (e) {
-        res.status(400).json({ message: e.message });
+    }  catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 })
 
+// Validate Token
 usersRouter.post("/valid", (req, res) => {
     jwt.verify(req.body.token, process.env.SECRET_KEY, (error, data) => {
         if (error) {
@@ -55,6 +58,7 @@ usersRouter.post("/valid", (req, res) => {
     })
 })
 
+// Log In
 usersRouter.post("/logIn", async (req, res) => {
     const { email, password, rememberToken } = req.body;
     try {
@@ -62,7 +66,7 @@ usersRouter.post("/logIn", async (req, res) => {
         if (await bcrypt.compare(password, user.password)) {
             const newToken = {
                 isAdmin: user.isAdmin,
-                user: user.email,
+                email: user.email,
                 userId: user.id,
             }
             if (!rememberToken) {
@@ -79,8 +83,9 @@ usersRouter.post("/logIn", async (req, res) => {
         } else {
             res.status(403).json({ message: 'The email or password you’ve entered doesn’t correct.' });
         }
-    }  catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 })
 

@@ -3,36 +3,39 @@ const ArtistsInteractions = express.Router();
 const {  User_artist, Song, Artist, Album } = require('../../../models');
 const { Op } = require("sequelize");
 
+// get all artists interactions
 ArtistsInteractions.get("/userInteractions", async (req, res) => {
     try {
         const allInteractions = await User_artist.findAll({
             where: {
-                email: req.decoded.user
+                email: req.decoded.email
             },
             order: [
                 ['id', 'ASC']
             ]
         })
         res.json(allInteractions)
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// get artists interactions filtered by user email
 ArtistsInteractions.post("/", async (req, res) => {
     try {
-        const { body, userEmail } = req;
-        body.email = userEmail;
+        const { body } = req;
+        body.email = req.decoded.email;
         const existInteraction = await User_artist.findOne({
             where: {
-                email: userEmail,
+                email: req.decoded.email,
                 artistId: body.artistId
             }
         })
         if (existInteraction) {
             const editInteraction = await User_artist.update(body, {
                 where: {
-                    email: userEmail,
+                    email: req.decoded.email,
                     artistId: body.artistId
                 }
             });
@@ -41,18 +44,20 @@ ArtistsInteractions.post("/", async (req, res) => {
             const newInteraction = await User_artist.create(body);
             res.json(newInteraction);
         }
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// create new interaction with a artist
 ArtistsInteractions.post("/byUser", async (req, res) => {
     try {
         const allInteractions = await User_artist.findAll({
             where:
             {
                 [Op.or]: [
-                    { email: req.decoded.user }
+                    { email: req.decoded.email }
                 ],
                 id: { [Op.in]: req.body }
             },
@@ -75,8 +80,9 @@ ArtistsInteractions.post("/byUser", async (req, res) => {
             ]
         })
         res.json(allInteractions)
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 

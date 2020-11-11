@@ -1,8 +1,10 @@
 const express = require('express');
 const playlistsRouter = express.Router();
-const { Song, Playlist, Artist, Album, PlaylistsSong, User_playlist } = require('../../models');
+const checkAdmin = require('../../helpers/checkAdmin');
+const { Song, Playlist, Artist, Album, PlaylistsSong } = require('../../models');
 const { Op } = require("sequelize");
 
+// get all playlists
 playlistsRouter.get("/", async (req, res) => {
     try {
         const allPlaylists = await Playlist.findAll({
@@ -27,11 +29,13 @@ playlistsRouter.get("/", async (req, res) => {
             ]
         });
         res.json(allPlaylists);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// get playlist filtered by id from params
 playlistsRouter.get("/byId/:id", async (req, res) => {
     try {
         const result = await Playlist.findByPk(req.params.id, {
@@ -56,11 +60,13 @@ playlistsRouter.get("/byId/:id", async (req, res) => {
             ]
         });
         res.json(result);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// get playlist filtered by name from params
 playlistsRouter.get("/byName/:name", async (req, res) => {
     try {
         const results = await Playlist.findAll({
@@ -71,55 +77,62 @@ playlistsRouter.get("/byName/:name", async (req, res) => {
             }
         });
         res.json(results);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// get top 20 playlists
 playlistsRouter.get("/top", async (req, res) => {
     try {
         const allPlaylists = await Playlist.findAll({ limit: 20 });
         res.json(allPlaylists);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// create new playlist
 playlistsRouter.post("/", async (req, res) => {
     try {
         const { body } = req;
+        body.userId = req.decoded.userId;
         const newPlaylist = await Playlist.create(body);
         res.json(newPlaylist);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
-// check if request is admin
-playlistsRouter.use((req, res, next) => {
-    req.decoded.isAdmin ? next() : res.status(403)
-})
+//============================== Admin Routes ======================================//
 
-playlistsRouter.put("/:id", async (req, res) => {
+// update playlist information
+playlistsRouter.put("/:id", checkAdmin, async (req, res) => {
     try {
         const { body } = req;
         const editPlaylist = await Playlist.update(body, {
             where: { id: req.params.id }
         })
         res.json(editPlaylist);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
-playlistsRouter.delete("/:id", async (req, res) => {
+// delete playlist
+playlistsRouter.delete("/:id", checkAdmin, async (req, res) => {
     try {
         const result = await Playlist.destroy({
             where: { id: req.params.id }
         })
         res.json(result);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 

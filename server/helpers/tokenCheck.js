@@ -10,7 +10,7 @@ module.exports = function (req, res, next) {
         } else {
           const newToken = {
             isAdmin: decoded.isAdmin,
-            user: decoded.user,
+            email: decoded.email,
             userId: decoded.userId
           }
           if (!decoded.rememberToken) {

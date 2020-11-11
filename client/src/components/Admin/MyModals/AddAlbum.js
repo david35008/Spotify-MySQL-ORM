@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import './MyModal.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button } from 'react-bootstrap';
-import { create } from '../../Network/Ajax';
+import { Modal, Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import { create, read } from '../../Network/Ajax';
 
 function AddAlbum({ openModal, setOpenModal, formatDate }) {
+
+    const [artistList, setArtistList] = useState([])
 
     const [albumName, setAlbumName] = useState('');
     const [albumArtist, setAlbumArtist] = useState('');
     const [albumCreated, setAlbumCreated] = useState('');
     const [albumImageLink, setAlbumImageLink] = useState('');
+
+    const getArtistsList = () => {
+        read('/api/v1/artists')
+            .then(setArtistList)
+            .catch(console.error);
+    }
 
     const sendNewAlbum = () => {
         const newAlbum = {
@@ -43,8 +51,11 @@ function AddAlbum({ openModal, setOpenModal, formatDate }) {
                     <form className="addNewForm" >
                         <label >Name:</label>
                         <input type="text" onChange={(e) => setAlbumName(e.target.value)} required /><br />
-                        <label >Artist:</label>
-                        <input type="number" onChange={(e) => setAlbumArtist(e.target.value)} required /><br />
+                        <DropdownButton id="dropdown-basic-button" title="Artists" onToggle={getArtistsList} onSelect={setAlbumArtist} >
+                            {artistList.map((option) =>
+                                <Dropdown.Item key={option.name} eventKey={option.id} >{option.name}</Dropdown.Item>
+                            )}
+                        </DropdownButton>
                         <label >Created At:</label>
                         <input type="date" onChange={(e) => setAlbumCreated(e.target.value)} required /><br />
                         <label >Image Link:</label>

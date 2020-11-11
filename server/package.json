@@ -6,7 +6,9 @@
   "scripts": {
     "test": "node_modules/.bin/jest",
     "dev": "nodemon start.js",
-    "start": "node start.js"
+    "start": "node start.js",
+    "migrate": "node_modules/.bin/sequelize db:migrate",
+    "seed": "node_modules/.bin/sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",

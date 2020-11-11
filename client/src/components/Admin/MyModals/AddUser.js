@@ -25,7 +25,7 @@ function AddUser({ openModal, setOpenModal, formatDate }) {
       createdAt: userCreated,
       uploadAt: formatDate(new Date())
     };
-    create('/api/v1/user', newUser)
+    create('/api/v1/users', newUser)
       .then(handleClose)
       .catch(console.error)
   };

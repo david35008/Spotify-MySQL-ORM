@@ -1,8 +1,10 @@
 const express = require('express');
 const artistsRouter = express.Router();
+const checkAdmin = require('../../helpers/checkAdmin');
 const { Artist, Album, Song } = require('../../models');
 const { Op } = require("sequelize");
 
+// get all artists
 artistsRouter.get("/", async (req, res) => {
     try {
         const allArtists = await Artist.findAll({
@@ -25,11 +27,13 @@ artistsRouter.get("/", async (req, res) => {
             ]
         });
         res.json(allArtists);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// get artist filtered by id from params
 artistsRouter.get('/byId/:id', async (req, res) => {
     try {
         const result = await Artist.findByPk(req.params.id, {
@@ -48,11 +52,13 @@ artistsRouter.get('/byId/:id', async (req, res) => {
             }]
         });
         res.json(result);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// get artist filtered by name from params
 artistsRouter.get("/byName/:name", async (req, res) => {
     try {
         const result = await Artist.findAll({
@@ -63,55 +69,61 @@ artistsRouter.get("/byName/:name", async (req, res) => {
             }
         });
         res.json(result);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
+// get top 20 artists
 artistsRouter.get("/top", async (req, res) => {
     try {
         const allArtists = await Artist.findAll({ limit: 20 });
         res.json(allArtists);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
-// check if request is admin
-artistsRouter.use((req, res, next) => {
-    req.decoded.isAdmin ? next() : res.status(403).send('unaoutherized')
-})
+//============================== Admin Routes ======================================//
 
-artistsRouter.post("/", async (req, res) => {
+// create new artist
+artistsRouter.post("/", checkAdmin, async (req, res) => {
     try {
         const { body } = req;
         const newAtrist = await Artist.create(body);
         res.json(newAtrist);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
-artistsRouter.put("/:id", async (req, res) => {
+// update artist information
+artistsRouter.put("/:id", checkAdmin, async (req, res) => {
     try {
         const { body } = req;
         const editArtist = await Artist.update(body, {
             where: { id: req.params.id }
         })
         res.json(editArtist);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
-artistsRouter.delete("/:id", async (req, res) => {
+// delete artist
+artistsRouter.delete("/:id", checkAdmin, async (req, res) => {
     try {
         const result = await Artist.destroy({
             where: { id: req.params.id }
         })
         res.json(result);
-    } catch (e) {
-        res.status(400).json({ message: e.message });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: error.message });
     };
 });
 
