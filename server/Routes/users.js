@@ -4,7 +4,6 @@ const usersRouter = express.Router();
 const { User } = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const fs = require('fs').promises;
 
 function pad(num) { return ('00' + num).slice(-2) };
 
@@ -37,19 +36,19 @@ usersRouter.post('/register', async (req, res) => {
                 name: userResponse.name,
                 email: userResponse.email
             });
-
-        } else {
+                
+            } else {
             res.status(406).json({ message: 'Email alreay taken!' })
         }
-    } catch (e) {
+    }  catch (e) {
         res.status(400).json({ message: e.message });
     };
 })
 
 usersRouter.post("/valid", (req, res) => {
-    jwt.verify(req.body.refreshToken, process.env.REFRESH_KEY, (error, data) => {
+    jwt.verify(req.body.token, process.env.SECRET_KEY, (error, data) => {
         if (error) {
-            res.status(403).json({ message: error });
+            res.status(403).json({message: error});
         } else {
             res.json({ valid: true, isAdmin: data.isAdmin })
         }
@@ -70,45 +69,19 @@ usersRouter.post("/logIn", async (req, res) => {
                 newToken.rememberToken = rememberToken,
                     newToken.exp = Math.floor(Date.now() / 1000) + (60 * 30)
             }
-            const token = jwt.sign(newToken, process.env.REFRESH_KEY)
-            const json = await fs.readFile('../refreshedTokens.json');
-            const tokensArray = JSON.parse(json);
-            tokensArray.push(token);
-            await fs.writeFile('../refreshedTokens.json', JSON.stringify(tokensArray, null, 2));
+            const token = jwt.sign(newToken, process.env.SECRET_KEY)
             res.cookie('name', user.name)
             res.cookie('isAdmin', user.isAdmin)
-            res.cookie('refreshToken', token)
+            res.cookie('token', token)
             res.cookie('user', user.email)
-            // res.header('Authorization', token)
+            res.header('Authorization', token)
             res.json(`welcome back ${user.name}`)
         } else {
             res.status(403).json({ message: 'The email or password you’ve entered doesn’t correct.' });
         }
-    } catch (e) {
+    }  catch (e) {
         res.status(400).json({ message: e.message });
     };
-})
-
-Array.prototype.remove = function () {
-    var what, a = arguments, L = a.length, ax;
-    while (L && this.length) {
-        what = a[--L];
-        while ((ax = this.indexOf(what)) !== -1) {
-            this.splice(ax, 1);
-        }
-    }
-    return this;
-};
-
-usersRouter.post("/logOut", async (req, res) => {
-console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-console.log('****************************************************');
-    const { token } = req.body;
-    const json = await fs.readFile('../refreshedTokens.json');
-    const tokensArray = JSON.parse(json);
-    tokensArray.remove(token);
-    await fs.writeFile('../refreshedTokens.json', JSON.stringify(tokensArray, null, 2));
-    res.status(204).json({ message: 'token removed' });
 })
 
 module.exports = usersRouter;

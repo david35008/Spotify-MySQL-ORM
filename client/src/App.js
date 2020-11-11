@@ -24,14 +24,14 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    if (Cookies.get('refreshToken')) {
+    if (Cookies.get('token')) {
       create('/users/valid', Cookies.get())
         .then(res => {
           setIsAdmin(res.isAdmin);
           setIsLogged(res.valid);
           setLoading(false);
         })
-        .catch(err => {  setLoading(false); setIsLogged(false); console.error(err); })
+        .catch(err => { setLoading(false); setIsLogged(false); console.error(err); })
     } else {
       setLoading(false)
       setIsLogged(false)
