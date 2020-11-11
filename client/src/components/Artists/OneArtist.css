@@ -1,0 +1,44 @@
+.OneArtist {
+    display: flex;
+    flex-direction: column;
+}
+
+/* .ArtistContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-bottom: 1px solid white;
+} */
+
+.OneArtitstDescriptionContainer {
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: left;
+    font-size: 40px;
+}
+
+.artistImage {
+    height: 350px;
+    width: 550px;
+}
+
+.OneArtitstDescription {
+    margin-top: 20px;
+    font-size: 20px;
+    max-width: 400px;
+}
+
+.OneArtistSongList {
+    display: flex;
+    flex-direction: row;
+}
+
+.OneArtistAlbums {
+    max-width: 600px;
+    margin-top: 40px;
+}
+
+.artisrcreatedAt {
+    margin-top: 40px;
+    font-size: 20px;
+}

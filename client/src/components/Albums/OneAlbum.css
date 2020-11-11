@@ -1,0 +1,29 @@
+.OneAlbum {
+    display: flex;
+    flex-direction: column;
+}
+
+.OneAlbumImage {
+    height: 309px;
+    width: 550px;
+}
+
+.OneAlbumContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
+
+.OneAlbumDescription {
+    margin-top: 20px;
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr;
+    text-align: left;
+    font-size: 30px;
+}
+
+.albumSongsList {
+    margin-top: 50px;
+}

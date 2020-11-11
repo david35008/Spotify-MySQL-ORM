@@ -1,42 +1,26 @@
-require('dotenv').config()
-const express = require('express')
-const morgan = require('morgan')
-const app = express()
+require('dotenv').config();
+const express = require('express');
+const app = express();
 
+// global middlewares
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(require('./helpers/morgan'));
 
-app.use(morgan(function (tokens, req, res) {
-  const myTiny =[tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.status(req, res),
-    tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms']
-  if (req.method === 'POST' || req.method === 'PUT' ) {
-    return myTiny.concat([JSON.stringify(req.body)]).join(' ')
-  } else {
-    return myTiny.join(' ')
-  }
-}));
+//users login,register validation
+app.use('/users', require('./Routes/users'));
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' });
-};
+// check token validation, and updateing infromation about user
+app.use(require('./helpers/tokenCheck'));
 
-app.use(unknownEndpoint);
+// expose api
+app.use('/api', require('./api'))
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
+// handle unknown endpoint
+app.use(require('./helpers/unknownEndpoint'));
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' });
-  };
+// error handling
+app.use(require('./helpers/errorHandler'));
 
-  next(error);
-};
 
-app.use(errorHandler);
-
-const PORT = process.env.PORT
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;

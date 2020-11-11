@@ -1,0 +1,9 @@
+.songNameGlobal {
+    margin-top: 20px;
+    list-style: none;
+    width: 170px;
+    height: 250px;
+    border: 1px solid lightslategray;
+    border-radius: 10px;
+    background-color: rgb(46, 52, 58);
+}

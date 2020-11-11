@@ -1,0 +1,38 @@
+.Album {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    border-bottom: 1px solid lightslategray;
+}
+
+.albumsImg {
+    height: 309px;
+     width: auto;
+}
+
+.AlbumContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.AlbumDescription {
+    margin-top: 20px;
+    margin-right: 200px;
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr;
+    text-align: left;
+}
+
+.AlbumName {
+    font-size: 40px !important;
+}
+
+.globalLikeButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

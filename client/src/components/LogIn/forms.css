@@ -1,0 +1,106 @@
+.enteryForm {
+    margin: 0px 50px 0px 0px;
+    margin-top: -60px;
+    width: 100%;
+    height: 100vh;
+    background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: 'Numans', sans-serif;
+}
+
+.forgetPassword {
+    cursor: pointer;
+}
+
+.modalForget {
+    color: black;
+}
+
+.forgetPassword:hover {
+    text-decoration: underline;
+}
+
+.container{
+height: 100%;
+align-content: center;
+}
+
+.card{
+height: 370px;
+margin-top: auto;
+margin-top: 15%;
+margin-bottom: auto;
+width: 400px;
+background-color: rgba(0,0,0,0.5) !important;
+}
+
+.socialIcon span{
+font-size: 60px;
+margin-left: 10px;
+color: #FFC312;
+}
+
+.socialIcon span:hover{
+color: white;
+cursor: pointer;
+}
+
+.card-header h3{
+color: white;
+}
+
+.socialIcon{
+position: absolute;
+right: 20px;
+top: -45px;
+}
+
+.input-group-prepend span{
+width: 50px;
+background-color: #FFC312;
+color: black;
+border:0 !important;
+}
+
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+color: white;
+}
+
+.remember input
+{
+width: 20px;
+height: 20px;
+margin-left: 15px;
+margin-right: 5px;
+}
+
+.loginBtn{
+color: black;
+background-color: #FFC312;
+width: 100px;
+}
+
+.loginBtn:hover{
+color: black;
+background-color: white;
+}
+
+.links{
+color: white;
+}
+
+.links a{
+margin-left: 4px;
+}
+
+.email {
+    font-size: 18px;
+    font-weight: bold;
+}

@@ -1,0 +1,19 @@
+.Home {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.ElementToCarusel {
+    list-style: none;
+}
+
+.listTitle {
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+    /* font-family: YT Sans, Roboto, Noto Naskh Arabic UI, Arial, sans-serif; */
+    /* font-weight: 700; */
+    /* font-variant: small-caps; */
+    font-size: 30px;
+}

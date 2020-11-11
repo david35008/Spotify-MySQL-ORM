@@ -1,0 +1,46 @@
+.Artist {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    border-bottom: 1px solid lightslategray;
+}
+
+.Artist-img {
+      height: 309px;
+      width: auto;
+}
+
+.artistTitle {
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.ArtistContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.ArtistDescription {
+    margin-top: 20px;
+    margin-right: 200px;
+    font-style: oblique;
+    font-family: 'Courier New', Courier, monospace;
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr;
+    text-align: left;
+}
+
+.ArtistName {
+    font-size: 40px !important;
+}
+
+.AlbumArtist {
+    font-size: 40px !important;
+}
+
+.OneArtistAlbumCarusel {
+    display: flex;
+    flex-direction: column;
+}
