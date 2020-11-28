@@ -1,0 +1,79 @@
+# Use root/example as user/password credentials
+version: "3.1"
+
+services:
+  # mysql DataBase service
+  db-spotify:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: "spotify_dev"
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: "root"
+      # You can use whatever password you like
+      MYSQL_PASSWORD: "password"
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - "3307:3306"
+    expose:
+      # Opens port 3306 on the container
+      - "3307"
+      # Where our data will be persisted
+    volumes:
+      - ./my-db:/var/lib/mysql
+
+  mysql-workbench:
+    image: ghcr.io/linuxserver/mysql-workbench
+    container_name: mysql-workbench
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /path/to/config:/config
+    ports:
+      - 4000:3000
+    cap_add:
+      - IPC_LOCK
+    restart: unless-stopped
+
+  # rest api of spotify
+  api-spotify:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '/usr/app/server/node_modules'
+      - ./server:/usr/app/server
+    stdin_open: true  
+    ports:
+      - 8080:8080
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: db-spotify ## same as the database service name
+      DB_PORT: "3307"
+      DB_USER: "root"
+      DB_PASSWORD: "password"
+      DB_DEV: "db-spotify"
+      SECRET_KEY: 'abcde'
+    depends_on:
+      - db-spotify
+
+  app-spotify:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    stdin_open: true  
+    volumes:
+      - '/usr/app/client/node_modules'
+      - ./client:/usr/app/client
+    ports:
+      - 3030:3000
+    depends_on:
+      - api-spotify
+
+volumes:
+ db-spotify:
+    driver: local

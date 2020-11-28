@@ -3,7 +3,7 @@ const express = require('express');
 const usersRouter = express.Router();
 const { User } = require('../models');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 function pad(num) { return ('00' + num).slice(-2) };
 
@@ -23,7 +23,7 @@ usersRouter.post('/register', async (req, res) => {
             where: { email: email }
         })
         if (!result) {
-            const hashedPassword = await bcrypt.hash(password, 10);
+            const hashedPassword = await bcrypt.hashSync(password, 10);
             const newUser = {
                 name,
                 email,
@@ -63,7 +63,7 @@ usersRouter.post("/logIn", async (req, res) => {
     const { email, password, rememberToken } = req.body;
     try {
         const user = await User.findOne({ where: { email: email } });
-        if (await bcrypt.compare(password, user.password)) {
+        if (await bcrypt.compareSync(password, user.password)) {
             const newToken = {
                 isAdmin: user.isAdmin,
                 email: user.email,

@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "node_modules/.bin/jest",
-    "dev": "nodemon start.js",
+    "dev": "node_modules/.bin/sequelize db:create && node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all && nodemon start.js",
     "start": "node start.js",
+    "createDB": "node_modules/.bin/sequelize db:create",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "seed": "node_modules/.bin/sequelize db:seed:all"
   },
@@ -14,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.0",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",

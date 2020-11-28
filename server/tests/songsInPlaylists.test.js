@@ -6,7 +6,7 @@
 require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { Playlist, PlaylistsSong, Song, Album, Artist, User } = require('../models');
 const { Op } = require("sequelize");
 
@@ -40,7 +40,7 @@ let header;
 
 describe('check songInPlaylist routs', () => {
   beforeAll(async () => {
-    userMock.password = await bcrypt.hash(process.env.PASSWORD, 10);
+    userMock.password = await bcrypt.hashSync(process.env.PASSWORD, 10);
     await User.create(userMock);
 
     userMock.password = process.env.PASSWORD;
